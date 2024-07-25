@@ -33,7 +33,7 @@ class ProfileWidget extends StatelessWidget {
                         child: Container(
                           child: Stack(children: [
                             Image.asset(
-                              'assets/images/avatars/avatar_${userProvider.avatarIndex}.png',
+                              'assets/images/p${userProvider.avatarIndex + 1}.jpg',
                               fit: BoxFit.cover,
                             ),
                           ]),

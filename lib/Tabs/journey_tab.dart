@@ -19,7 +19,7 @@ class JourneyTab extends StatelessWidget {
     final currentLevel = userProvider.currentLevelIndex;
 
     frontIndex = backIndex = userProvider.currentLevelIndex;
-    for (int i = 1; i <= 2; i++) {
+    for (int i = 1; i <= 1; i++) {
       if (backIndex > 0) {
         backIndex--;
       } else {
@@ -60,6 +60,18 @@ class JourneyTab extends StatelessWidget {
         child: Column(
           children: [
             ...timelineTiles,
+            //an elevated button to show all levels.
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 30),
+                child: ElevatedButton(
+                  onPressed: () {
+                    //show all levels
+                  },
+                  child: Text('Show All Levels'),
+                ),
+              ),
+            ),
           ],
         ),
       ),

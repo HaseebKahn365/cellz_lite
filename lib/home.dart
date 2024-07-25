@@ -81,7 +81,7 @@ class Home extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: DefaultTabController(
-                    length: 3,
+                    length: 2,
                     child: Column(
                       children: [
                         TabBar(
