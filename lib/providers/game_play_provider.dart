@@ -15,22 +15,16 @@ eg.
 
  */
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cellz_lite/dealing_with_data/GamePlay.dart';
 import 'package:cellz_lite/main.dart';
 import 'package:flutter/material.dart';
 
 class GamePlayStateForGui {
-  LevelObject currentLevel = userProvider.currentLevel;
+  LevelObject currentLevel = levels[userProvider.currentLevelIndex];
   String playerOneName = userProvider.name;
   String playerTwoName = 'Artificial Intelligence';
 
   Widget? playerTwoImage;
-  Widget playerOneImage = CachedNetworkImage(
-    imageUrl: userProvider.imageUrl,
-    placeholder: (context, url) => const CircularProgressIndicator(),
-    errorWidget: (context, url, error) => const Icon(Icons.error),
-  );
+  Widget playerOneImage = Image.asset('assets/images/avatars/avatar_${userProvider.avatarIndex}.png');
   final ValueNotifier<bool> isMyTurnNotifier = ValueNotifier(false);
   final ValueNotifier<int> movesLeftNotifier = ValueNotifier(365);
   final ValueNotifier<int> playerOneScoreNotifier = ValueNotifier(0);

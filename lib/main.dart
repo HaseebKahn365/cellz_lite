@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cellz_lite/dealing_with_data/User.dart';
 import 'package:cellz_lite/providers/theme_provider.dart';
 import 'package:flutter/material.dart';

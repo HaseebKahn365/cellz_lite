@@ -4,7 +4,6 @@ import 'package:animations/animations.dart';
 import 'package:cellz_lite/Profile_Section/current_level_clipper.dart';
 import 'package:cellz_lite/Profile_Section/profile.dart';
 import 'package:cellz_lite/Tabs/journey_tab.dart';
-import 'package:cellz_lite/Tabs/special_tab.dart';
 import 'package:cellz_lite/providers/theme_provider.dart';
 import 'package:cellz_lite/screens/settings.dart';
 import 'package:flutter/material.dart';
@@ -93,9 +92,6 @@ class Home extends StatelessWidget {
                             Tab(
                               text: 'Journey',
                             ),
-                            Tab(
-                              text: 'Special',
-                            ),
                           ],
                         ),
                         Expanded(
@@ -103,7 +99,6 @@ class Home extends StatelessWidget {
                             children: [
                               OverviewTab(),
                               JourneyTab(),
-                              SpecialTab(),
                             ],
                           ),
                         ),

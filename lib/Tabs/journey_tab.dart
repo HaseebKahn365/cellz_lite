@@ -16,8 +16,9 @@ class JourneyTab extends StatelessWidget {
   int frontIndex = 0, backIndex = 0;
   void findRange() {
     //there are levels in the list of levels from 0 to 64. we need to find 5 levels near the current level and display them in the timeline.
+    final currentLevel = userProvider.currentLevelIndex;
 
-    frontIndex = backIndex = userProvider.currentLevel.id - 1;
+    frontIndex = backIndex = userProvider.currentLevelIndex;
     for (int i = 1; i <= 2; i++) {
       if (backIndex > 0) {
         backIndex--;
@@ -37,9 +38,9 @@ class JourneyTab extends StatelessWidget {
         MyTimeLineTile(
           isFirst: i == backIndex,
           isLast: i == frontIndex,
-          isCurrent: i == userProvider.currentLevel.id - 1,
-          isPassed: i < userProvider.currentLevel.id - 1,
-          isExpanded: i == userProvider.currentLevel.id - 1,
+          isCurrent: i == currentLevel,
+          isPassed: i < currentLevel,
+          isExpanded: i == currentLevel,
           currentLevel: i,
         ),
       );

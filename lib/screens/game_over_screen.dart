@@ -1,8 +1,6 @@
 import 'dart:developer';
 
-import 'package:cellz_lite/Profile_Section/current_level_clipper.dart';
 import 'package:cellz_lite/business_logic/game_state.dart';
-import 'package:cellz_lite/dealing_with_data/GamePlay.dart';
 import 'package:cellz_lite/main.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:cellz_lite/screens/my_game.dart';
@@ -48,45 +46,13 @@ class _GameResultScreenState extends State<GameResultScreen> {
   }
 
   Future<void> updateTheDb() async {
-    //uploading the stats of the current game to the database:
-
-    //making sure that this is only inserted if the aiExperience is not null. this indicates that the game is played against ai
-    if (gamePlayStateForGui!.currentLevel.aiXperience != null) {
-      //!inserting the game play record in the database
-      await dbService.gameOverInsertion(GamePlayState(
-        id: 0,
-        dateTime: DateTime.now().millisecondsSinceEpoch,
-        isCompleted: 1,
-        isWon: widget.playerOneScore > widget.playerTwoScore ? 1 : 0,
-        score: widget.playerOneScore,
-        uid: 1,
-        fkLevelId: gamePlayStateForGui!.currentLevel.id,
-      ));
-
-      //!inserting updated record into the warehouse
-      await dbService.gameOverInsertionInWarehouse(
-        isWon: widget.playerOneScore > widget.playerTwoScore ? true : false,
-        squaresOwned: gamePlayStateForGui!.playerOneScoreNotifier.value,
-        wasAgainstFriend: false,
-      );
-
-      //if game is won then insert a new level in database:
-      if (widget.playerOneScore > widget.playerTwoScore) {
-        await dbService.insertLevel(levels[gamePlayStateForGui!.currentLevel.id]); //!inserting the level in the database with current level index. this means that the next level will be unlocked
-        userProvider.incrementLives(); //! this is to refund the life
-        userProvider.currentLevelAttempts = 0; //! resetting the attempts
-        recentPlay = null;
-      } else if (widget.playerOneScore == widget.playerTwoScore) {
-        //recording the recent play activity:
-        recentPlay = RecentPlay(endTime: DateTime.now(), score: widget.playerOneScore, total: widget.playerOneScore + widget.playerTwoScore);
-        userProvider.incrementLives(); //! this is to refund the life
-      } else {
-        //recording the recent play activity:
-        recentPlay = RecentPlay(endTime: DateTime.now(), score: widget.playerOneScore, total: widget.playerOneScore + widget.playerTwoScore);
-      }
+    userProvider.lastScore = widget.playerOneScore;
+    userProvider.lastTotalScore = widget.playerOneScore + widget.playerTwoScore;
+    if (widget.playerOneScore > widget.playerTwoScore) {
+      userProvider.wins++;
+    } else if (widget.playerOneScore < widget.playerTwoScore) {
+      userProvider.losses++;
     }
-
-    await userProvider.updateUserCareer();
   }
 
   @override

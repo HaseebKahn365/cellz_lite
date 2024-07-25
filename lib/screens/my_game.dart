@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:cellz_lite/business_logic/game_state.dart';
 import 'package:cellz_lite/custom_components/custom_gui_dot.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
-import 'package:cellz_lite/screens/play_with_friend.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
@@ -72,14 +71,6 @@ class MyGame extends FlameGame with HasGameRef {
       world.add(CustomGuiDot(
         myPoint: entry.value,
       ));
-    }
-
-    if (opponentData != null) {
-      //!check if it is sender then
-      if (opponentData!.opponentType == OpponentType.joiner) {
-        log('we are here on the sender side trying to download the first line');
-        GameState!.uploadDownloadLine(null, gameRef);
-      }
     }
   }
 

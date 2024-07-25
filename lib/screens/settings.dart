@@ -1,5 +1,4 @@
 import 'package:cellz_lite/dealing_with_data/User.dart';
-import 'package:cellz_lite/providers/constants.dart';
 import 'package:cellz_lite/providers/theme_provider.dart';
 import 'package:cellz_lite/sections/subscription.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +67,7 @@ class _SettingsContainerState extends State<SettingsContainer> {
                       child: GridView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: ColorImageProvider.values.length,
+                        itemCount: ThemeProvider.colorImageProviders.length,
                         padding: const EdgeInsets.all(0),
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
@@ -76,7 +75,7 @@ class _SettingsContainerState extends State<SettingsContainer> {
                           crossAxisSpacing: 2,
                         ),
                         itemBuilder: (context, index) {
-                          final currentImage = ColorImageProvider.values[index];
+                          final currentImage = ThemeProvider.colorImageProviders[index];
                           return InkWell(
                             onTap: () {
                               themeProvider.handleImageSelect(index);
@@ -148,7 +147,7 @@ class _SettingsContainerState extends State<SettingsContainer> {
                               child: Opacity(
                                 opacity: _sliderValue, // Use the slider value for opacity
                                 child: Image.asset(
-                                  themeProvider.imageSelected.assetPath,
+                                  ThemeProvider.colorImageProviders[themeProvider.imageSelected].assetPath,
                                   fit: BoxFit.cover,
                                   width: double.infinity,
                                   height: 96,
@@ -178,11 +177,12 @@ class _SettingsContainerState extends State<SettingsContainer> {
 
   List<Widget> generateColorRows(ThemeProvider themeProvider) {
     final colors = Theme.of(context).colorScheme;
+    final colorsCount = ThemeProvider.colorSeeds.length;
     List<Widget> rows = [];
-    for (var i = 0; i < ColorSeed.values.length; i += 3) {
+    for (var i = 0; i < colorsCount; i += 3) {
       List<Widget> rowChildren = [];
       for (var j = 0; j < 3; j++) {
-        if (i + j < ColorSeed.values.length) {
+        if (i + j < ThemeProvider.colorSeeds.length) {
           rowChildren.add(
             InkWell(
               onTap: () {
@@ -193,9 +193,9 @@ class _SettingsContainerState extends State<SettingsContainer> {
                 height: 60,
                 width: 60,
                 decoration: BoxDecoration(
-                  color: themeProvider.colorSelected == ColorSeed.values[i + j] ? ColorSeed.values[i + j].color : ColorSeed.values[i + j].color,
+                  color: themeProvider.colorSelected == ThemeProvider.colorSeeds[i + j] ? ThemeProvider.colorSeeds[i + j].color : ThemeProvider.colorSeeds[i + j].color,
                   border: Border.all(
-                    color: themeProvider.colorSelected == ColorSeed.values[i + j] ? colors.surface.withOpacity(0.8) : colors.surface,
+                    color: themeProvider.colorSelected == ThemeProvider.colorSeeds[i + j] ? colors.surface.withOpacity(0.8) : colors.surface,
                     width: 5,
                   ),
                   borderRadius: BorderRadius.circular(20),
@@ -308,7 +308,7 @@ class _AccountSettingsState extends State<AccountSettings> {
                           },
                           onFieldSubmitted: (value) {
                             if (_formKey.currentState!.validate()) {
-                              userProvider.trackNameChanges(value);
+                              userProvider.changeName(value);
                             }
                           },
                         ),
