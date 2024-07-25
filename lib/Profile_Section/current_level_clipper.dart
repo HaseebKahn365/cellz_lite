@@ -197,7 +197,6 @@ class CurrentLevelContainer extends StatelessWidget {
 
                           GameState!.offsetFromTopLeftCorner = gamePlayStateForGui!.currentLevel.offsetFromTopLeftCorner;
                           GameState!.offsetFactoForSquare = gamePlayStateForGui!.currentLevel.offsetFactoForSquare;
-                          final levelId = gamePlayStateForGui!.currentLevel.id;
 
                           //lets upload a new instance to the database. this will be a gameStartInsertion
 

@@ -34,7 +34,7 @@ class App extends StatelessWidget {
       builder: (context, themeProvider, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'My App',
+          title: 'Cellz',
           themeMode: themeProvider.themeMode,
           theme: ThemeData(
             colorSchemeSeed: ThemeProvider.colorSeeds[themeProvider.colorSelected].color,

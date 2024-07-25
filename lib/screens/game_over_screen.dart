@@ -49,9 +49,9 @@ class _GameResultScreenState extends State<GameResultScreen> {
     userProvider.lastScore = widget.playerOneScore;
     userProvider.lastTotalScore = widget.playerOneScore + widget.playerTwoScore;
     if (widget.playerOneScore > widget.playerTwoScore) {
-      userProvider.wins++;
+      userProvider.incrementWins();
     } else if (widget.playerOneScore < widget.playerTwoScore) {
-      userProvider.losses++;
+      userProvider.incrementLosses();
     }
   }
 

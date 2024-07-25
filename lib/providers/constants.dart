@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/material.dart';
-
 // NavigationRail shows if the screen width is greater or equal to
 // narrowScreenWidthThreshold; otherwise, NavigationBar is used for navigation.
 const double narrowScreenWidthThreshold = 450;
