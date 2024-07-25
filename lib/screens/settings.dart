@@ -314,9 +314,6 @@ class _AccountSettingsState extends State<AccountSettings> {
                         ),
                       ),
                     ),
-                    ListTile(
-                      title: const Text('From'),
-                    ),
                   ],
                 ),
               ),

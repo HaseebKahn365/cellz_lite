@@ -34,12 +34,12 @@ class ThemeProvider extends ChangeNotifier {
   ];
 
   static const List<ColorImageProvider> colorImageProviders = [
-    ColorImageProvider('Leaves', 'assets/images/leaves.png'),
-    ColorImageProvider('Peonies', 'assets/images/peonies.jpg'),
-    ColorImageProvider('Bubbles', 'assets/images/bubbles.jpg'),
-    ColorImageProvider('Seaweed', 'assets/images/seaweed.jpg'),
-    ColorImageProvider('Sea Grapes', 'assets/images/seagrapes.jpg'),
-    ColorImageProvider('Petals', 'assets/images/petals.jpg'),
+    ColorImageProvider('Leaves', 'assets/images/w1.jpg'),
+    ColorImageProvider('Peonies', 'assets/images/w2.jpg'),
+    ColorImageProvider('Bubbles', 'assets/images/w3.jpg'),
+    ColorImageProvider('Seaweed', 'assets/images/w4.jpg'),
+    ColorImageProvider('Sea Grapes', 'assets/images/w5.jpg'),
+    ColorImageProvider('Petals', 'assets/images/w6.jpg'),
   ];
 
   static const List<ScreenSelected> screens = [
