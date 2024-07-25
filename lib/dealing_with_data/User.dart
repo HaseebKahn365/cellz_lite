@@ -55,6 +55,10 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool hasLives() {
+    return lives > 0;
+  }
+
   void decrementLives() {
     if (lives > 0) {
       lives--;

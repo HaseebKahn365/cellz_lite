@@ -5,7 +5,6 @@ import 'package:cellz_lite/business_logic/game_state.dart';
 import 'package:cellz_lite/business_logic/point.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:cellz_lite/screens/game_play_screen.dart';
-import 'package:cellz_lite/screens/play_with_friend.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
@@ -110,11 +109,7 @@ class GuiLine extends PositionComponent with HasGameRef {
       AudioPlayer().play(AssetSource('audio/line.wav'));
     }
 
-    //in case if the opponentData is not null then trigger the uploadDownloadLine method in the gameState
-    if (opponentData != null && GameState!.latestLine != null) {
-      print('Uploading line to the server');
-      GameState!.uploadDownloadLine(GameState!.latestLine!, gameRef);
-    }
+   
     return super.onLoad();
   }
 

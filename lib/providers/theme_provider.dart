@@ -14,10 +14,6 @@ class ThemeProvider extends ChangeNotifier {
 
   SharedPreferences? _prefs;
 
-  ThemeProvider() {
-    _loadPreferences();
-  }
-
   bool get useLightMode {
     if (themeMode == ThemeMode.system) {
       return WidgetsBinding.instance.window.platformBrightness == Brightness.light;
@@ -53,7 +49,7 @@ class ThemeProvider extends ChangeNotifier {
     ScreenSelected('Elevation', 3),
   ];
 
-  Future<void> _loadPreferences() async {
+  Future<void> loadTheme() async {
     _prefs = await SharedPreferences.getInstance();
     useMaterial3 = _prefs?.getBool('useMaterial3') ?? true;
     themeMode = ThemeMode.values[_prefs?.getInt('themeMode') ?? ThemeMode.system.index];

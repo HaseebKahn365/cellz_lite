@@ -1,5 +1,4 @@
 import 'package:cellz_lite/business_logic/game_state.dart';
-import 'package:cellz_lite/dealing_with_data/GamePlay.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
 import 'package:cellz_lite/main.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
@@ -8,7 +7,6 @@ import 'package:cellz_lite/screens/my_game.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
-import 'package:timeago/timeago.dart';
 
 class PointsClipper extends CustomClipper<Path> {
   final int waves;
@@ -68,6 +66,7 @@ class CurrentLevelContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(
       builder: (context, userProvider, child) {
+        final currentLevel = levels[userProvider.currentLevelIndex];
         return ClipRRect(
           borderRadius: BorderRadius.circular(23),
           child: ClipPath(
@@ -96,7 +95,7 @@ class CurrentLevelContainer extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          userProvider.currentLevel.id.toString(),
+                          currentLevel.id.toString(),
                           style: Theme.of(context).textTheme.displayLarge,
                         ),
                       ),
@@ -108,14 +107,10 @@ class CurrentLevelContainer extends StatelessWidget {
                         children: [
                           const SizedBox(height: 5),
                           Text(
-                            'Grid: ' + userProvider.currentLevel.xPoints.toString() + ' x ' + userProvider.currentLevel.yPoints.toString(),
+                            'Grid: ' + currentLevel.xPoints.toString() + ' x ' + currentLevel.yPoints.toString(),
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            'Attempts: ' + userProvider.currentLevelAttempts.toString(),
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
                         ],
                       ),
 
@@ -185,7 +180,7 @@ class CurrentLevelContainer extends StatelessWidget {
                             return;
                           }
 
-                          await userProvider.decrementLives();
+                          userProvider.decrementLives();
 
                           //Creating instances of Global States
                           GameState = GameStateClass();
@@ -204,29 +199,8 @@ class CurrentLevelContainer extends StatelessWidget {
                           GameState!.offsetFactoForSquare = gamePlayStateForGui!.currentLevel.offsetFactoForSquare;
                           final levelId = gamePlayStateForGui!.currentLevel.id;
 
-                          //setting the images for the players
-                          gamePlayStateForGui!.playerTwoImage = Image.asset('assets/images/ai.jpg');
-
                           //lets upload a new instance to the database. this will be a gameStartInsertion
-                          final GamePlayState newGameInfo = GamePlayState(
-                            id: 0, //its insignificant
-                            dateTime: DateTime.now().millisecondsSinceEpoch,
-                            isCompleted: 0,
-                            isWon: 0,
-                            score: 0,
-                            uid: 1,
-                            fkLevelId: levelId,
-                          );
 
-                          //!inserting into the gamesplaytable
-                          await dbService.gameStartInsertion(
-                            newGameInfo,
-                          );
-
-                          //!inserting into the warehouse:
-                          await dbService.gameStartInsertionInWarehouse();
-
-                          await userProvider.updateUserCareer();
                           GameState!.myTurn = false;
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => GamePlayScreen(
@@ -296,7 +270,7 @@ class CurrentLevelContainer extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            userProvider.currentLevel.grade!,
+                            currentLevel.grade!,
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ],
@@ -313,20 +287,6 @@ class CurrentLevelContainer extends StatelessWidget {
   }
 }
 
-class RecentPlay {
-  final DateTime endTime;
-  final int score;
-  final int total;
-
-  const RecentPlay({
-    required this.endTime,
-    required this.score,
-    required this.total,
-  });
-}
-
-RecentPlay? recentPlay;
-
 class HistoryElement extends StatelessWidget {
   const HistoryElement({
     super.key,
@@ -334,7 +294,9 @@ class HistoryElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (recentPlay != null)
+    final level = levels[userProvider.currentLevelIndex];
+    final totalScore = (level.xPoints - 1) * (level.yPoints - 1);
+    return (userProvider.lastScore != 0)
         ? Container(
             margin: const EdgeInsets.only(right: 10),
             padding: const EdgeInsets.all(10),
@@ -347,11 +309,11 @@ class HistoryElement extends StatelessWidget {
               children: [
                 Text(
                   //lets use timeago package to format the time
-                  'Last Played  \n${format(recentPlay!.endTime)}',
+                  'Last Played ',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 Text(
-                  'Score: ${recentPlay!.score} / ${(recentPlay!.total == 0) ? "" : recentPlay!.total.toString()}',
+                  'Score: ${userProvider.lastScore} / ${totalScore}',
                   style: TextStyle(
                     fontSize: 12,
                   ),

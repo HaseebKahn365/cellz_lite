@@ -77,6 +77,37 @@ class GamePlayStateForGui {
   }
 }
 
+class LevelObject {
+  final double offsetFromTopLeftCorner;
+  final offsetFactoForSquare;
+  final int id;
+  final String? grade;
+  final int xPoints;
+  final int yPoints;
+  int? aiXperience; //in case when playing with friend this could be set to null if we use LevelObject in gamePlaystateForGui
+
+  LevelObject({
+    required this.offsetFromTopLeftCorner,
+    required this.offsetFactoForSquare,
+    required this.id,
+    required this.grade,
+    required this.xPoints,
+    required this.yPoints,
+    this.aiXperience = 1,
+  });
+
+  @override
+  String toString() {
+    return '''LevelObject{
+      id: $id,
+      grade: $grade,
+      xPoints: $xPoints,
+      yPoints: $yPoints,
+      aiXperience: $aiXperience,
+    }''';
+  }
+}
+
 //create a global instance for easy access
 GamePlayStateForGui? gamePlayStateForGui;
 

@@ -10,7 +10,6 @@ import 'package:cellz_lite/business_logic/square.dart';
 import 'package:cellz_lite/game_components/gui_line_for_ai.dart';
 import 'package:cellz_lite/game_components/gui_square.dart';
 import 'package:cellz_lite/screens/game_play_screen.dart';
-import 'package:cellz_lite/screens/play_with_friend.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';

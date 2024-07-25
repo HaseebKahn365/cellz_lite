@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
 import 'package:flutter/material.dart';
 
@@ -30,47 +29,15 @@ class ProfileWidget extends StatelessWidget {
                       ),
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: (userProvider.imageUrl.isNotEmpty)
-                          ? Container(
-                              child: Stack(children: [
-                                CachedNetworkImage(
-                                  imageUrl: userProvider.imageUrl,
-                                  height: 130,
-                                  width: 130,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) => const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                ),
-
-                                //display the country flag at the bottom right corner
-                                Positioned(
-                                  bottom: 0,
-                                  right: 0,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: (userProvider.countryCode.isEmpty)
-                                        ? const SizedBox.shrink()
-                                        : CachedNetworkImage(
-                                            imageUrl: 'https://flagcdn.com/h60/${userProvider.countryCode.toLowerCase()}.png',
-                                            height: 25,
-                                            width: 35,
-                                            fit: BoxFit.cover,
-                                            placeholder: (context, url) => const Center(
-                                              child: CircularProgressIndicator(),
-                                            ),
-                                          ),
-                                  ),
-                                ),
-                              ]),
-                            )
-                          : Icon(
-                              Icons.person,
-                              size: 80,
-                              color: Theme.of(context).colorScheme.secondary,
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                          child: Stack(children: [
+                            Image.asset(
+                              'assets/images/avatars/avatar_${userProvider.avatarIndex}.png',
+                              fit: BoxFit.cover,
                             ),
-                    ),
+                          ]),
+                        )),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -99,14 +66,14 @@ class ProfileWidget extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
-                    child: Text('Lives: ${userProvider.hearts}'),
+                    child: Text('Lives: ${userProvider.lives}'),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
-                        child: BuildLives(userProvider.hearts),
+                        child: BuildLives(userProvider.lives),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
@@ -114,7 +81,7 @@ class ProfileWidget extends StatelessWidget {
                           onPressed: () {
                             // Implement get life functionality
                             // You might want to call a method in UserProvider here
-                            userProvider.incrementLives();
+                            userProvider.incrementLife();
                           },
                           label: Text('Get Life'),
                           icon: Icon(Icons.favorite, color: Theme.of(context).colorScheme.secondary),

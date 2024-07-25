@@ -27,7 +27,7 @@ class Home extends StatelessWidget {
                 //   ),
                 //   fit: BoxFit.cover,
                 //   opacity,: themeProvider.bgOpacity,
-                image: AssetImage(themeProvider.imageSelected.assetPath),
+                image: AssetImage(ThemeProvider.colorImageProviders[themeProvider.imageSelected].assetPath),
                 fit: BoxFit.cover,
                 opacity: themeProvider.bgOpacity,
               )),
