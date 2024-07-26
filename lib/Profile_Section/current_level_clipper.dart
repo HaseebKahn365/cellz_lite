@@ -281,7 +281,7 @@ class HistoryElement extends StatelessWidget {
   Widget build(BuildContext context) {
     final totalScore = userProvider.lastTotalScore;
     final score = userProvider.lastScore;
-    return (score != 0)
+    return (score != 0 && score <= totalScore)
         ? Center(
             child: Container(
               margin: const EdgeInsets.only(right: 10),

@@ -83,11 +83,12 @@ class ProfileWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
+                          const SizedBox(height: 10),
                           Text(
                             userProvider.name,
                             style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: 19),
+                          const SizedBox(height: 10),
                           BuildRow("Score", userProvider.score.toString()),
                           BuildRow("Wins", userProvider.wins.toString()),
                           BuildRow("Losses", userProvider.losses.toString()),
