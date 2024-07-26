@@ -72,7 +72,7 @@ class Dot extends PositionComponent with DragCallbacks, CollisionCallbacks, HasG
 
     //play the dot touch sound
     if (soundEnabled && GameState!.myTurn) {
-      AudioPlayer().play(AssetSource('audio/dot_touch.wav'));
+      AudioPlayer().play(AssetSource('audio/dot.wav'));
     }
 
     super.onDragStart(event);

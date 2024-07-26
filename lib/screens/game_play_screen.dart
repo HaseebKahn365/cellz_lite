@@ -108,8 +108,11 @@ class GamePlayScreen extends StatelessWidget {
 
   //making sure to correct the colors of the game
 
+  // final instead of using a solid 200 lets use 1/5 of the screen height
+
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height / 5;
     // level 29: 7x11 grid
 
     if (!gamePlayStateForGui!.isExpired) {
@@ -413,18 +416,18 @@ class GamePlayScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 200,
+            SizedBox(
+              height: height,
             ),
             //!Here is the game board
-            Container(padding: const EdgeInsets.only(top: 200), child: GameWidget(game: game)),
+            Container(padding: EdgeInsets.only(top: height), child: GameWidget(game: game)),
 
             Align(
               alignment: Alignment.bottomCenter,
               child: Opacity(
                 opacity: 0.5,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 20.0),
+                  padding: const EdgeInsets.only(bottom: 30.0),
                   child: SizedBox(
                     height: 30,
                     child: interactiveSoundButton(),

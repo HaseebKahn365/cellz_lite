@@ -210,13 +210,27 @@ class CurrentLevelContainer extends StatelessWidget {
                           //lets upload a new instance to the database. this will be a gameStartInsertion
 
                           GameState!.myTurn = true;
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => GamePlayScreen(
-                              game: game!,
-                              playerOneName: gamePlayStateForGui!.playerOneName,
-                              playerTwoName: gamePlayStateForGui!.playerTwoName,
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) => GamePlayScreen(
+                                game: game!,
+                                playerOneName: gamePlayStateForGui!.playerOneName,
+                                playerTwoName: gamePlayStateForGui!.playerTwoName,
+                              ),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                const begin = 0.5;
+                                const end = 1.0;
+                                const curve = Curves.easeOutQuint;
+                                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                var scaleAnimation = animation.drive(tween);
+                                return ScaleTransition(
+                                  scale: scaleAnimation,
+                                  child: child,
+                                );
+                              },
+                              transitionDuration: Duration(milliseconds: 1000),
                             ),
-                          ));
+                          );
                         },
                         child: Container(
                           padding: const EdgeInsets.all(10),
