@@ -99,16 +99,15 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateLastScore(int score) {
-    lastScore = score;
-    _saveToPrefs('lastScore', lastScore);
-    notifyListeners();
-  }
+  Future<void> lastPlay(int myScore, int totalScore) async {
+    lastScore = myScore;
 
-  void updateLastTotalScore(int score) {
-    lastTotalScore = score;
-    _saveToPrefs('lastTotalScore', lastTotalScore);
-    notifyListeners();
+    await _saveToPrefs('lastScore', lastScore);
+    lastTotalScore = totalScore;
+
+    await ('lastTotalScore', lastTotalScore);
+
+    updateScore(myScore);
   }
 
   void updateCurrentLevelIndex(int index) {

@@ -46,10 +46,11 @@ class _GameResultScreenState extends State<GameResultScreen> {
   }
 
   Future<void> updateTheDb() async {
-    userProvider.lastScore = widget.playerOneScore;
-    userProvider.lastTotalScore = widget.playerOneScore + widget.playerTwoScore;
+    await userProvider.lastPlay(widget.playerOneScore, widget.playerTwoScore + widget.playerOneScore);
+
     if (widget.playerOneScore > widget.playerTwoScore) {
       userProvider.incrementWins();
+      userProvider.updateCurrentLevelIndex(userProvider.currentLevelIndex + 1);
     } else if (widget.playerOneScore < widget.playerTwoScore) {
       userProvider.incrementLosses();
     }

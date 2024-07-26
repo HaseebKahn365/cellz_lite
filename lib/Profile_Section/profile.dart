@@ -3,6 +3,7 @@
 import 'package:cellz_lite/dealing_with_data/User.dart';
 import 'package:cellz_lite/screens/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 import 'package:provider/provider.dart';
 
@@ -89,6 +90,7 @@ class ProfileWidget extends StatelessWidget {
                           BuildRow("Score", userProvider.score.toString()),
                           BuildRow("Wins", userProvider.wins.toString()),
                           BuildRow("Losses", userProvider.losses.toString()),
+                          BuildRow("Lives", userProvider.lives.toString()),
                         ],
                       ),
                     ),
@@ -98,10 +100,6 @@ class ProfileWidget extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
-                    child: Text('Lives: ${userProvider.lives}'),
-                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -142,12 +140,15 @@ class BuildRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label),
-        Text(value),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 3.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label),
+          Text(value),
+        ],
+      ),
     );
   }
 }
@@ -162,9 +163,30 @@ class BuildLives extends StatelessWidget {
     return Row(
       children: List.generate(
         5,
-        (index) => Icon(
-          index < lives ? Icons.favorite : Icons.favorite_border,
-          color: Theme.of(context).colorScheme.secondary,
+        (index) => Animate(
+          effects: [
+            (index + 1 == lives)
+                ? const ScaleEffect(
+                    begin: Offset(0.5, 0.5),
+                    end: Offset(1.0, 1.0),
+                    duration: Duration(milliseconds: 1000),
+                    curve: Curves.easeInOut,
+                  )
+                : const ScaleEffect(
+                    begin: Offset(1.0, 1.0),
+                    end: Offset(1.0, 1.0),
+                    duration: Duration(milliseconds: 100),
+                    curve: Curves.easeInOut,
+                  ),
+          ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+            child: Icon(
+              index < lives ? Icons.favorite : Icons.favorite_border,
+              color: Theme.of(context).colorScheme.secondary,
+              size: index < lives ? 20 : 10,
+            ),
+          ),
         ),
       ),
     );

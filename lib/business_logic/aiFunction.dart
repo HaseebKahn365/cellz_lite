@@ -7,6 +7,7 @@ import 'package:cellz_lite/business_logic/lines.dart';
 import 'package:cellz_lite/business_logic/square.dart';
 import 'package:cellz_lite/game_components/gui_line_for_ai.dart';
 import 'package:cellz_lite/game_components/gui_square.dart';
+import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:flame/game.dart';
 import 'point.dart';
 import 'dart:developer' as dev;
@@ -20,6 +21,11 @@ class AIFunction {
 
   Future<void> buildReadyLines(FlameGame gameRef) async {
     print('The state of game after call to buildReadyLines: Lines : ${GameState!.linesDrawn.length} Points: ${GameState!.allPoints.length}');
+
+    if (gamePlayStateForGui!.currentLevel.id < 2) {
+      GameState!.switchTurn();
+      return;
+    }
 
     tempLinesDrawn.clear();
     tempRemainingLines.clear();

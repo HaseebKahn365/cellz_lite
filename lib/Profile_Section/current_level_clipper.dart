@@ -74,7 +74,6 @@ class CurrentLevelContainer extends StatelessWidget {
           child: ClipPath(
             clipper: PointsClipper(waves: 10, amplitude: 3),
             child: Container(
-              height: 270,
               width: double.infinity,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -113,6 +112,10 @@ class CurrentLevelContainer extends StatelessWidget {
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const SizedBox(height: 5),
+                          Text(
+                            currentLevel.grade!,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
                         ],
                       ),
 
@@ -182,7 +185,10 @@ class CurrentLevelContainer extends StatelessWidget {
                             return;
                           }
 
-                          userProvider.decrementLives();
+                          Future.delayed(Duration(seconds: 2), () {
+                            //Creating instances of Global States
+                            userProvider.decrementLives();
+                          });
 
                           //Creating instances of Global States
                           GameState = GameStateClass();
@@ -205,7 +211,7 @@ class CurrentLevelContainer extends StatelessWidget {
 
                           //lets upload a new instance to the database. this will be a gameStartInsertion
 
-                          GameState!.myTurn = false;
+                          GameState!.myTurn = true;
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => GamePlayScreen(
                               game: game!,
@@ -245,42 +251,7 @@ class CurrentLevelContainer extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 15),
-                  Row(
-                    children: [
-                      HistoryElement(),
-                      Spacer(),
-                      //wrap   Text(
-                      //   'Difficulty:' + userProvider.currentLevel.grade!,
-                      //   style: TextStyle(
-                      //     fontSize: 12,
-                      //   ),
-                      // ), in  a beautiful outlined container
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Difficulty',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                          // Add some space
-
-                          //create a straight line
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              height: 2,
-                              width: 70,
-                              color: Theme.of(context).colorScheme.secondaryContainer,
-                            ),
-                          ),
-                          Text(
-                            currentLevel.grade!,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                  HistoryElement(),
                 ],
               ),
             ),
@@ -298,31 +269,64 @@ class HistoryElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final level = levels[userProvider.currentLevelIndex];
-    final totalScore = (level.xPoints - 1) * (level.yPoints - 1);
-    return (userProvider.lastScore != 0)
-        ? Container(
-            margin: const EdgeInsets.only(right: 10),
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              border: Border.all(color: Theme.of(context).colorScheme.secondaryContainer),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  //lets use timeago package to format the time
-                  'Last Played ',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                Text(
-                  'Score: ${userProvider.lastScore} / ${totalScore}',
-                  style: TextStyle(
-                    fontSize: 12,
+    final totalScore = userProvider.lastTotalScore;
+    final score = userProvider.lastScore;
+    return (score != 0)
+        ? Center(
+            child: Container(
+              margin: const EdgeInsets.only(right: 10),
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                border: Border.all(color: Theme.of(context).colorScheme.secondaryContainer),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Last Played',
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  Text(
+                    'Score: $score / $totalScore',
+                    style: TextStyle(fontSize: 12),
+                  ),
+                  const SizedBox(height: 8),
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      double userRatio = totalScore == 0 ? 0.5 : score / totalScore;
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: SizedBox(
+                          width: constraints.maxWidth,
+                          height: 13,
+                          child: Stack(
+                            children: [
+                              LinearProgressIndicator(
+                                value: 1,
+                                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                minHeight: 13,
+                              ),
+                              Row(
+                                children: [
+                                  AnimatedContainer(
+                                    duration: Duration(milliseconds: 300),
+                                    width: constraints.maxWidth * userRatio,
+                                    height: 13,
+                                    color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.8),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           )
         : const SizedBox.shrink();
