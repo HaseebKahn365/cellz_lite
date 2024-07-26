@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cellz_lite/business_logic/game_state.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
 import 'package:cellz_lite/main.dart';
@@ -6,7 +8,7 @@ import 'package:cellz_lite/screens/game_play_screen.dart';
 import 'package:cellz_lite/screens/my_game.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rive/rive.dart';
+import 'package:rive/rive.dart' as riv;
 
 class PointsClipper extends CustomClipper<Path> {
   final int waves;
@@ -143,7 +145,7 @@ class CurrentLevelContainer extends StatelessWidget {
                                           SizedBox(
                                             width: 350,
                                             height: 150,
-                                            child: RiveAnimation.asset(
+                                            child: riv.RiveAnimation.asset(
                                               'assets/images/cute_heart_broken.riv',
                                               fit: BoxFit.cover,
                                               antialiasing: true,
@@ -188,12 +190,15 @@ class CurrentLevelContainer extends StatelessWidget {
                           //make sure to reset the scores and stuff before game start
                           gamePlayStateForGui!.resetGame();
                           //use material route to navigate to the game play screen
+
                           final size = MediaQuery.of(context).size;
                           game = MyGame(
                             screenSize: size,
                             xP: gamePlayStateForGui!.currentLevel.xPoints,
                             yP: gamePlayStateForGui!.currentLevel.yPoints,
                           );
+                          //random int generated from 0 to 2
+                          int randomInt = 1 + Random().nextInt(3);
 
                           GameState!.offsetFromTopLeftCorner = gamePlayStateForGui!.currentLevel.offsetFromTopLeftCorner;
                           GameState!.offsetFactoForSquare = gamePlayStateForGui!.currentLevel.offsetFactoForSquare;

@@ -1,12 +1,30 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:cellz_lite/dealing_with_data/User.dart';
+import 'package:cellz_lite/screens/settings.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
 class ProfileWidget extends StatelessWidget {
   const ProfileWidget({Key? key}) : super(key: key);
+
+  void _navigateToSettings(BuildContext context) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => SettingsContainer(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 1.0);
+          const end = Offset.zero;
+          const curve = Curves.easeOutQuint;
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+          return SlideTransition(position: offsetAnimation, child: child);
+        },
+        transitionDuration: Duration(milliseconds: 1000),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,26 +36,42 @@ class ProfileWidget extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Container(
-                    width: 130,
-                    height: 130,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(11),
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                        width: 3,
+                  InkWell(
+                    onTap: () {
+                      _navigateToSettings(context);
+                    },
+                    child: Container(
+                      width: 130,
+                      height: 130,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(11),
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.secondaryContainer,
+                          width: 3,
+                        ),
                       ),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Container(
+                            child: Stack(children: [
+                              //add a settings icon button to the top right corner
+                              Image.asset(
+                                'assets/images/p${userProvider.avatarIndex + 1}.jpg',
+                                fit: BoxFit.cover,
+                              ),
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: IconButton(
+                                  icon: Icon(Icons.edit),
+                                  onPressed: () {
+                                    _navigateToSettings(context);
+                                  },
+                                ),
+                              ),
+                            ]),
+                          )),
                     ),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Container(
-                          child: Stack(children: [
-                            Image.asset(
-                              'assets/images/p${userProvider.avatarIndex + 1}.jpg',
-                              fit: BoxFit.cover,
-                            ),
-                          ]),
-                        )),
                   ),
                   const SizedBox(width: 16),
                   Expanded(

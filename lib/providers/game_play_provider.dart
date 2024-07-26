@@ -15,16 +15,18 @@ eg.
 
  */
 
+import 'dart:math';
+
 import 'package:cellz_lite/main.dart';
 import 'package:flutter/material.dart';
 
 class GamePlayStateForGui {
   LevelObject currentLevel = levels[userProvider.currentLevelIndex];
   String playerOneName = userProvider.name;
-  String playerTwoName = 'Artificial Intelligence';
+  String playerTwoName = 'Opponent';
 
-  Widget? playerTwoImage;
-  Widget playerOneImage = Image.asset('assets/images/avatars/avatar_${userProvider.avatarIndex}.png');
+  Widget? playerTwoImage = Image.asset('assets/images/o${Random().nextInt(3) + 1}.jpg');
+  Widget playerOneImage = Image.asset('assets/images/p${userProvider.avatarIndex + 1}.jpg');
   final ValueNotifier<bool> isMyTurnNotifier = ValueNotifier(false);
   final ValueNotifier<int> movesLeftNotifier = ValueNotifier(365);
   final ValueNotifier<int> playerOneScoreNotifier = ValueNotifier(0);

@@ -13,12 +13,12 @@ import 'package:cellz_lite/game_components/gui_dot.dart';
 class CustomGuiDot extends Dot {
   CustomGuiDot({required Point myPoint, double radFactor = 0.13}) : super(myPoint, radFactor: radFactor);
 
-  @override
-  Future<void> aiResponse() async {
-    //we need to override aiResponse so that it waits till the GameState.isUploading is false
+  // @override
+  // Future<void> aiResponse() async {
+  //   //we need to override aiResponse so that it waits till the GameState.isUploading is false
 
-    super.aiResponse();
-  }
+  //   super.aiResponse();
+  // }
 
   //the ai response also passes the test
 }

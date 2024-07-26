@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:animations/animations.dart';
+// import 'package:animations/animations.dart';
 import 'package:cellz_lite/Profile_Section/current_level_clipper.dart';
 import 'package:cellz_lite/Profile_Section/profile.dart';
 import 'package:cellz_lite/Tabs/journey_tab.dart';
@@ -50,27 +50,19 @@ class Home extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const ProfileWidget(),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: OpenContainer(
-                            transitionType: ContainerTransitionType.fadeThrough,
-                            closedBuilder: (context, action) {
-                              return IconButton(
-                                icon: const Icon(Icons.settings),
-                                onPressed: action,
-                                style: ButtonStyle(
-                                  backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.secondaryContainer),
-                                ),
-                              );
-                            },
-                            openBuilder: (context, action) {
-                              return SettingsContainer();
-                            },
-                            transitionDuration: const Duration(milliseconds: 300),
-                            openColor: Theme.of(context).colorScheme.secondaryContainer,
-                            closedColor: Theme.of(context).colorScheme.secondaryContainer,
-                          ),
-                        ),
+                        // IconButton(
+                        //   icon: const Icon(Icons.settings),
+                        //   onPressed: () {
+                        //     Navigator.of(context).push(
+                        //       MaterialPageRoute(
+                        //         builder: (context) => SettingsContainer(),
+                        //       ),
+                        //     );
+                        //   },
+                        //   style: ButtonStyle(
+                        //     backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondaryContainer),
+                        //   ),
+                        // )
                       ],
                     ),
                   ),
