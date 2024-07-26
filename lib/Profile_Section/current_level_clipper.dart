@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cellz_lite/business_logic/game_state.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
 import 'package:cellz_lite/main.dart';
@@ -205,7 +203,6 @@ class CurrentLevelContainer extends StatelessWidget {
                             yP: gamePlayStateForGui!.currentLevel.yPoints,
                           );
                           //random int generated from 0 to 2
-                          int randomInt = 1 + Random().nextInt(3);
 
                           GameState!.offsetFromTopLeftCorner = gamePlayStateForGui!.currentLevel.offsetFromTopLeftCorner;
                           GameState!.offsetFactoForSquare = gamePlayStateForGui!.currentLevel.offsetFactoForSquare;
