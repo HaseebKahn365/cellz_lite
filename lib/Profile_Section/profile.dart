@@ -61,10 +61,11 @@ class ProfileWidget extends StatelessWidget {
                                 fit: BoxFit.cover,
                               ),
                               Positioned(
-                                top: 0,
-                                right: 0,
+                                bottom: 90,
+                                right: 90,
                                 child: IconButton(
-                                  icon: Icon(Icons.edit),
+                                  iconSize: 12,
+                                  icon: Icon(Icons.settings),
                                   onPressed: () {
                                     _navigateToSettings(context);
                                   },
@@ -111,13 +112,19 @@ class ProfileWidget extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 8.0),
                         child: OutlinedButton.icon(
                           onPressed: () {
-                            // Implement get life functionality
-                            // You might want to call a method in UserProvider here
                             userProvider.incrementLife();
                           },
                           label: Text('Get Life'),
                           icon: Icon(Icons.favorite, color: Theme.of(context).colorScheme.secondary),
-                        ),
+                        )
+                            .animate(
+                              onPlay: (controller) => controller.repeat(), // This makes it loop indefinitely
+                            )
+                            .shimmer(
+                              duration: const Duration(seconds: 2),
+                              color: Theme.of(context).colorScheme.primary,
+                              angle: 45,
+                            ),
                       ),
                     ],
                   ),

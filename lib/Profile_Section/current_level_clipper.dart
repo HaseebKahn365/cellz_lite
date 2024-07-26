@@ -7,6 +7,7 @@ import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:cellz_lite/screens/game_play_screen.dart';
 import 'package:cellz_lite/screens/my_game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:rive/rive.dart' as riv;
 
@@ -246,7 +247,16 @@ class CurrentLevelContainer extends StatelessWidget {
                               ),
                             ],
                           ),
-                        ),
+                        )
+                            .animate(
+                              onPlay: (controller) => controller.repeat(), // This makes it loop indefinitely
+                            )
+                            .shimmer(
+                              delay: const Duration(seconds: 1),
+                              duration: const Duration(seconds: 1),
+                              color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                              angle: 45,
+                            ),
                       ),
                     ],
                   ),
@@ -284,11 +294,12 @@ class HistoryElement extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'Last Played',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                  Center(
+                    child: Text(
+                      'Last Played',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                   ),
-                  const SizedBox(height: 8),
                   Text(
                     'Score: $score / $totalScore',
                     style: TextStyle(fontSize: 12),
@@ -312,7 +323,7 @@ class HistoryElement extends StatelessWidget {
                               Row(
                                 children: [
                                   AnimatedContainer(
-                                    duration: Duration(milliseconds: 300),
+                                    duration: const Duration(milliseconds: 200),
                                     width: constraints.maxWidth * userRatio,
                                     height: 13,
                                     color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.8),

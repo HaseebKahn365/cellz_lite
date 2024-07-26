@@ -50,7 +50,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   void incrementLife() {
-    if (lives < 9) {
+    if (lives < 7) {
       lives++;
       _saveToPrefs('lives', lives);
       notifyListeners();

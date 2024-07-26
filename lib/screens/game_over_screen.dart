@@ -53,6 +53,9 @@ class _GameResultScreenState extends State<GameResultScreen> {
       userProvider.updateCurrentLevelIndex(userProvider.currentLevelIndex + 1);
     } else if (widget.playerOneScore < widget.playerTwoScore) {
       userProvider.incrementLosses();
+    } else {
+      //lets refund the life
+      userProvider.incrementLife();
     }
   }
 
