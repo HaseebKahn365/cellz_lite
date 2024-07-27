@@ -52,7 +52,7 @@ class ThemeProvider extends ChangeNotifier {
   Future<void> loadTheme() async {
     _prefs = await SharedPreferences.getInstance();
     useMaterial3 = _prefs?.getBool('useMaterial3') ?? true;
-    themeMode = ThemeMode.values[_prefs?.getInt('themeMode') ?? ThemeMode.system.index];
+    themeMode = ThemeMode.values[_prefs?.getInt('themeMode') ?? ThemeMode.dark.index];
     colorSelected = _prefs?.getInt('colorSelected') ?? 0;
     imageSelected = _prefs?.getInt('imageSelected') ?? 0;
     useColorSeed = _prefs?.getBool('useColorSeed') ?? true;

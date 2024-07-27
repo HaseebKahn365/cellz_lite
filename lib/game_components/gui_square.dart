@@ -61,6 +61,10 @@ class GuiSquare extends PositionComponent {
         });
       }
     }
+
+    if (gamePlayStateForGui!.currentLevel.id < 3) {
+      AudioPlayer().play(AssetSource('audio/${GameState!.allSquares.length}.wav'));
+    }
   }
 
   @override

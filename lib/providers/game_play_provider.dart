@@ -160,7 +160,7 @@ const List<LevelObject> levels = [
     grade: "Moderate",
     xPoints: 4,
     yPoints: 4,
-    aiXperience: 2,
+    aiXperience: 1,
   ),
   LevelObject(
     offsetFromTopLeftCorner: 110,
@@ -169,7 +169,7 @@ const List<LevelObject> levels = [
     grade: "Average",
     xPoints: 4,
     yPoints: 5,
-    aiXperience: 2,
+    aiXperience: 1,
   ),
   LevelObject(
     offsetFromTopLeftCorner: 110,
@@ -178,7 +178,7 @@ const List<LevelObject> levels = [
     grade: "Decent",
     xPoints: 4,
     yPoints: 6,
-    aiXperience: 2,
+    aiXperience: 1,
   ),
   LevelObject(
     offsetFromTopLeftCorner: 110,
@@ -187,7 +187,7 @@ const List<LevelObject> levels = [
     grade: "Manageable",
     xPoints: 4,
     yPoints: 7,
-    aiXperience: 2,
+    aiXperience: 1,
   ),
   LevelObject(
     offsetFromTopLeftCorner: 80,
@@ -196,7 +196,7 @@ const List<LevelObject> levels = [
     grade: "Medium",
     xPoints: 5,
     yPoints: 4,
-    aiXperience: 2,
+    aiXperience: 1,
   ),
   LevelObject(
     offsetFromTopLeftCorner: 80,
@@ -205,7 +205,7 @@ const List<LevelObject> levels = [
     grade: "Moderate",
     xPoints: 5,
     yPoints: 5,
-    aiXperience: 2,
+    aiXperience: 1,
   ),
   LevelObject(
     offsetFromTopLeftCorner: 80,
@@ -214,7 +214,7 @@ const List<LevelObject> levels = [
     grade: "Average",
     xPoints: 5,
     yPoints: 6,
-    aiXperience: 2,
+    aiXperience: 1,
   ),
   LevelObject(
     offsetFromTopLeftCorner: 80,
@@ -223,7 +223,7 @@ const List<LevelObject> levels = [
     grade: "Decent",
     xPoints: 5,
     yPoints: 7,
-    aiXperience: 2,
+    aiXperience: 1,
   ),
   LevelObject(
     offsetFromTopLeftCorner: 80,
@@ -232,7 +232,7 @@ const List<LevelObject> levels = [
     grade: "Manageable",
     xPoints: 5,
     yPoints: 8,
-    aiXperience: 2,
+    aiXperience: 1,
   ),
   LevelObject(
     offsetFromTopLeftCorner: 70,
@@ -241,7 +241,7 @@ const List<LevelObject> levels = [
     grade: "Moderate",
     xPoints: 6,
     yPoints: 4,
-    aiXperience: 2,
+    aiXperience: 1,
   ),
   LevelObject(
     offsetFromTopLeftCorner: 70,
@@ -250,7 +250,7 @@ const List<LevelObject> levels = [
     grade: "Average",
     xPoints: 6,
     yPoints: 5,
-    aiXperience: 2,
+    aiXperience: 1,
   ),
   LevelObject(
     offsetFromTopLeftCorner: 70,
@@ -259,7 +259,7 @@ const List<LevelObject> levels = [
     grade: "Decent",
     xPoints: 6,
     yPoints: 6,
-    aiXperience: 2,
+    aiXperience: 1,
   ),
   LevelObject(
     offsetFromTopLeftCorner: 70,
@@ -268,7 +268,7 @@ const List<LevelObject> levels = [
     grade: "Manageable",
     xPoints: 6,
     yPoints: 7,
-    aiXperience: 2,
+    aiXperience: 1,
   ),
   LevelObject(
     offsetFromTopLeftCorner: 70,
@@ -277,7 +277,7 @@ const List<LevelObject> levels = [
     grade: "Medium",
     xPoints: 6,
     yPoints: 8,
-    aiXperience: 2,
+    aiXperience: 1,
   ),
   LevelObject(
     offsetFromTopLeftCorner: 70,

@@ -19,6 +19,15 @@ class AIFunction {
   Set<Line> safeLines = {};
   Set<Line> readyMoves = {};
 
+  //bool pickRandom() it is a function that has a 1/3 probability of returning true
+  bool shouldPickRandomLine() {
+    return Random().nextInt(4) == 1;
+  }
+
+  int pickRandTempLine() {
+    return Random().nextInt(tempRemainingLines.length);
+  }
+
   Future<void> buildReadyLines(FlameGame gameRef) async {
     print('The state of game after call to buildReadyLines: Lines : ${GameState!.linesDrawn.length} Points: ${GameState!.allPoints.length}');
 
@@ -91,16 +100,19 @@ class AIFunction {
       if (firstMaxSquareChainLines.length > 2) {
         readyMoves.addAll(firstMaxSquareChainLines);
         if (safeLines.isNotEmpty) {
-          readyMoves.add(safeLines.elementAt(getProperRandIndex()));
+          (gamePlayStateForGui!.currentLevel.aiXperience! == 1 && shouldPickRandomLine()) ? readyMoves.add(tempRemainingLines.elementAt(pickRandTempLine())) : readyMoves.add(safeLines.elementAt(getProperRandIndex()));
         } else {
-          if (tempRemainingLines.isNotEmpty) {
+          //! this is a trickshot that should be done only if the ai experience is =3
+          if (tempRemainingLines.isNotEmpty && (gamePlayStateForGui!.currentLevel.aiXperience! == 3)) {
             readyMoves.remove(readyMoves.elementAt(readyMoves.length - 2));
           }
         }
       } else {
+        //!if FMC length is less than =2
         readyMoves.addAll(firstMaxSquareChainLines);
         if (safeLines.isNotEmpty) {
-          readyMoves.add(safeLines.elementAt(getProperRandIndex()));
+          //check if aiExperience is 1 and use shouldPickRandomLine
+          (gamePlayStateForGui!.currentLevel.aiXperience! == 1 && shouldPickRandomLine()) ? readyMoves.add(tempRemainingLines.elementAt(pickRandTempLine())) : readyMoves.add(safeLines.elementAt(getProperRandIndex()));
         } else {
           readyMoves.add(tempRemainingLines.last);
         }
@@ -135,7 +147,28 @@ class AIFunction {
         }
       });
     }
-    dev.log('AI has done its job but the isMyTurn: ${GameState!.myTurn}');
+
+    //!if it is still ai's turn then switch the turn the pick a random line from tempRemainingLines and add it to the GameState!
+    if (!GameState!.myTurn && tempRemainingLines.isNotEmpty) {
+      dev.log('This is a special case where the AI has to pick a random line');
+
+      final Line randomLine = tempRemainingLines.elementAt(pickRandTempLine());
+      final GuiLine guiLine = GuiLine(firstPoint: randomLine.firstPoint, secondPoint: randomLine.secondPoint);
+      await Future.delayed(const Duration(milliseconds: 300), () {
+        randomLine.addLineToMap();
+        final squares = randomLine.checkSquare();
+        squares.forEach((key, square) {
+          final guiSquare = GuiSquare(
+            isMine: GameState!.myTurn,
+            myXcord: square.xCord,
+            myYcord: square.yCord,
+          );
+          gameRef.world.add(guiSquare);
+        });
+
+        gameRef.world.add(guiLine);
+      });
+    }
   }
 
   void initTheSets() {
