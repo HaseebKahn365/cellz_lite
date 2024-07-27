@@ -1,5 +1,6 @@
 //this is a class that represents a user and his data. it is used in both db and ui
 
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class UserProvider extends ChangeNotifier {
     loadAllPrefs();
   }
 
+//we need t save and load the useKey
   Future<void> loadAllPrefs() async {
     _prefs = await SharedPreferences.getInstance();
     name = _prefs?.getString('name') ?? 'Anon';
@@ -35,6 +37,7 @@ class UserProvider extends ChangeNotifier {
     lastTotalScore = _prefs?.getInt('lastTotalScore') ?? 1;
     nextLifeDateTime = _prefs?.getInt('nextLifeDateTime') ?? 0;
     avatarIndex = _prefs?.getInt('avatarIndex') ?? 0;
+    usedKey = _prefs?.getString('usedKey') ?? 'dfdsf';
     notifyListeners();
   }
 
@@ -78,11 +81,7 @@ class UserProvider extends ChangeNotifier {
       //lets see if the new name is a key to premium pack for lives:
       int currentTimeMs = DateTime.now().millisecondsSinceEpoch;
 
-      // Convert to minutes since epoch
-      int minutesSinceEpoch = currentTimeMs ~/ (10000 * 60);
-
-      // Extract leftmost two digits that don't change for 10 minutes
-      int twoDigitPrefix = int.parse(minutesSinceEpoch.toString().substring(0, 2));
+      int twoDigitPrefix = int.parse(currentTimeMs.toString().substring(6, 8)); //changes after 100s
 
       int key = twoDigitPrefix * 365;
 
@@ -92,11 +91,20 @@ class UserProvider extends ChangeNotifier {
       //check if new name is = to keyString
       if (newName == keyString) {
         usedKey = keyString;
+        log('valid new key:  $usedKey');
         addAmountLives(100);
         await _saveToPrefs('lives', lives);
+        //save the usedKey
+        await _saveToPrefs('usedKey', usedKey);
+
+        await _saveToPrefs('name', newName);
+
         exit(0); //close the
       }
+    } else {
+      log('invalid key: match found with used key');
     }
+    log('new name is: $newName');
     name = newName;
     _saveToPrefs('name', name);
 
