@@ -237,8 +237,8 @@ class _SettingsContainerState extends State<SettingsContainer> {
                 effects: [
                   if (isSelected)
                     const ScaleEffect(
-                      duration: Duration(milliseconds: 800),
-                      begin: Offset(0.6, 0.6),
+                      duration: Duration(milliseconds: 1200),
+                      begin: Offset(0.6, 0.3),
                       end: Offset(1, 1),
                       curve: Curves.easeOutBack,
                     )
@@ -388,7 +388,7 @@ class _AccountSettingsState extends State<AccountSettings> {
                             child: Stack(
                               children: [
                                 Container(
-                                  margin: EdgeInsets.all(isSelected ? 0 : 15),
+                                  margin: EdgeInsets.all(isSelected ? 0 : 17),
                                   child: Animate(
                                     effects: [
                                       if (isSelected)
