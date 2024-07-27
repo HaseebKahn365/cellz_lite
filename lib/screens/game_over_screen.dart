@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cellz_lite/business_logic/game_state.dart';
 import 'package:cellz_lite/main.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
+import 'package:cellz_lite/screens/game_play_screen.dart';
 import 'package:cellz_lite/screens/my_game.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
@@ -12,6 +13,7 @@ class GameResultScreen extends StatefulWidget {
   final int playerOneScore;
   final String playerTwoName;
   final int playerTwoScore;
+  final levelPlayedIndex;
 
   const GameResultScreen({
     Key? key,
@@ -19,6 +21,7 @@ class GameResultScreen extends StatefulWidget {
     required this.playerOneScore,
     required this.playerTwoName,
     required this.playerTwoScore,
+    required this.levelPlayedIndex,
   }) : super(key: key);
 
   @override
@@ -26,19 +29,6 @@ class GameResultScreen extends StatefulWidget {
 }
 
 class _GameResultScreenState extends State<GameResultScreen> {
-  @override
-  void dispose() {
-    // TODO: implement dispose
-
-    //making the state instances null to free up the resources
-    game = null;
-    gamePlayStateForGui = null;
-    GameState!.dispose();
-    GameState = null;
-    log('Everything is destroyed to free up resources');
-    super.dispose();
-  }
-
   @override
   void initState() {
     updateTheDb();
@@ -50,7 +40,9 @@ class _GameResultScreenState extends State<GameResultScreen> {
 
     if (widget.playerOneScore > widget.playerTwoScore) {
       userProvider.incrementWins();
-      userProvider.updateCurrentLevelIndex(userProvider.currentLevelIndex + 1);
+      if (widget.levelPlayedIndex > userProvider.currentLevelIndex) {
+        userProvider.updateCurrentLevelIndex(userProvider.currentLevelIndex + 1);
+      }
     } else if (widget.playerOneScore < widget.playerTwoScore) {
       userProvider.incrementLosses();
     } else {
@@ -63,6 +55,8 @@ class _GameResultScreenState extends State<GameResultScreen> {
   Widget build(BuildContext context) {
     int total = widget.playerOneScore + widget.playerTwoScore;
     double ratio = total == 0 ? 0.5 : widget.playerOneScore / total;
+
+    final bool shouldRetry = widget.playerOneScore <= widget.playerTwoScore;
 
     String resultText = widget.playerOneScore > widget.playerTwoScore
         ? 'You Win!'
@@ -86,6 +80,8 @@ class _GameResultScreenState extends State<GameResultScreen> {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
+                  //add a cross icon at the top right corner to close the screen
+
                   if (widget.playerOneScore > widget.playerTwoScore)
                     RiveAnimation.asset(
                       'assets/images/confetti_best.riv',
@@ -113,6 +109,23 @@ class _GameResultScreenState extends State<GameResultScreen> {
                       ),
                     ],
                   ),
+                  Positioned(
+                    top: 5,
+                    right: 10,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+                        border: Border.all(color: Theme.of(context).colorScheme.onSurface),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -127,11 +140,150 @@ class _GameResultScreenState extends State<GameResultScreen> {
                     _buildPlayerScore(context, widget.playerTwoName, widget.playerTwoScore, total, Colors.redAccent),
                     SizedBox(height: 40),
                     ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.of(context).pop(true);
+                      onPressed: () async {
+                        if (!userProvider.hasLives() && shouldRetry) {
+                          showDialog(
+                            barrierColor: Colors.black.withOpacity(0.8),
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                titlePadding: EdgeInsets.all(0),
+                                contentPadding: EdgeInsets.all(0),
+                                actionsPadding: EdgeInsets.all(0),
+                                content: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2.0),
+                                    borderRadius: BorderRadius.circular(24.0),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Text(
+                                          'No Lives Left',
+                                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          width: 350,
+                                          height: 150,
+                                          child: RiveAnimation.asset(
+                                            'assets/images/cute_heart_broken.riv',
+                                            fit: BoxFit.cover,
+                                            antialiasing: true,
+                                          ),
+                                        ),
+                                        SizedBox(height: 16),
+                                        Text('You have no lives left. Would you like to get more?'),
+                                        const SizedBox(height: 20),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: <Widget>[
+                                            TextButton(
+                                              child: Text('Cancel'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            OutlinedButton(
+                                              child: Text('Get Lives'),
+                                              onPressed: () {
+                                                // Implement logic to get more lives
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                          return;
+                        }
+
+                        //first we store the current level
+                        final thisLevel = levels[widget.levelPlayedIndex];
+
+                        Future.delayed(Duration(seconds: 1), () {
+                          //Creating instances of Global States
+                          userProvider.decrementLives();
+                        });
+
+                        gamePlayStateForGui = GamePlayStateForGui();
+
+                        //Creating instances of Global States
+
+                        //make sure to reset the scores and stuff before game start
+                        gamePlayStateForGui!.resetGame();
+
+                        gamePlayStateForGui!.currentLevel = (shouldRetry) ? thisLevel : levels[thisLevel.id]; //id of this level is index+1
+                        //use material route to navigate to the game play screen
+
+                        final size = MediaQuery.of(context).size;
+                        game = MyGame(
+                          screenSize: size,
+                          xP: gamePlayStateForGui!.currentLevel.xPoints,
+                          yP: gamePlayStateForGui!.currentLevel.yPoints,
+                        );
+                        //random int generated from 0 to 2
+
+                        GameState!.offsetFromTopLeftCorner = gamePlayStateForGui!.currentLevel.offsetFromTopLeftCorner;
+                        GameState!.offsetFactoForSquare = gamePlayStateForGui!.currentLevel.offsetFactoForSquare;
+
+                        //lets upload a new instance to the database. this will be a gameStartInsertion
+
+                        GameState!.myTurn = true;
+                        Navigator.of(context).pushReplacement(
+                          PageRouteBuilder(
+                            pageBuilder: (context, animation, secondaryAnimation) => GamePlayScreen(
+                              game: game!,
+                              playerOneName: gamePlayStateForGui!.playerOneName,
+                              playerTwoName: gamePlayStateForGui!.playerTwoName,
+                            ),
+                            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                              if (shouldRetry) {
+                                // Scale animation for retry
+                                const begin = 0.5;
+                                const end = 1.0;
+                                const curve = Curves.easeOutQuint;
+                                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                var scaleAnimation = animation.drive(tween);
+                                return ScaleTransition(
+                                  scale: scaleAnimation,
+                                  child: child,
+                                );
+                              } else if (!shouldRetry) {
+                                // Slide animation for next level
+                                const begin = Offset(1.0, 0.0);
+                                const end = Offset.zero;
+                                const curve = Curves.easeInOut;
+                                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                var slideAnimation = animation.drive(tween);
+                                return SlideTransition(
+                                  position: slideAnimation,
+                                  child: child,
+                                );
+                              } else {
+                                // Default fade transition
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              }
+                            },
+                            transitionDuration: Duration(milliseconds: 1000),
+                          ),
+                        );
                       },
-                      icon: Icon(Icons.home),
-                      label: Text('Go Home'),
+
+                      //in case if the game is lost or draw the show retry button else show go Next button
+                      icon: shouldRetry ? Icon(Icons.replay_circle_filled_rounded) : Icon(Icons.arrow_forward_ios_rounded),
+                      label: Text(
+                        shouldRetry ? 'Retry' : 'Next Level',
+                      ),
                       style: ElevatedButton.styleFrom(
                         elevation: 5,
                         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),

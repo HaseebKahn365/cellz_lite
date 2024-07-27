@@ -144,6 +144,7 @@ class GamePlayScreen extends StatelessWidget {
               playerOneScore: gamePlayStateForGui!.playerOneScoreNotifier.value,
               playerTwoName: playerTwoName,
               playerTwoScore: gamePlayStateForGui!.playerTwoScoreNotifier.value,
+              levelPlayedIndex: gamePlayStateForGui!.currentLevel.id - 1,
             ),
           ),
         );

@@ -57,7 +57,7 @@ class GamePlayStateForGui {
   }
 
   void resetGame() {
-    isMyTurnNotifier.value = false;
+    isMyTurnNotifier.value = true;
     isGameOverNotifier.value = false;
     playerOneScoreNotifier.value = 0;
     playerTwoScoreNotifier.value = 0;
