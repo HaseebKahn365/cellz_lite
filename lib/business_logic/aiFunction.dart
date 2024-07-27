@@ -21,7 +21,7 @@ class AIFunction {
 
   //bool pickRandom() it is a function that has a 1/3 probability of returning true
   bool shouldPickRandomLine() {
-    return Random().nextInt(4) == 1;
+    return Random().nextInt(3) == 1;
   }
 
   int pickRandTempLine() {

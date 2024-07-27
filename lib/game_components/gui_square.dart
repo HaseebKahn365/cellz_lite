@@ -69,6 +69,7 @@ class GuiSquare extends PositionComponent {
 
   @override
   void onLoad() {
+    AudioPlayer().play(AssetSource('audio/square.wav'));
     //we will use switch case on the chain count to play the sound
     if (GameState!.myTurn && soundEnabled) {
       GameState!.chainCount++;

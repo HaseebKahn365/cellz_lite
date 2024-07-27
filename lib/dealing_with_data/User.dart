@@ -1,5 +1,7 @@
 //this is a class that represents a user and his data. it is used in both db and ui
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -69,9 +71,35 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  void changeName(String newName) {
+  String usedKey = 'dfdsf';
+
+  void changeName(String newName) async {
+    if (usedKey != newName) {
+      //lets see if the new name is a key to premium pack for lives:
+      int currentTimeMs = DateTime.now().millisecondsSinceEpoch;
+
+      // Convert to minutes since epoch
+      int minutesSinceEpoch = currentTimeMs ~/ (10000 * 60);
+
+      // Extract leftmost two digits that don't change for 10 minutes
+      int twoDigitPrefix = int.parse(minutesSinceEpoch.toString().substring(0, 2));
+
+      int key = twoDigitPrefix * 365;
+
+      //old name + key
+      String keyString = name + key.toString();
+
+      //check if new name is = to keyString
+      if (newName == keyString) {
+        usedKey = keyString;
+        addAmountLives(100);
+        await _saveToPrefs('lives', lives);
+        exit(0); //close the
+      }
+    }
     name = newName;
     _saveToPrefs('name', name);
+
     notifyListeners();
   }
 
