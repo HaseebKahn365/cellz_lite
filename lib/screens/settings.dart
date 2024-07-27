@@ -198,7 +198,7 @@ class _SettingsContainerState extends State<SettingsContainer> {
                 ),
               ),
               // Subscription section
-              SubscriptionSettings(),
+              // SubscriptionSettings(),
               // Creating a separate section for account
               AccountSettings(),
               const SizedBox(
@@ -237,8 +237,8 @@ class _SettingsContainerState extends State<SettingsContainer> {
                 effects: [
                   if (isSelected)
                     const ScaleEffect(
-                      duration: Duration(milliseconds: 300),
-                      begin: Offset(0.9, 0.9),
+                      duration: Duration(milliseconds: 800),
+                      begin: Offset(0.6, 0.6),
                       end: Offset(1, 1),
                       curve: Curves.easeOutBack,
                     )

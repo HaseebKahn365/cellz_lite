@@ -7,7 +7,6 @@ import 'package:cellz_lite/Profile_Section/current_level_clipper.dart';
 import 'package:cellz_lite/Profile_Section/profile.dart';
 import 'package:cellz_lite/Tabs/journey_tab.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
-import 'package:cellz_lite/main.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:cellz_lite/providers/theme_provider.dart';
 import 'package:flutter/material.dart';

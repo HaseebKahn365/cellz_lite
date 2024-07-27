@@ -3,10 +3,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider extends ChangeNotifier {
   bool useMaterial3 = true;
-  ThemeMode themeMode = ThemeMode.system;
+  ThemeMode themeMode = ThemeMode.dark; // default to dark mode
   int colorSelected = 0;
   int imageSelected = 0;
-  ColorScheme? imageColorScheme = const ColorScheme.light();
+  ColorScheme? imageColorScheme = const ColorScheme.dark();
   bool useColorSeed = true;
   double bgOpacity = 0.030;
   int wallpaperIndex = 0;

@@ -233,7 +233,7 @@ class CurrentLevelContainer extends StatelessWidget {
                           );
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.secondaryContainer,
                             borderRadius: BorderRadius.circular(8),
@@ -250,11 +250,12 @@ class CurrentLevelContainer extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.play_arrow,
+                                size: 40,
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                               Text(
                                 'Play',
-                                style: Theme.of(context).textTheme.bodyMedium,
+                                style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -265,7 +266,7 @@ class CurrentLevelContainer extends StatelessWidget {
                             .shimmer(
                               delay: const Duration(seconds: 1),
                               duration: const Duration(seconds: 1),
-                              color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                              color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
                               angle: 45,
                             ),
                       ),

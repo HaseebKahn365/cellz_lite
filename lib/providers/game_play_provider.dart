@@ -80,9 +80,9 @@ class LevelObject {
   final String? grade;
   final int xPoints;
   final int yPoints;
-  int? aiXperience; //in case when playing with friend this could be set to null if we use LevelObject in gamePlaystateForGui
+  final int? aiXperience; //in case when playing with friend this could be set to null if we use LevelObject in gamePlaystateForGui
 
-  LevelObject({
+  const LevelObject({
     required this.offsetFromTopLeftCorner,
     required this.offsetFactoForSquare,
     required this.id,
@@ -107,7 +107,7 @@ class LevelObject {
 //create a global instance for easy access
 GamePlayStateForGui? gamePlayStateForGui;
 
-List<LevelObject> levels = [
+const List<LevelObject> levels = [
   LevelObject(
     offsetFromTopLeftCorner: 275,
     offsetFactoForSquare: 0.9,
