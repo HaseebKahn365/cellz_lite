@@ -109,24 +109,45 @@ class ProfileWidget extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 8.0),
                         child: BuildLives(userProvider.lives),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: OutlinedButton.icon(
-                          onPressed: () {
-                            userProvider.incrementLife();
-                          },
-                          label: Text('Get Life'),
-                          icon: Icon(Icons.favorite, color: Theme.of(context).colorScheme.secondary),
-                        )
-                            .animate(
-                              onPlay: (controller) => controller.repeat(), // This makes it loop indefinitely
-                            )
-                            .shimmer(
-                              duration: const Duration(seconds: 2),
-                              color: Theme.of(context).colorScheme.primary,
-                              angle: 45,
-                            ),
-                      ),
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // Animated blurred background
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Container(
+                              width: 120, // Adjust as needed
+                              height: 40, // Adjust as needed
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            ).animate(onPlay: (controller) => controller.repeat(reverse: true)).blurXY(
+                                  duration: const Duration(seconds: 1),
+                                  begin: 0,
+                                  end: 12,
+                                ),
+                          ),
+
+                          // Button
+                          Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: OutlinedButton.icon(
+                                onPressed: () {
+                                  userProvider.incrementLife();
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                                ),
+                                label: Text('Get Life'),
+                                icon: Icon(Icons.favorite, color: Theme.of(context).colorScheme.secondary).animate(onPlay: (controller) => controller.repeat(reverse: true)).scale(
+                                      duration: const Duration(milliseconds: 1200),
+                                      begin: Offset(1, 1),
+                                      end: Offset(1.2, 1.2),
+                                    ),
+                              )),
+                        ],
+                      )
                     ],
                   ),
                 ],
@@ -200,51 +221,3 @@ class BuildLives extends StatelessWidget {
     );
   }
 }
-
-// class BuildRow extends StatelessWidget {
-//   final String left;
-//   final String right;
-//   const BuildRow(
-//     this.left,
-//     this.right, {
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//       children: [
-//         Text(
-//           left,
-//           style: Theme.of(context).textTheme.bodySmall,
-//         ),
-//         Text(
-//           right,
-//           style: Theme.of(context).textTheme.bodyMedium,
-//         ),
-//       ],
-//     );
-//   }
-// }
-
-// class BuildLives extends StatelessWidget {
-//   final int lives;
-//   const BuildLives(
-//     this.lives, {
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       children: List.generate(
-//         5,
-//         (index) => Icon(
-//           index < lives ? Icons.favorite : Icons.favorite_border,
-//           color: index < lives ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.secondary.withOpacity(0.3),
-//         ),
-//       ),
-//     );
-//   }
-// }

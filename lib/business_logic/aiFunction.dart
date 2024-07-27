@@ -22,7 +22,7 @@ class AIFunction {
   Future<void> buildReadyLines(FlameGame gameRef) async {
     print('The state of game after call to buildReadyLines: Lines : ${GameState!.linesDrawn.length} Points: ${GameState!.allPoints.length}');
 
-    if (gamePlayStateForGui!.currentLevel.id < 2) {
+    if (gamePlayStateForGui!.currentLevel.id < 3) {
       GameState!.switchTurn();
       return;
     }
