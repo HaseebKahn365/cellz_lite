@@ -107,6 +107,8 @@ class LevelObject {
 //create a global instance for easy access
 GamePlayStateForGui? gamePlayStateForGui;
 
+//reordering the levels is required
+
 const List<LevelObject> levels = [
   LevelObject(
     offsetFromTopLeftCorner: 275,
