@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/business_logic/game_state.dart';
 import 'package:cellz_lite/main.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
@@ -45,8 +44,11 @@ class _GameResultScreenState extends State<GameResultScreen> {
       if (widget.levelPlayedIndex > userProvider.currentLevelIndex) {
         userProvider.updateCurrentLevelIndex(userProvider.currentLevelIndex + 1);
       }
+      //lets play the applause audio
+      AudioPlayer().play(AssetSource('audio/applause.wav'));
     } else if (widget.playerOneScore < widget.playerTwoScore) {
       userProvider.incrementLosses();
+      AudioPlayer().play(AssetSource('audio/loss.wav'));
     } else {
       //lets refund the life
       userProvider.incrementLife();
