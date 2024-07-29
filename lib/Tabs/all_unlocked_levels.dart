@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cellz_lite/business_logic/game_state.dart';
 import 'package:cellz_lite/main.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
@@ -15,19 +13,24 @@ class AllUnlockedLevels extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Levels Journey'),
+        forceMaterialTransparency: true,
+      ),
       body: Column(
         children: [
           // add a close button
-          Padding(
-            padding: const EdgeInsets.only(top: 50.0),
-            child: OutlinedButton.icon(
-              label: Text('Close'),
-              icon: Icon(Icons.close),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.only(top: 50.0),
+          //   child: OutlinedButton.icon(
+          //     label: Text('Close'),
+          //     icon: Icon(Icons.close),
+          //     onPressed: () {
+          //       Navigator.of(context).pop();
+          //     },
+          //   ),
+          // ),
           Expanded(
             child: ListView.builder(
               itemCount: levels.length,
@@ -150,9 +153,6 @@ class AllUnlockedLevels extends StatelessWidget {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
-                                              titlePadding: EdgeInsets.all(0),
-                                              contentPadding: EdgeInsets.all(0),
-                                              actionsPadding: EdgeInsets.all(0),
                                               content: Container(
                                                 decoration: BoxDecoration(
                                                   border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2.0),
@@ -189,7 +189,7 @@ class AllUnlockedLevels extends StatelessWidget {
                                                             },
                                                           ),
                                                           OutlinedButton(
-                                                            child: Text('Get Lives'),
+                                                            child: const Text('Get Lives'),
                                                             onPressed: () {
                                                               // Implement logic to get more lives
                                                               Navigator.of(context).pop();
@@ -328,11 +328,11 @@ class Grid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
+      child: SizedBox(
         width: (15 * level.xPoints).toDouble(),
         height: (15 * level.yPoints).toDouble(),
         child: GridView.builder(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: level.xPoints,
             crossAxisSpacing: 1,
@@ -345,7 +345,7 @@ class Grid extends StatelessWidget {
               margin: const EdgeInsets.all(1),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
-                color: Theme.of(context).colorScheme.secondaryContainer,
+                color: Theme.of(context).colorScheme.surfaceDim,
               ),
               child: Center(
                 child: FittedBox(

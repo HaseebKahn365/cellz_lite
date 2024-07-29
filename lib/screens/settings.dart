@@ -1,6 +1,6 @@
 import 'package:cellz_lite/dealing_with_data/User.dart';
 import 'package:cellz_lite/providers/theme_provider.dart';
-import 'package:cellz_lite/sections/subscription.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
@@ -164,33 +164,34 @@ class _SettingsContainerState extends State<SettingsContainer> {
                         max: 0.2,
                         label: 'Opacity: ${(_sliderValue * 100).toStringAsFixed(0)}%', // Updated label to show percentage
                       ),
-                      Container(
-                        height: 100,
-                        width: double.infinity,
-                        margin: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(11),
-                          border: Border.all(
-                            color: Theme.of(context).colorScheme.secondaryContainer,
-                            width: 2,
+                      Center(
+                        child: Container(
+                          height: 150,
+                          width: 150,
+                          margin: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(11),
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.secondaryContainer,
+                              width: 2,
+                            ),
                           ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(11),
-                              child: Opacity(
-                                opacity: _sliderValue, // Use the slider value for opacity
-                                child: Image.asset(
-                                  ThemeProvider.colorImageProviders[themeProvider.imageSelected].assetPath,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  height: 96,
+                          child: Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Opacity(
+                                  opacity: _sliderValue, // Use the slider value for opacity
+                                  child: Image.asset(
+                                    ThemeProvider.colorImageProviders[themeProvider.imageSelected].assetPath,
+                                    fit: BoxFit.fill,
+                                    width: 150,
+                                    height: 146,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ],

@@ -73,6 +73,7 @@ class JourneyTab extends StatelessWidget {
                       //Navigate to the levels screen ..it will have details of each level. all levels that the user has unlocked will be shown.
                       Navigator.of(context).push(
                         PageRouteBuilder(
+                          fullscreenDialog: true,
                           pageBuilder: (context, animation, secondaryAnimation) => AllUnlockedLevels(),
                           transitionsBuilder: (context, animation, secondaryAnimation, child) {
                             const begin = Offset(0.0, 1.0);

@@ -27,10 +27,6 @@ class Dot extends PositionComponent with DragCallbacks, CollisionCallbacks, HasG
   Offset? dragStart;
   Offset? dragEnd;
 
-  static late final AudioCache audioCache = AudioCache(
-    prefix: 'audio/',
-  );
-
   final globalOffset = GameState!.globalOffset;
 
   late double radius;
@@ -71,9 +67,9 @@ class Dot extends PositionComponent with DragCallbacks, CollisionCallbacks, HasG
     dragEnd = event.localPosition.toOffset();
 
     //play the dot touch sound
-    if (soundEnabled && GameState!.myTurn) {
-      AudioPlayer().play(AssetSource('audio/dot.wav'));
-    }
+    // if (soundEnabled && GameState!.myTurn) {
+    //   AudioPlayer().play(AssetSource('audio/dot.wav'));
+    // }
 
     super.onDragStart(event);
   }
