@@ -96,7 +96,7 @@ class Dot extends PositionComponent with DragCallbacks, CollisionCallbacks, HasG
       dragEnd = event.localStartPosition.toOffset();
 
       //check if the distance between the dragStart and dragEnd is greater than the threshold then draw a line
-      if ((dragEnd! - dragStart!).distance > globalOffset * 1.1) {
+      if ((dragEnd! - dragStart!).distance > globalOffset * 1.0) {
         LineDirection direction = getDirection(dragStart!, dragEnd!);
 
         log('Direction of line is : $direction');

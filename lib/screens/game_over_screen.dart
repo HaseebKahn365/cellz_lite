@@ -40,6 +40,8 @@ class _GameResultScreenState extends State<GameResultScreen> {
 
     if (widget.playerOneScore > widget.playerTwoScore) {
       userProvider.incrementWins();
+      userProvider.incrementLife();
+
       if (widget.levelPlayedIndex > userProvider.currentLevelIndex) {
         userProvider.updateCurrentLevelIndex(userProvider.currentLevelIndex + 1);
       }
@@ -50,6 +52,8 @@ class _GameResultScreenState extends State<GameResultScreen> {
       userProvider.incrementLife();
     }
   }
+
+  bool shouldAppear = true;
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +87,12 @@ class _GameResultScreenState extends State<GameResultScreen> {
                   //add a cross icon at the top right corner to close the screen
 
                   if (widget.playerOneScore > widget.playerTwoScore)
-                    RiveAnimation.asset(
-                      'assets/images/confetti_best.riv',
-                      fit: BoxFit.cover,
-                    ),
+                    (!shouldAppear)
+                        ? const SizedBox.shrink()
+                        : RiveAnimation.asset(
+                            'assets/images/confetti_best.riv',
+                            fit: BoxFit.cover,
+                          ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -101,11 +107,13 @@ class _GameResultScreenState extends State<GameResultScreen> {
                       SizedBox(
                         height: 300,
                         width: 450,
-                        child: RiveAnimation.asset(
-                          'assets/images/emoji_set.riv',
-                          artboard: emojiAnimation,
-                          fit: BoxFit.contain,
-                        ),
+                        child: (!shouldAppear)
+                            ? const SizedBox.shrink()
+                            : RiveAnimation.asset(
+                                'assets/images/emoji_set.riv',
+                                artboard: emojiAnimation,
+                                fit: BoxFit.contain,
+                              ),
                       ),
                     ],
                   ),
@@ -141,6 +149,9 @@ class _GameResultScreenState extends State<GameResultScreen> {
                     SizedBox(height: 40),
                     ElevatedButton.icon(
                       onPressed: () async {
+                        setState(() {
+                          shouldAppear = false;
+                        });
                         if (!userProvider.hasLives() && shouldRetry) {
                           showDialog(
                             barrierColor: Colors.black.withOpacity(0.8),
@@ -259,7 +270,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
                                 // Slide animation for next level
                                 const begin = Offset(1.0, 0.0);
                                 const end = Offset.zero;
-                                const curve = Curves.easeInOut;
+                                const curve = Curves.easeOutCubic;
                                 var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
                                 var slideAnimation = animation.drive(tween);
                                 return SlideTransition(
@@ -274,19 +285,19 @@ class _GameResultScreenState extends State<GameResultScreen> {
                                 );
                               }
                             },
-                            transitionDuration: Duration(milliseconds: 1000),
+                            transitionDuration: const Duration(milliseconds: 1000),
                           ),
                         );
                       },
 
                       //in case if the game is lost or draw the show retry button else show go Next button
-                      icon: shouldRetry ? Icon(Icons.replay_circle_filled_rounded) : Icon(Icons.arrow_forward_ios_rounded),
+                      icon: shouldRetry ? const Icon(Icons.replay_circle_filled_rounded) : Icon(Icons.arrow_forward_ios_rounded),
                       label: Text(
                         shouldRetry ? 'Retry' : 'Next Level',
                       ),
                       style: ElevatedButton.styleFrom(
                         elevation: 5,
-                        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       ),
                     ),
                   ],

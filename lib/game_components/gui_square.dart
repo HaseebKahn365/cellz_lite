@@ -1,4 +1,5 @@
-import 'dart:developer';
+import 'dart:developer' as dev;
+import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/business_logic/game_state.dart';
@@ -6,6 +7,7 @@ import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:cellz_lite/screens/game_play_screen.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
+import 'package:flame/particles.dart';
 import 'package:flutter/material.dart';
 
 class GuiSquare extends PositionComponent {
@@ -45,7 +47,7 @@ class GuiSquare extends PositionComponent {
       final myScore = gamePlayStateForGui!.playerOneScoreNotifier.value;
       final aiScore = gamePlayStateForGui!.playerTwoScoreNotifier.value;
 
-      log('Game Over: My Score: $myScore, AI Score: $aiScore');
+      dev.log('Game Over: My Score: $myScore, AI Score: $aiScore');
 
       if (myScore > aiScore) {
         Future.delayed(const Duration(milliseconds: 1000), () {
@@ -67,6 +69,44 @@ class GuiSquare extends PositionComponent {
     }
   }
 
+  void _addParticle(int count, Vector2 position) {
+    dev.log('Generating random particles');
+    final random = Random();
+    ParticleSystemComponent particleSystem = ParticleSystemComponent(
+      priority: 0,
+      particle: Particle.generate(
+        count: count * 5, // Increase count for more drops
+        //rand between 0.5 and 2.5
+        lifespan: 0.5 + random.nextDouble() * 1.0,
+        generator: (i) {
+          // Randomize direction for acceleration and speed
+          final angle = random.nextDouble() * 2 * pi;
+          final speedMagnitude = random.nextDouble() * 200;
+          //lets also make it negative randomly
+          final accelerationMagnitude = random.nextDouble() * 100 * (random.nextBool() ? 1 : -1);
+
+          return AcceleratedParticle(
+            acceleration: Vector2(
+              accelerationMagnitude * cos(angle),
+              accelerationMagnitude * sin(angle),
+            ),
+            speed: Vector2(
+              speedMagnitude * cos(angle),
+              speedMagnitude * sin(angle),
+            ),
+            child: CircleParticle(
+              radius: 1 + random.nextDouble() * 0.5, // Increase radius for larger, more drop-like particles
+              paint: Paint()..color = Colors.primaries[random.nextInt(Colors.primaries.length)].withOpacity(0.5), // Change color to colorful
+            ),
+          );
+        },
+      ),
+      position: position,
+    );
+
+    add(particleSystem);
+  }
+
   @override
   void onLoad() {
     AudioPlayer().play(AssetSource('audio/square.wav'));
@@ -74,27 +114,42 @@ class GuiSquare extends PositionComponent {
     if (GameState!.myTurn && soundEnabled) {
       GameState!.chainCount++;
 
+      final positionOffset = Offset(
+        (myXcord.toDouble() * GameState!.globalOffset) + (GameState!.offsetFromTopLeftCorner * GameState!.offsetFactoForSquare),
+        (myYcord.toDouble() * GameState!.globalOffset) + GameState!.offsetFromTopLeftCorner * GameState!.offsetFactoForSquare,
+      );
+
       if (GameState!.chainCount > 1) {
         if (GameState!.chainCount == 2) {
           AudioPlayer().play(AssetSource('audio/2.wav'));
+          _addParticle(1, positionOffset.toVector2());
         } else if (GameState!.chainCount == 3) {
           AudioPlayer().play(AssetSource('audio/3.wav'));
+          _addParticle(2, positionOffset.toVector2());
         } else if (GameState!.chainCount == 4) {
           AudioPlayer().play(AssetSource('audio/4.wav'));
+          _addParticle(3, positionOffset.toVector2());
         } else if (GameState!.chainCount == 5) {
           AudioPlayer().play(AssetSource('audio/5.wav'));
+          _addParticle(4, positionOffset.toVector2());
         } else if (GameState!.chainCount == 6) {
           AudioPlayer().play(AssetSource('audio/6.wav'));
+          _addParticle(5, positionOffset.toVector2());
         } else if (GameState!.chainCount == 7) {
           AudioPlayer().play(AssetSource('audio/7.wav'));
+          _addParticle(6, positionOffset.toVector2());
         } else if (GameState!.chainCount == 8) {
           AudioPlayer().play(AssetSource('audio/8.wav'));
+          _addParticle(7, positionOffset.toVector2());
         } else if (GameState!.chainCount == 9) {
           AudioPlayer().play(AssetSource('audio/9.wav'));
+          _addParticle(8, positionOffset.toVector2());
         } else if (GameState!.chainCount == 10) {
           AudioPlayer().play(AssetSource('audio/10.wav'));
+          _addParticle(9, positionOffset.toVector2());
         } else {
           AudioPlayer().play(AssetSource('audio/combo.wav'));
+          _addParticle(10, positionOffset.toVector2());
         }
       }
     }
