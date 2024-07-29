@@ -163,7 +163,7 @@ class OverviewTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (context, userProvider, child) {
-      final nextLevel = (userProvider.currentLevelIndex < 65) ? levels[userProvider.currentLevelIndex + 1] : levels[64];
+      final nextLevel = (userProvider.currentLevelIndex < 64) ? levels[userProvider.currentLevelIndex + 1] : levels[64];
 
       return Container(
         margin: const EdgeInsets.all(12),
@@ -175,7 +175,7 @@ class OverviewTab extends StatelessWidget {
 
             CurrentLevelContainer(),
             SizedBox(height: 10),
-            (userProvider.currentLevelIndex < 65)
+            (userProvider.currentLevelIndex < 64)
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
                     child: Column(

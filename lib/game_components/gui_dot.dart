@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/business_logic/aiFunction.dart';
 import 'package:cellz_lite/business_logic/game_state.dart';
 import 'package:cellz_lite/business_logic/lines.dart';
@@ -9,7 +8,6 @@ import 'package:cellz_lite/business_logic/point.dart';
 import 'package:cellz_lite/business_logic/square.dart';
 import 'package:cellz_lite/game_components/gui_line_for_ai.dart';
 import 'package:cellz_lite/game_components/gui_square.dart';
-import 'package:cellz_lite/screens/game_play_screen.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';

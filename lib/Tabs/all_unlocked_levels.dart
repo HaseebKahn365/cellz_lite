@@ -153,6 +153,9 @@ class AllUnlockedLevels extends StatelessWidget {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
+                                              titlePadding: const EdgeInsets.all(0),
+                                              contentPadding: const EdgeInsets.all(0),
+                                              actionsPadding: EdgeInsets.all(0),
                                               content: Container(
                                                 decoration: BoxDecoration(
                                                   border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2.0),

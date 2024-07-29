@@ -16,7 +16,7 @@ class GuiLine extends PositionComponent with HasGameRef {
   double lineWidth = 2.0;
   double animationProgress = GameState!.myTurn ? 0.4 : 0;
 
-  static bool controlBool = false;
+  static bool controlBool = true;
 
   late bool imNew;
   bool expired = false;
@@ -60,7 +60,7 @@ class GuiLine extends PositionComponent with HasGameRef {
   void update(double dt) {
     super.update(dt);
 
-    //change the color of line
+    // change the color of line
     if (!expired) {
       if ((controlBool && imNew) || (!controlBool && !imNew)) {
         line.color = newColor;
@@ -108,8 +108,8 @@ class GuiLine extends PositionComponent with HasGameRef {
     if (soundEnabled) {
       AudioPlayer().play(AssetSource('audio/line.wav'));
     }
+    line.color = oldColor;
 
-   
     return super.onLoad();
   }
 
