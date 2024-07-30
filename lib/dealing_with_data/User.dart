@@ -29,8 +29,7 @@ class UserProvider extends ChangeNotifier {
     _prefs = await SharedPreferences.getInstance();
     name = _prefs?.getString('name') ?? 'Anon';
     score = _prefs?.getInt('score') ?? 0;
-    // currentLevelIndex = _prefs?.getInt('currentLevelIndex') ?? 0;
-    currentLevelIndex = 64; //for test
+    currentLevelIndex = _prefs?.getInt('currentLevelIndex') ?? 0;
     wins = _prefs?.getInt('wins') ?? 0;
     losses = _prefs?.getInt('losses') ?? 0;
     lives = _prefs?.getInt('lives') ?? 5;

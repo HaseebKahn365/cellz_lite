@@ -369,7 +369,7 @@ class Dot extends PositionComponent with DragCallbacks, CollisionCallbacks, HasG
   @override
   bool containsLocalPoint(Vector2 point) {
     // Increase the touch detection radius to 20
-    return (point - (size / 2)).length < radius * 3;
+    return (point - (size / 2)).length < radius * 3.5;
   }
 
   //Line approver
