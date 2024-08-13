@@ -41,7 +41,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
       userProvider.incrementWins();
       userProvider.incrementLife();
 
-      if (widget.levelPlayedIndex > userProvider.currentLevelIndex) {
+      if (widget.levelPlayedIndex == userProvider.currentLevelIndex) {
         userProvider.updateCurrentLevelIndex(userProvider.currentLevelIndex + 1);
       }
       //lets play the applause audio

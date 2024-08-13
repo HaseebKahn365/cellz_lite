@@ -12,9 +12,7 @@ import 'package:timeline_tile/timeline_tile.dart';
 class JourneyTab extends StatelessWidget {
   JourneyTab({
     super.key,
-  }) {
-    findRange();
-  }
+  }) {}
 
   int frontIndex = 0, backIndex = 0;
   void findRange() {
@@ -53,6 +51,9 @@ class JourneyTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (context, userProvider, child) {
+      timelineTiles = [];
+      findRange();
+
       return Container(
         margin: const EdgeInsets.all(12),
         padding: const EdgeInsets.all(10),
