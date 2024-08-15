@@ -29,6 +29,7 @@ class GamePlayStateForGui {
   Widget playerOneImage = Image.asset('assets/images/p${userProvider.avatarIndex + 1}.jpg');
   final ValueNotifier<bool> isMyTurnNotifier = ValueNotifier(false);
   final ValueNotifier<int> movesLeftNotifier = ValueNotifier(365);
+  final ValueNotifier<int> squaresLeftNotifier = ValueNotifier(365);
   final ValueNotifier<int> playerOneScoreNotifier = ValueNotifier(0);
   final ValueNotifier<int> playerTwoScoreNotifier = ValueNotifier(0);
   //another boolean value notifier for isGameOver
@@ -40,8 +41,9 @@ class GamePlayStateForGui {
     isMyTurnNotifier.value = isMyTurn;
   }
 
-  void initMovesLeft(int movesLeft) {
+  void initMovesLeftAndSquares(int movesLeft, int squaresLeft) {
     movesLeftNotifier.value = movesLeft;
+    squaresLeftNotifier.value = squaresLeft;
   }
 
   void decrementMovesLeft() {

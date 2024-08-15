@@ -72,7 +72,11 @@ class GameStateClass {
     gameCanvas = GameCanvas(xPoints: xPoints, yPoints: yPoints);
     validLines = gameCanvas!.drawAllPossibleLines();
     //make sure to init the remaining lines in the gamestate for gui
-    gamePlayStateForGui!.initMovesLeft(validLines.length);
+    //number of squares initially = xPoints-1 * yPoints-1;
+    gamePlayStateForGui!.initMovesLeftAndSquares(
+      validLines.length,
+      (xPoints - 1) * (yPoints - 1),
+    );
     log('Valid lines: ${validLines.length}');
     GameState!.chainCount = 0;
   }

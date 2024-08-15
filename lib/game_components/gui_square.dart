@@ -36,6 +36,8 @@ class GuiSquare extends PositionComponent {
     currentSize = animationStartSize;
     size = Vector2(animationEndSize, animationEndSize);
     // incrementing the score in the gamestate!forGui when the square is created
+    //decrementiing the squares value notifier when square is crreated
+    gamePlayStateForGui!.squaresLeftNotifier.value--;
     if (isMine) {
       gamePlayStateForGui!.incrementPlayerOneScore();
     } else {

@@ -330,13 +330,14 @@ class GamePlayScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
+                              Text('Level ${gamePlayStateForGui!.currentLevel.id}', style: TextStyle(fontSize: 9)),
                               ValueListenableBuilder<int>(
-                                valueListenable: gamePlayStateForGui!.movesLeftNotifier,
-                                builder: (context, movesLeft, _) {
-                                  return Text('$movesLeft', style: Theme.of(context).textTheme.titleLarge);
+                                valueListenable: gamePlayStateForGui!.squaresLeftNotifier,
+                                builder: (context, squares, _) {
+                                  return Text('$squares', style: Theme.of(context).textTheme.titleLarge);
                                 },
                               ),
-                              Text('Lines', style: TextStyle(fontSize: 10)),
+                              const Text('Sqrs. Left', style: TextStyle(fontSize: 9)),
                             ],
                           ),
                         ),
