@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:cellz_lite/business_logic/aiFunction.dart';
 import 'package:cellz_lite/business_logic/game_state.dart';
@@ -290,10 +291,23 @@ class Dot extends PositionComponent with DragCallbacks, CollisionCallbacks, HasG
 
   //for now we are just gonna use the futures to demo the feature:
 
+  static final totalLinesHalf = GameState!.validLines.length / 2;
+
+  int getDynamicDelay() {
+    //between 300 and 3000 milliseconds random int
+    if (GameState!.linesDrawn.length < totalLinesHalf) {
+      return 300;
+    }
+    final random = math.Random();
+    final interval = random.nextInt(2000) + 200;
+    log('Dynamic delay is: $interval');
+    return interval;
+  }
+
   Future<void> aiResponse() async {
     print('Ai Function is initiated');
 
-    await Future.delayed(const Duration(milliseconds: 300)).then((value) async {
+    await Future.delayed(Duration(milliseconds: getDynamicDelay())).then((value) async {
       // aiFunction.testComponentCreation(gameRef);
       if (!GameState!.myTurn) {
         try {
