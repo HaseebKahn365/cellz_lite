@@ -18,14 +18,14 @@ class GuiLine extends PositionComponent with HasGameRef {
 
   static bool controlBool = true;
 
-  late bool imNew;
+  late final bool imNew;
   bool expired = false;
 
   GuiLine({required this.firstPoint, required this.secondPoint}) {
     priority = 0;
     print('Received points: ${firstPoint.location} and ${secondPoint.location}');
     _calculateLinePositionAndSize();
-    controlBool = GameState!.myTurn;
+    controlBool = !controlBool;
     imNew = controlBool;
     anchor = Anchor.topLeft;
     //lets decrement the moves when line is created

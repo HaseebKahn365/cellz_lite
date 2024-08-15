@@ -122,7 +122,7 @@ class GamePlayScreen extends StatelessWidget {
       GameState!.changeHumanColor(Theme.of(context).colorScheme.primary);
       GameState!.changeAIColor(Theme.of(context).colorScheme.surface);
       GameState!.changeSquareIconBoxColor(Theme.of(context).colorScheme.secondaryContainer);
-      GameState!.changeMostRecentLineColor(Theme.of(context).colorScheme.primary);
+      GameState!.changeMostRecentLineColor(Theme.of(context).colorScheme.primaryContainer);
       GameState!.changeOldLineColor(Theme.of(context).colorScheme.secondary.withOpacity(0.8));
       GameState!.changeNewLineGlowColor(Theme.of(context).colorScheme.secondary.withOpacity(0.6));
       isExpired = true;
