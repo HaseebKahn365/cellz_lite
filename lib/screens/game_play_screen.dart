@@ -47,6 +47,7 @@ import 'dart:developer';
 
 import 'package:cellz_lite/business_logic/game_state.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
+import 'package:cellz_lite/screens/animated_think_circle.dart';
 import 'package:cellz_lite/screens/game_over_screen.dart';
 import 'package:cellz_lite/screens/my_game.dart';
 import 'package:flame/game.dart';
@@ -147,7 +148,7 @@ class GamePlayScreen extends StatelessWidget {
       GameState!.changeLineColor(Theme.of(context).colorScheme.secondary);
       GameState!.changeDotColor(Theme.of(context).colorScheme.secondary);
       GameState!.changeHumanColor(Theme.of(context).colorScheme.primary);
-      GameState!.changeAIColor(Theme.of(context).colorScheme.surface);
+      GameState!.changeAIColor(Theme.of(context).colorScheme.error);
       GameState!.changeSquareIconBoxColor(Theme.of(context).colorScheme.secondaryContainer);
       GameState!.changeMostRecentLineColor(Theme.of(context).colorScheme.primaryContainer);
       GameState!.changeOldLineColor(Theme.of(context).colorScheme.secondary.withOpacity(0.8));
@@ -289,54 +290,63 @@ class GamePlayScreen extends StatelessWidget {
                         child: ValueListenableBuilder<bool>(
                           valueListenable: gamePlayStateForGui!.isMyTurnNotifier,
                           builder: (context, isMyTurn, _) {
-                            return Card(
-                              elevation: 0,
-                              color: Theme.of(context).colorScheme.secondaryContainer.withOpacity(
-                                    Theme.of(context).brightness == Brightness.dark ? 0.2 : 0.7,
+                            return Stack(
+                              children: [
+                                (GameState!.myTurn)
+                                    ? Center(
+                                        child: AnimatedScaleWidget(),
+                                      )
+                                    : const SizedBox.shrink(),
+                                Card(
+                                  elevation: 0,
+                                  color: Theme.of(context).colorScheme.secondaryContainer.withOpacity(
+                                        Theme.of(context).brightness == Brightness.dark ? 0.2 : 0.7,
+                                      ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    side: BorderSide(
+                                      color: GameState!.colorSet[3],
+                                      width: isMyTurn ? 4.0 : 1.0, // Adjust these values as needed
+                                    ),
                                   ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                side: BorderSide(
-                                  color: (isMyTurn) ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondaryContainer,
-                                  width: isMyTurn ? 3.0 : 1.0, // Adjust these values as needed
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          (playerOneName.length > 8) ? '${playerOneName.substring(0, 8)}..' : playerOneName,
-                                          style: TextStyle(fontSize: 12),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              (playerOneName.length > 8) ? '${playerOneName.substring(0, 8)}..' : playerOneName,
+                                              style: TextStyle(fontSize: 12),
+                                            ),
+                                            ValueListenableBuilder<int>(
+                                              valueListenable: gamePlayStateForGui!.playerOneScoreNotifier,
+                                              builder: (context, score, _) {
+                                                return Text(
+                                                  '$score',
+                                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                                );
+                                              },
+                                            ),
+                                          ],
                                         ),
-                                        ValueListenableBuilder<int>(
-                                          valueListenable: gamePlayStateForGui!.playerOneScoreNotifier,
-                                          builder: (context, score, _) {
-                                            return Text(
-                                              '$score',
-                                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                            );
-                                          },
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(10),
+                                          child: Container(
+                                              width: 50,
+                                              height: 50,
+                                              child: FittedBox(
+                                                fit: BoxFit.cover,
+                                                child: gamePlayStateForGui!.playerOneImage,
+                                              )),
                                         ),
                                       ],
                                     ),
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Container(
-                                          width: 50,
-                                          height: 50,
-                                          child: FittedBox(
-                                            fit: BoxFit.cover,
-                                            child: gamePlayStateForGui!.playerOneImage,
-                                          )),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             );
                           },
                         ),
@@ -374,53 +384,62 @@ class GamePlayScreen extends StatelessWidget {
                         child: ValueListenableBuilder<bool>(
                           valueListenable: gamePlayStateForGui!.isMyTurnNotifier,
                           builder: (context, isMyTurn, _) {
-                            return Card(
-                              elevation: 0,
-                              color: Theme.of(context).colorScheme.secondaryContainer.withOpacity(
-                                    Theme.of(context).brightness == Brightness.dark ? 0.2 : 0.7,
-                                  ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                side: BorderSide(
-                                  color: (!isMyTurn) ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondaryContainer,
-                                  width: !isMyTurn ? 3.0 : 1.0, // Adjust these values as needed
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Container(
-                                        width: 50,
-                                        height: 50,
-                                        color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                                        child: gamePlayStateForGui!.playerTwoImage,
+                            return Stack(
+                              children: [
+                                (!GameState!.myTurn)
+                                    ? Center(
+                                        child: AnimatedScaleWidget(),
+                                      )
+                                    : const SizedBox.shrink(),
+                                Card(
+                                  elevation: 0,
+                                  color: Theme.of(context).colorScheme.secondaryContainer.withOpacity(
+                                        Theme.of(context).brightness == Brightness.dark ? 0.2 : 0.7,
                                       ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    side: BorderSide(
+                                      color: GameState!.myTurn ? GameState!.colorSet[3] : GameState!.colorSet[4],
+                                      width: !isMyTurn ? 4.0 : 1.0, // Adjust these values as needed
                                     ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          (playerTwoName.length > 11) ? '${playerTwoName.substring(0, 10)}..' : playerTwoName,
-                                          style: TextStyle(fontSize: 12),
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(10),
+                                          child: Container(
+                                            width: 50,
+                                            height: 50,
+                                            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                            child: gamePlayStateForGui!.playerTwoImage,
+                                          ),
                                         ),
-                                        ValueListenableBuilder<int>(
-                                          valueListenable: gamePlayStateForGui!.playerTwoScoreNotifier,
-                                          builder: (context, score, _) {
-                                            return Text(
-                                              '$score',
-                                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                            );
-                                          },
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              (playerTwoName.length > 11) ? '${playerTwoName.substring(0, 10)}..' : playerTwoName,
+                                              style: TextStyle(fontSize: 12),
+                                            ),
+                                            ValueListenableBuilder<int>(
+                                              valueListenable: gamePlayStateForGui!.playerTwoScoreNotifier,
+                                              builder: (context, score, _) {
+                                                return Text(
+                                                  '$score',
+                                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                                );
+                                              },
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             );
                           },
                         ),
