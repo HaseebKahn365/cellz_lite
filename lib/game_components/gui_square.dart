@@ -74,31 +74,51 @@ class GuiSquare extends PositionComponent {
   void _addParticle(int count, Vector2 position) {
     dev.log('Generating random particles');
     final random = Random();
+
     ParticleSystemComponent particleSystem = ParticleSystemComponent(
       priority: 0,
       particle: Particle.generate(
-        count: count * 5, // Increase count for more drops
-        //rand between 0.5 and 2.5
+        count: count * 5,
         lifespan: 0.5 + random.nextDouble() * 1.0,
         generator: (i) {
-          // Randomize direction for acceleration and speed
           final angle = random.nextDouble() * 2 * pi;
           final speedMagnitude = random.nextDouble() * 200;
-          //lets also make it negative randomly
-          final accelerationMagnitude = random.nextDouble() * 100 * (random.nextBool() ? 1 : -1);
+          final gravity = Vector2(0, 100); // Simulate gravity downward
 
           return AcceleratedParticle(
             acceleration: Vector2(
-              accelerationMagnitude * cos(angle),
-              accelerationMagnitude * sin(angle),
+              0, // No horizontal acceleration for gravity
+              gravity.y * 2, // Apply gravity downward
             ),
             speed: Vector2(
               speedMagnitude * cos(angle),
               speedMagnitude * sin(angle),
             ),
-            child: CircleParticle(
-              radius: 1 + random.nextDouble() * 0.5, // Increase radius for larger, more drop-like particles
-              paint: Paint()..color = Colors.primaries[random.nextInt(Colors.primaries.length)].withOpacity(0.5), // Change color to colorful
+            child: ComputedParticle(
+              renderer: (canvas, particle) {
+                final progress = particle.progress;
+                final opacity = 1.0 - progress; // Gradually decrease opacity from 1.0 to 0
+                final size = 1 + random.nextDouble() * 0.5; // Randomize size
+
+                final position = this.position;
+                final paint = Paint()
+                  ..color = Colors.primaries[random.nextInt(Colors.primaries.length)].withOpacity(opacity)
+                  ..style = PaintingStyle.fill;
+
+                canvas.drawCircle(position.toOffset(), size, paint);
+              },
+              // child: CircleParticle(
+              //   radius: 1 + random.nextDouble() * 0.5,
+              //   paint: Paint()..color = Colors.primaries[random.nextInt(Colors.primaries.length)].withOpacity(0.5),
+              // ),
+              // // Use a ComputedParticle to dynamically calculate the scale
+              // computer: (particle, delta) {
+              //   final progress = particle.progress;
+              //   return ScaledParticle(
+              //     scale: 1.0 - progress, // Gradually decrease scale from 1.0 to 0
+              //     child: particle.child,
+              //   );
+              // },
             ),
           );
         },

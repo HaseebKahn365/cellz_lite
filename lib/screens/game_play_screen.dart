@@ -69,38 +69,65 @@ class GamePlayScreen extends StatelessWidget {
   bool isExpired = false;
   Future<bool> _onWillPop(BuildContext context) async {
     return await showDialog<bool>(
+          barrierColor: Colors.black.withOpacity(0.8),
           context: context,
           builder: (context) => AlertDialog(
-            title: Center(child: Text('Leave Game ?')),
-            content: const Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  width: 350,
-                  height: 150,
-                  child: RiveAnimation.asset(
-                    'assets/images/cute_heart_broken.riv',
-                    fit: BoxFit.cover,
-                    antialiasing: true,
-                  ),
+            titlePadding: EdgeInsets.all(0),
+            contentPadding: EdgeInsets.all(0),
+            actionsPadding: EdgeInsets.all(0),
+            content: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2.0),
+                borderRadius: BorderRadius.circular(24.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const SizedBox(
+                      width: 350,
+                      height: 150,
+                      child: RiveAnimation.asset(
+                        'assets/images/cute_heart_broken.riv',
+                        fit: BoxFit.cover,
+                        antialiasing: true,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'You will lose life!\nAre you sure you want to quit?',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        OutlinedButton(
+                          child: Text('Leave', textAlign: TextAlign.center),
+                          onPressed: () {
+                            Navigator.of(context).pop(true);
+                          },
+                        ),
+                        const SizedBox(width: 10),
+                        ElevatedButton(
+                          child: Text('Keep Playing'),
+                          style: ElevatedButton.styleFrom(
+                            elevation: 10,
+                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop(false);
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                Text('\nYou will lose life!'),
-              ],
+              ),
             ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  gamePlayStateForGui!.resetGame();
-
-                  Navigator.of(context).pop(true);
-                },
-                child: Text('Leave'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text('Keep Playing'),
-              ),
-            ],
           ),
         ) ??
         false;
