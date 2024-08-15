@@ -342,11 +342,11 @@ class _AccountSettingsState extends State<AccountSettings> {
                                 _isError = true;
                               });
                               return 'Name cannot be empty';
-                            } else if (value.length <= 3 || value.length >= 18) {
+                            } else if (value.length < 3 || value.length > 18) {
                               setState(() {
                                 _isError = true;
                               });
-                              return 'Name must be between 3 and 18 characters';
+                              return 'Valid name length: 3-18';
                             }
                             setState(() {
                               _isError = false;
