@@ -1,6 +1,5 @@
 import 'package:cellz_lite/business_logic/game_state.dart';
-import 'package:cellz_lite/providers/game_play_provider.dart';
-import 'package:cellz_lite/screens/my_game.dart';
+
 import 'package:flutter/material.dart';
 
 class AnimatedScaleWidget extends StatefulWidget {
@@ -18,8 +17,8 @@ class _AnimatedScaleWidgetState extends State<AnimatedScaleWidget> with SingleTi
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
-      reverseDuration: Duration(seconds: 1),
+      duration: const Duration(seconds: 2),
+      reverseDuration: const Duration(seconds: 1),
     )..repeat(reverse: true);
 
     _animation = Tween<double>(begin: 0.3, end: 1.0).animate(

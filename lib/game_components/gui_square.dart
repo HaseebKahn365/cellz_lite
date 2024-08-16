@@ -78,8 +78,8 @@ class GuiSquare extends PositionComponent {
     ParticleSystemComponent particleSystem = ParticleSystemComponent(
       priority: 0,
       particle: Particle.generate(
-        count: count * 5,
-        lifespan: 0.5 + random.nextDouble() * 1.0,
+        count: count * 2,
+        lifespan: 1,
         generator: (i) {
           final angle = random.nextDouble() * 2 * pi;
           final speedMagnitude = random.nextDouble() * 200;
@@ -98,7 +98,7 @@ class GuiSquare extends PositionComponent {
               renderer: (canvas, particle) {
                 final progress = particle.progress;
                 final opacity = 1.0 - progress; // Gradually decrease opacity from 1.0 to 0
-                final size = 1 + random.nextDouble() * 0.5; // Randomize size
+                final size = 1 + random.nextDouble() * 1.5; // Randomize size
 
                 final position = this.position;
                 final paint = Paint()
