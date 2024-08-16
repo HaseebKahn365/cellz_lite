@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cellz_lite/business_logic/game_state.dart';
 import 'package:cellz_lite/custom_components/custom_gui_dot.dart';
+import 'package:cellz_lite/game_components/gui_square.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
@@ -74,9 +76,19 @@ class MyGame extends FlameGame with HasGameRef {
     }
   }
 
+  final random = Random();
+
+  int interval = 60;
+  int counter = 0;
+
   @override
   void update(double dt) {
     // textComponent.text = GameState!.myTurn ? 'My Turn' : 'Ai Turn';
+    counter++;
+    if (counter == interval) {
+      colorChangeCounter = Colors.primaries[random.nextInt(Colors.primaries.length)].withOpacity(0.2);
+      counter = 0;
+    }
     super.update(dt);
   }
 

@@ -9,6 +9,8 @@ import 'package:cellz_lite/business_logic/point.dart';
 import 'package:cellz_lite/business_logic/square.dart';
 import 'package:cellz_lite/game_components/gui_line_for_ai.dart';
 import 'package:cellz_lite/game_components/gui_square.dart';
+import 'package:cellz_lite/main.dart';
+import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -295,11 +297,13 @@ class Dot extends PositionComponent with DragCallbacks, CollisionCallbacks, HasG
 
   int getDynamicDelay() {
     //between 300 and 3000 milliseconds random int
+
+    // if (gamePlayStateForGui!.currentLevel.id < 3) return 0;
     if (GameState!.linesDrawn.length < totalLinesHalf) {
       return 300;
     }
     final random = math.Random();
-    final interval = random.nextInt(2000) + 200;
+    final interval = random.nextInt(1500) + 200;
     log('Dynamic delay is: $interval');
     return interval;
   }

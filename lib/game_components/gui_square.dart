@@ -111,12 +111,13 @@ class GuiSquare extends PositionComponent with HasGameRef {
             child: ComputedParticle(
               renderer: (canvas, particle) {
                 final progress = particle.progress;
-                final opacity = 1.0 - progress; // Gradually decrease opacity from 1.0 to 0
+                final opacity = 1.0 - (progress > 0.6 ? progress : 0); // stat decrease opacity from 1.0 to 0
                 final size = 1 + random.nextDouble() * 1.5; // Randomize size
 
                 final position = this.position;
+                randInt = random.nextInt(Colors.primaries.length);
                 final paint = Paint()
-                  ..color = Colors.primaries[random.nextInt(Colors.primaries.length)].withOpacity(opacity)
+                  ..color = Colors.primaries[randInt].withOpacity(opacity)
                   ..style = PaintingStyle.fill;
 
                 canvas.drawCircle(position.toOffset(), size, paint);
@@ -197,8 +198,9 @@ class GuiSquare extends PositionComponent with HasGameRef {
     prefix: 'audio/',
   );
 
-  int colorChangeCounter = 0;
-  int colorChangeInterval = 15;
+  int colorChangeInterval = 19;
+
+  static int randInt = 0;
 
   @override
   void update(double dt) {
@@ -216,14 +218,8 @@ class GuiSquare extends PositionComponent with HasGameRef {
     currentSize = currentSize.clamp(animationStartSize, animationEndSize);
 
     //randomized the colors of the shadow
-    final Random random = Random();
-    colorChangeCounter++;
 
-    if (colorChangeCounter >= colorChangeInterval) {
-      // Change color
-      colorChangeCounter = 0;
-      shadowPaint.color = Colors.primaries[random.nextInt(Colors.primaries.length)].withOpacity(0.4);
-    }
+    shadowPaint.color = colorChangeCounter;
 
     shadowPaint.style = PaintingStyle.fill;
     // Update the icon scale
@@ -304,3 +300,5 @@ class GuiSquare extends PositionComponent with HasGameRef {
 
   bool expired = false;
 }
+
+Color colorChangeCounter = Colors.primaries[Random().nextInt(Colors.primaries.length)];
