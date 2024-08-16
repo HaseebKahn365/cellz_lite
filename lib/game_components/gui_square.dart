@@ -10,7 +10,18 @@ import 'package:flame/extensions.dart';
 import 'package:flame/particles.dart';
 import 'package:flutter/material.dart';
 
-class GuiSquare extends PositionComponent {
+/*
+Here is the latest feature that we are adding to the game:
+we should record the chain of squares by storing the cordinates of its top left corner in a list.
+
+lets display a shadow while the squares are added by the current player
+
+lets code:
+
+
+ */
+
+class GuiSquare extends PositionComponent with HasGameRef {
   final bool isMine;
   final Offset offsetFromTopLeftCorner;
   final double animationDuration = 40;
@@ -18,6 +29,8 @@ class GuiSquare extends PositionComponent {
   final double animationStartSize = GameState!.globalOffset / 4;
   final myXcord;
   final myYcord;
+
+  static bool controlBool = false; //! this is the new static bool for the class to control the chain of squares
 
   double currentSize = 0.0;
   double velocity = 100.0;
@@ -33,6 +46,7 @@ class GuiSquare extends PositionComponent {
     required this.myYcord,
     this.offsetFromTopLeftCorner = const Offset(0, 0),
   }) : super(anchor: Anchor.center) {
+    controlBool = isMine;
     currentSize = animationStartSize;
     size = Vector2(animationEndSize, animationEndSize);
     // incrementing the score in the gamestate!forGui when the square is created
@@ -183,6 +197,9 @@ class GuiSquare extends PositionComponent {
     prefix: 'audio/',
   );
 
+  int colorChangeCounter = 0;
+  int colorChangeInterval = 15;
+
   @override
   void update(double dt) {
     super.update(dt);
@@ -198,9 +215,22 @@ class GuiSquare extends PositionComponent {
     // Clamp the size to prevent overshooting
     currentSize = currentSize.clamp(animationStartSize, animationEndSize);
 
+    //randomized the colors of the shadow
+    final Random random = Random();
+    colorChangeCounter++;
+
+    if (colorChangeCounter >= colorChangeInterval) {
+      // Change color
+      colorChangeCounter = 0;
+      shadowPaint.color = Colors.primaries[random.nextInt(Colors.primaries.length)].withOpacity(0.4);
+    }
+
+    shadowPaint.style = PaintingStyle.fill;
     // Update the icon scale
     iconScale = (currentSize - animationStartSize) / (animationEndSize - animationStartSize);
   }
+
+  Paint shadowPaint = Paint()..maskFilter = MaskFilter.blur(BlurStyle.normal, 10); // Add blur effect
 
   @override
   void render(Canvas canvas) {
@@ -212,6 +242,25 @@ class GuiSquare extends PositionComponent {
       (myYcord.toDouble() * GameState!.globalOffset) + GameState!.offsetFromTopLeftCorner * GameState!.offsetFactoForSquare,
     );
 
+    if (!expired) {
+      if (!(isMine ^ controlBool)) {
+        final shadowPath = Path()
+          ..addRRect(
+            RRect.fromRectAndRadius(
+              Rect.fromCenter(
+                center: positionOffset + Offset(5, 5),
+                width: currentSize,
+                height: currentSize,
+              ),
+              const Radius.circular(10.0),
+            ),
+          );
+
+        canvas.drawPath(shadowPath, shadowPaint);
+      } else {
+        expired = true;
+      }
+    }
     // Draw the square
     final squarePaint = Paint()
       ..color = GameState!.colorSet[5]
@@ -252,4 +301,6 @@ class GuiSquare extends PositionComponent {
 
     textPainter.paint(canvas, relativePosition.toOffset());
   }
+
+  bool expired = false;
 }
