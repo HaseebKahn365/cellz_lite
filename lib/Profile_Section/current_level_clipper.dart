@@ -273,7 +273,6 @@ class CurrentLevelContainer extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 15),
-                  HistoryElement(),
                 ],
               ),
             ),
