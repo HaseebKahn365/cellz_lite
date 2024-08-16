@@ -109,45 +109,49 @@ class ProfileWidget extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 8.0),
                         child: BuildLives(userProvider.lives),
                       ),
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          // Animated blurred background
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Container(
-                              width: 120, // Adjust as needed
-                              height: 40, // Adjust as needed
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.15),
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                            ).animate(onPlay: (controller) => controller.repeat(reverse: true)).blurXY(
-                                  duration: const Duration(seconds: 1),
-                                  begin: 0,
-                                  end: 12,
-                                ),
-                          ),
+                      (userProvider.lives >= 10)
+                          ? const SizedBox.shrink()
+                          : Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // Animated blurred background
 
-                          // Button
-                          Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: OutlinedButton.icon(
-                                onPressed: () {
-                                  userProvider.incrementLife();
-                                },
-                                style: OutlinedButton.styleFrom(
-                                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                                ),
-                                label: Text('Get Life'),
-                                icon: Icon(Icons.favorite, color: Theme.of(context).colorScheme.secondary).animate(onPlay: (controller) => controller.repeat(reverse: true)).scale(
-                                      duration: const Duration(milliseconds: 1200),
-                                      begin: Offset(1, 1),
-                                      end: Offset(1.2, 1.2),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Container(
+                                    width: 120, // Adjust as needed
+                                    height: 40, // Adjust as needed
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.15),
+                                      borderRadius: BorderRadius.circular(50),
                                     ),
-                              )),
-                        ],
-                      )
+                                  ).animate(onPlay: (controller) => controller.repeat(reverse: true)).blurXY(
+                                        duration: const Duration(seconds: 1),
+                                        begin: 0,
+                                        end: 12,
+                                      ),
+                                ),
+
+                                // Button
+
+                                Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: OutlinedButton.icon(
+                                      onPressed: () {
+                                        userProvider.incrementLife();
+                                      },
+                                      style: OutlinedButton.styleFrom(
+                                        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                                      ),
+                                      label: Text('Get Life'),
+                                      icon: Icon(Icons.favorite, color: Theme.of(context).colorScheme.secondary).animate(onPlay: (controller) => controller.repeat(reverse: true)).scale(
+                                            duration: const Duration(milliseconds: 1200),
+                                            begin: Offset(1, 1),
+                                            end: Offset(1.2, 1.2),
+                                          ),
+                                    )),
+                              ],
+                            )
                     ],
                   ),
                 ],
