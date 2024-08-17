@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
 import 'package:cellz_lite/screens/settings.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,8 @@ class ProfileWidget extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
+                      AudioPlayer().play(AssetSource('audio/profile.wav'));
+
                       _navigateToSettings(context);
                     },
                     child: Container(
@@ -138,6 +141,8 @@ class ProfileWidget extends StatelessWidget {
                                     padding: const EdgeInsets.only(left: 8.0),
                                     child: OutlinedButton.icon(
                                       onPressed: () {
+                                        AudioPlayer().play(AssetSource('audio/tap.wav'));
+
                                         userProvider.incrementLife();
                                       },
                                       style: OutlinedButton.styleFrom(

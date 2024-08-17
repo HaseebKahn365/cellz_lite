@@ -45,6 +45,7 @@ remaining moves = 12
  */
 import 'dart:developer';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/business_logic/game_state.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:cellz_lite/screens/animated_think_circle.dart';
@@ -69,6 +70,8 @@ class GamePlayScreen extends StatelessWidget {
 
   bool isExpired = false;
   Future<bool> _onWillPop(BuildContext context) async {
+    AudioPlayer().play(AssetSource('audio/leave.wav'), volume: 0.4);
+
     return await showDialog<bool>(
           barrierColor: Colors.black.withOpacity(0.8),
           context: context,

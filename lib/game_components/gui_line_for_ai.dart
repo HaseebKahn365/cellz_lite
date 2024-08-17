@@ -106,7 +106,7 @@ class GuiLine extends PositionComponent with HasGameRef {
   @override
   FutureOr<void> onLoad() {
     if (soundEnabled) {
-      AudioPlayer().play(AssetSource('audio/line.wav'));
+      AudioPlayer().play(AssetSource('audio/line.wav'), volume: 0.6);
     }
     line.color = oldColor;
 

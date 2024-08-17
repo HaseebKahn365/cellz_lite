@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/Profile_Section/current_level_clipper.dart';
 import 'package:cellz_lite/Profile_Section/profile.dart';
 import 'package:cellz_lite/Tabs/journey_tab.dart';
@@ -101,6 +102,12 @@ class Home extends StatelessWidget {
   }
 
   Future<bool?> _showExitDialog(BuildContext context) {
+    AudioPlayer().play(
+        AssetSource(
+          'audio/quit.wav',
+        ),
+        volume: 0.4);
+
     return showDialog<bool>(
       barrierColor: Colors.black.withOpacity(0.8),
       context: context,
