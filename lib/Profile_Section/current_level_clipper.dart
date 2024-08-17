@@ -284,73 +284,72 @@ class CurrentLevelContainer extends StatelessWidget {
 }
 
 class HistoryElement extends StatelessWidget {
-  const HistoryElement({
-    super.key,
-  });
+  const HistoryElement({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final totalScore = userProvider.lastTotalScore;
     final score = userProvider.lastScore;
-    return (score != 0 && score <= totalScore)
-        ? Center(
-            child: Container(
-              margin: const EdgeInsets.only(right: 10),
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                border: Border.all(color: Theme.of(context).colorScheme.secondaryContainer),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Center(
-                    child: Text(
-                      'Last Played',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ),
-                  Text(
-                    'Score: $score / $totalScore',
-                    style: TextStyle(fontSize: 12),
-                  ),
-                  const SizedBox(height: 8),
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      double userRatio = totalScore == 0 ? 0.5 : score / totalScore;
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(6),
-                        child: SizedBox(
-                          width: constraints.maxWidth,
-                          height: 13,
-                          child: Stack(
-                            children: [
-                              LinearProgressIndicator(
-                                value: 1,
-                                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                                minHeight: 13,
-                              ),
-                              Row(
-                                children: [
-                                  AnimatedContainer(
-                                    duration: const Duration(milliseconds: 200),
-                                    width: constraints.maxWidth * userRatio,
-                                    height: 13,
-                                    color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.8),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
+
+    if (score == 0 || score > totalScore) {
+      return const SizedBox.shrink();
+    }
+
+    return SizedBox(
+      width: 200, // Set a fixed width or adjust as needed
+      child: Container(
+        margin: const EdgeInsets.only(right: 10),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          border: Border.all(color: Theme.of(context).colorScheme.secondaryContainer),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Center(
+              child: Text(
+                'Last Played',
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
-          )
-        : const SizedBox.shrink();
+            Text(
+              'Score: $score / $totalScore',
+              style: TextStyle(fontSize: 12),
+            ),
+            const SizedBox(height: 8),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                double userRatio = totalScore == 0 ? 0.5 : score / totalScore;
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: SizedBox(
+                    width: constraints.maxWidth,
+                    height: 13,
+                    child: Stack(
+                      children: [
+                        LinearProgressIndicator(
+                          value: 1,
+                          backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                          minHeight: 13,
+                        ),
+                        FractionallySizedBox(
+                          widthFactor: userRatio,
+                          child: Container(
+                            height: 13,
+                            color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.8),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

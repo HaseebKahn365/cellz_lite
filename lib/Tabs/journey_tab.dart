@@ -213,7 +213,7 @@ class MyTimeLineTile extends StatelessWidget {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            isPassed ? 'Attempts: ${levels[currentLevel].aiXperience}' : 'Locked',
+                            isPassed ? '' : 'Locked',
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                           const SizedBox(height: 5),
