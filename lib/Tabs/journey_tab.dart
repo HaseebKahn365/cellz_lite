@@ -69,7 +69,9 @@ class JourneyTab extends StatelessWidget {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 30),
-                  child: ElevatedButton(
+                  child: OutlinedButton.icon(
+                    //  up arrow
+                    icon: Icon(Icons.arrow_upward),
                     onPressed: () {
                       //Navigate to the levels screen ..it will have details of each level. all levels that the user has unlocked will be shown.
                       Navigator.of(context).push(
@@ -88,7 +90,7 @@ class JourneyTab extends StatelessWidget {
                         ),
                       );
                     },
-                    child: Text('Show All Levels'),
+                    label: Text('Show All Levels'),
                   ),
                 ),
               ),

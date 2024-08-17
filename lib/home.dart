@@ -183,7 +183,7 @@ class OverviewTab extends StatelessWidget {
                 currentLevel: userProvider.currentLevelIndex + 1,
                 totalLevels: 65,
                 diameter: 230,
-                progressColor: Theme.of(context).colorScheme.primaryFixedDim,
+                progressColor: Theme.of(context).colorScheme.primary,
                 backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                 centerColor: Theme.of(context).colorScheme.primary.withOpacity(0.8),
                 labels: [

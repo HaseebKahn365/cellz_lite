@@ -44,6 +44,7 @@ class FunkyLevelsRadial extends StatelessWidget {
       child: Stack(
         children: [
           ShaderMask(
+            blendMode: BlendMode.srcIn,
             shaderCallback: (rect) {
               return SweepGradient(
                 startAngle: degToRad(180),
@@ -65,8 +66,8 @@ class FunkyLevelsRadial extends StatelessWidget {
           ),
           Center(
             child: Container(
-              width: diameter - 100, //radius of the center circle
-              height: diameter - 100,
+              width: diameter - 110, //radius of the center circle
+              height: diameter - 110,
               decoration: BoxDecoration(
                 color: centerColor,
                 shape: BoxShape.circle,
