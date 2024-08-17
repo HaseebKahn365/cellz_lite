@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/business_logic/game_state.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
 import 'package:cellz_lite/main.dart';
@@ -183,6 +184,8 @@ class CurrentLevelContainer extends StatelessWidget {
                             );
                             return;
                           }
+
+                          AudioPlayer().play(AssetSource('audio/play.wav'), volume: 0.4);
 
                           Future.delayed(Duration(seconds: 2), () {
                             //Creating instances of Global States
