@@ -19,10 +19,13 @@ class LevelStarObject extends ChangeNotifier {
 
   LevelStarObject({required this.levelObject}) {
     thresholdSeconds = ((levelObject.xPoints - 1) * levelObject.yPoints) + ((levelObject.yPoints - 1) * levelObject.xPoints) * 3;
+    log('thresholdSeconds: $thresholdSeconds for level: ${levelObject.id}');
     totalScore = levelObject.xPoints - 1 * levelObject.yPoints - 1;
+    log('totalScore: $totalScore for level: ${levelObject.id}');
   }
 
   void updateStoredData(int score, int time) {
+    log('updating stored data for level: ${levelObject.id}');
     newTime = time;
     newScore = score;
     int tempStars = calculateStars();

@@ -33,6 +33,8 @@ class _GameResultScreenState extends State<GameResultScreen> {
   @override
   void initState() {
     updateTheDb();
+    //lets feed the score and timer value to the LevelStarObject to get the stars
+    levelStars[widget.levelPlayedIndex].updateStoredData(widget.playerOneScore, gamePlayStateForGui!.secTimerNotifier.value);
     super.initState();
   }
 
@@ -134,6 +136,23 @@ class _GameResultScreenState extends State<GameResultScreen> {
                           fontWeight: FontWeight.w300,
                           color: _getResultColor(widget.playerOneScore, widget.playerTwoScore),
                         ),
+                  ),
+
+                  //!now the stars are ready to be displayed
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      3,
+                      (index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.star,
+                            color: (index < levelStars[widget.levelPlayedIndex].stars) ? Colors.yellow : Colors.grey,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
