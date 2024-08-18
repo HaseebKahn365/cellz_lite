@@ -148,7 +148,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: Icon(
                             Icons.star,
-                            color: (index < levelStars[widget.levelPlayedIndex].stars) ? Colors.yellow : Colors.grey,
+                            color: (index < levelStars[widget.levelPlayedIndex].newStars) ? Colors.yellow : Colors.grey,
                           ),
                         );
                       },

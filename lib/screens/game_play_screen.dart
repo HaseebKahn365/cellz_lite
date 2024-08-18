@@ -145,7 +145,7 @@ class GamePlayScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height / 4.8;
+    final height = MediaQuery.of(context).size.height / 4.5;
     // level 29: 7x11 grid
 
     if (!gamePlayStateForGui!.isExpired) {

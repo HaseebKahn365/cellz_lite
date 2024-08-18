@@ -31,6 +31,8 @@ class LevelStarObject extends ChangeNotifier {
     log('newTime: $newTime, \n newScore: $newScore');
   }
 
+  int newStars = 0;
+
   void updateStoredData(int score, int time) {
     log('updating stored data for level: ${levelObject.id}');
     log('incoming score: $score, incoming time: $time');
@@ -38,6 +40,7 @@ class LevelStarObject extends ChangeNotifier {
     newScore = score;
     int tempStars = calculateStars();
     saveStats(tempStars);
+    newStars = tempStars;
     log('Saved stats for level: ${levelObject.id} are stars: $stars, time: $time');
     notifyListeners();
   }
@@ -56,10 +59,14 @@ class LevelStarObject extends ChangeNotifier {
       first = true;
     }
 
+    log('second star criteria: ${secondStarCritera()}');
+
     if (newScore > secondStarCritera()) {
       log('criteria for second star: ${secondStarCritera()} has been met because new score is $newScore');
       second = true;
     }
+
+    log('third star criteria: $thresholdSeconds seconds new time: $newTime');
 
     if ((newTime < thresholdSeconds) && second) {
       log('criteria for third star: $thresholdSeconds seconds has been met because new time is $newTime');
@@ -104,6 +111,8 @@ class LevelStarObject extends ChangeNotifier {
     SharedPreferences.getInstance().then((prefs) {
       stars = prefs.getInt('${levelObject.id}stars') ?? 0;
       time = prefs.getInt('${levelObject.id}time') ?? 0;
+      // stars = 0;
+      // time = 0;
       notifyListeners();
     });
 

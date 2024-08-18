@@ -9,9 +9,14 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:rive/rive.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
-class AllUnlockedLevels extends StatelessWidget {
+class AllUnlockedLevels extends StatefulWidget {
   const AllUnlockedLevels({super.key});
 
+  @override
+  State<AllUnlockedLevels> createState() => _AllUnlockedLevelsState();
+}
+
+class _AllUnlockedLevelsState extends State<AllUnlockedLevels> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
