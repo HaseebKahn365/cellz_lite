@@ -4,7 +4,6 @@ import 'package:cellz_lite/main.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:cellz_lite/screens/game_play_screen.dart';
 import 'package:cellz_lite/screens/my_game.dart';
-import 'package:flame/effects.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:rive/rive.dart';
@@ -103,6 +102,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
             //lets display a huge percentage in the center
             Center(
               child: Stack(
+                alignment: Alignment.center,
                 children: [
                   //this time it should animate and scale up until it disappears at the end using flutter animate
                   Text(
@@ -146,11 +146,27 @@ class _GameResultScreenState extends State<GameResultScreen> {
                     children: List.generate(
                       3,
                       (index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.star,
-                            color: (index < levelStars[widget.levelPlayedIndex].newStars) ? Colors.yellow : Colors.grey,
+                        bool isActive = index < levelStars[widget.levelPlayedIndex].newStars;
+                        return Container(
+                          margin: const EdgeInsets.only(top: 110.0),
+                          height: 700,
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Icon(
+                              Icons.star,
+                              color: isActive ? Colors.yellow : Colors.grey,
+                              size: 20, // Increased size for better visibility
+                            )
+                                .animate(
+                                  onPlay: (controller) => controller.forward(), // Ensure the animation plays
+                                )
+                                .scale(
+                                  delay: ((index + 1) * 500).milliseconds, // Delay each star's animation,
+                                  duration: 1000.milliseconds,
+                                  curve: Curves.bounceOut,
+                                  begin: Offset((isActive) ? 2.5 : 1, (isActive) ? 2.5 : 1),
+                                  end: Offset(1, 1),
+                                ),
                           ),
                         );
                       },
