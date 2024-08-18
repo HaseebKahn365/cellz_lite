@@ -43,6 +43,7 @@ remaining moves = 12
 
 
  */
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:audioplayers/audioplayers.dart';
@@ -67,6 +68,7 @@ class GamePlayScreen extends StatelessWidget {
     required this.playerTwoName,
     required this.game,
   }) : super(key: key);
+  //lets create a timer that starts as the widget is created and should count the time the user has been in the game
 
   bool isExpired = false;
   Future<bool> _onWillPop(BuildContext context) async {
@@ -136,8 +138,6 @@ class GamePlayScreen extends StatelessWidget {
         ) ??
         false;
   }
-
-  //making sure to correct the colors of the game
 
   // final instead of using a solid 200 lets use 1/5 of the screen height
 
@@ -218,48 +218,62 @@ class GamePlayScreen extends StatelessWidget {
                       ),
                       // Progress Indicator
                       Expanded(
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            return ValueListenableBuilder<int>(
-                              valueListenable: gamePlayStateForGui!.playerOneScoreNotifier,
-                              builder: (context, playerOneScore, _) {
+                        child: Column(
+                          children: [
+                            //!Timer Text
+                            ValueListenableBuilder<int>(
+                              valueListenable: gamePlayStateForGui!.secTimerNotifier,
+                              builder: (context, sec, _) {
+                                return Text(
+                                  '${(sec ~/ 60).toString().padLeft(2, '')}:${(sec % 60).toString().padLeft(2, '0')}',
+                                  style: TextStyle(fontSize: 12),
+                                );
+                              },
+                            ),
+                            LayoutBuilder(
+                              builder: (context, constraints) {
                                 return ValueListenableBuilder<int>(
-                                  valueListenable: gamePlayStateForGui!.playerTwoScoreNotifier,
-                                  builder: (context, playerTwoScore, _) {
-                                    int totalScore = playerOneScore + playerTwoScore;
-                                    double playerOneRatio = totalScore == 0 ? 0.5 : playerOneScore / totalScore;
-                                    double playerTwoRatio = totalScore == 0 ? 0.5 : playerTwoScore / totalScore;
-                                    return ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Stack(
-                                        alignment: Alignment.center,
-                                        children: [
-                                          LinearProgressIndicator(
-                                            value: 1,
-                                            backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                                            minHeight: 12,
-                                          ),
-                                          SizedBox(
-                                            height: 13,
-                                            child: Row(
-                                              children: [
-                                                AnimatedContainer(duration: Duration(milliseconds: 300), width: constraints.maxWidth * playerOneRatio, color: playerOneScore == 0 && playerTwoScore == 0 ? Theme.of(context).colorScheme.surfaceContainerHighest : Theme.of(context).colorScheme.primaryContainer.withOpacity(0.8)),
-                                                AnimatedContainer(
-                                                  duration: Duration(milliseconds: 300),
-                                                  width: constraints.maxWidth * playerTwoRatio,
-                                                  color: playerOneScore == 0 && playerTwoScore == 0 ? Theme.of(context).colorScheme.surfaceContainerHighest : Theme.of(context).colorScheme.onSurfaceVariant,
+                                  valueListenable: gamePlayStateForGui!.playerOneScoreNotifier,
+                                  builder: (context, playerOneScore, _) {
+                                    return ValueListenableBuilder<int>(
+                                      valueListenable: gamePlayStateForGui!.playerTwoScoreNotifier,
+                                      builder: (context, playerTwoScore, _) {
+                                        int totalScore = playerOneScore + playerTwoScore;
+                                        double playerOneRatio = totalScore == 0 ? 0.5 : playerOneScore / totalScore;
+                                        double playerTwoRatio = totalScore == 0 ? 0.5 : playerTwoScore / totalScore;
+                                        return ClipRRect(
+                                          borderRadius: BorderRadius.circular(10),
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              LinearProgressIndicator(
+                                                value: 1,
+                                                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                                minHeight: 12,
+                                              ),
+                                              SizedBox(
+                                                height: 13,
+                                                child: Row(
+                                                  children: [
+                                                    AnimatedContainer(duration: Duration(milliseconds: 300), width: constraints.maxWidth * playerOneRatio, color: playerOneScore == 0 && playerTwoScore == 0 ? Theme.of(context).colorScheme.surfaceContainerHighest : Theme.of(context).colorScheme.primaryContainer.withOpacity(0.8)),
+                                                    AnimatedContainer(
+                                                      duration: Duration(milliseconds: 300),
+                                                      width: constraints.maxWidth * playerTwoRatio,
+                                                      color: playerOneScore == 0 && playerTwoScore == 0 ? Theme.of(context).colorScheme.surfaceContainerHighest : Theme.of(context).colorScheme.onSurfaceVariant,
+                                                    ),
+                                                  ],
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
+                                        );
+                                      },
                                     );
                                   },
                                 );
                               },
-                            );
-                          },
+                            ),
+                          ],
                         ),
                       ),
                       Container(

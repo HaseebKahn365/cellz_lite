@@ -15,6 +15,7 @@ eg.
 
  */
 
+import 'dart:async';
 import 'dart:math';
 
 import 'package:cellz_lite/main.dart';
@@ -34,6 +35,13 @@ class GamePlayStateForGui {
   final ValueNotifier<int> playerTwoScoreNotifier = ValueNotifier(0);
   //another boolean value notifier for isGameOver
   final ValueNotifier<bool> isGameOverNotifier = ValueNotifier(false);
+  //creating a timer
+  final ValueNotifier<int> secTimerNotifier = ValueNotifier(0);
+
+  Timer timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    //increment the time by 1
+    gamePlayStateForGui!.secTimerNotifier.value++;
+  });
 
   bool isExpired = false;
 
@@ -44,6 +52,11 @@ class GamePlayStateForGui {
   void initMovesLeftAndSquares(int movesLeft, int squaresLeft) {
     movesLeftNotifier.value = movesLeft;
     squaresLeftNotifier.value = squaresLeft;
+    //start the timer
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      //increment the time by 1
+      secTimerNotifier.value++;
+    });
   }
 
   void decrementMovesLeft() {
@@ -63,6 +76,9 @@ class GamePlayStateForGui {
     isGameOverNotifier.value = false;
     playerOneScoreNotifier.value = 0;
     playerTwoScoreNotifier.value = 0;
+
+    //stop the timer
+    timer.cancel();
   }
 
   bool checkGameOver() {

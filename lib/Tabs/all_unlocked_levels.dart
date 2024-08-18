@@ -1,4 +1,5 @@
 import 'package:cellz_lite/business_logic/game_state.dart';
+import 'package:cellz_lite/dealing_with_data/LevelStarts.dart';
 import 'package:cellz_lite/main.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:cellz_lite/screens/game_play_screen.dart';
@@ -41,6 +42,7 @@ class AllUnlockedLevels extends StatelessWidget {
                 final isCurrent = level.id - 1 == userProvider.currentLevelIndex;
                 final isPassed = level.id - 1 < userProvider.currentLevelIndex;
                 final isExpanded = isCurrent || isPassed;
+                final LevelStarObject levelStar = levelStars[level.id - 1];
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -106,9 +108,48 @@ class AllUnlockedLevels extends StatelessWidget {
                           enabled: isCurrent || isPassed,
                           initiallyExpanded: isExpanded,
                           childrenPadding: const EdgeInsets.all(0),
-                          title: Text(
-                            'Level ${level.id}',
-                            style: Theme.of(context).textTheme.headlineSmall,
+                          title: Row(
+                            children: [
+                              Text(
+                                'Level ${level.id}',
+                                style: Theme.of(context).textTheme.headlineSmall,
+                              ),
+
+                              Spacer(),
+
+                              //creating stars for the level
+                              (isPassed || isCurrent)
+                                  ? Stack(
+                                      children: [
+                                        ...[
+                                          Row(
+                                            children: [
+                                              //this row will contain the filled stars
+                                              for (int i = 0; i < levelStar.stars; i++)
+                                                Icon(
+                                                  Icons.star,
+                                                  color: Theme.of(context).colorScheme.primary,
+                                                  size: 25,
+                                                ),
+                                            ],
+                                          ),
+                                          Row(
+                                            //this row will contain the empty stars
+                                            children: [
+                                              for (int i = 0; i < 3; i++)
+                                                Icon(
+                                                  Icons.star_border_rounded,
+                                                  color: Theme.of(context).colorScheme.primary,
+                                                  size: 25,
+                                                ),
+                                            ],
+                                          ),
+                                        ]
+                                      ],
+                                    )
+                                  : SizedBox.shrink(),
+                              Spacer(),
+                            ],
                           ),
                           children: [
                             Padding(
@@ -132,6 +173,13 @@ class AllUnlockedLevels extends StatelessWidget {
                                             const SizedBox(height: 5),
                                             Text(
                                               'Hard? - ${level.grade}',
+                                              style: Theme.of(context).textTheme.bodySmall,
+                                            ),
+
+                                            //adding time
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              '${levelStar.time} s',
                                               style: Theme.of(context).textTheme.bodySmall,
                                             ),
                                           ],
