@@ -294,14 +294,16 @@ class Dot extends PositionComponent with DragCallbacks, CollisionCallbacks, HasG
   //for now we are just gonna use the futures to demo the feature:
 
   static final totalLinesHalf = GameState!.validLines.length / 2;
+  static final dotsCount = GameState!.allPoints.length;
 
   int getDynamicDelay() {
     //between 300 and 3000 milliseconds random int
+    if (dotsCount == 4 || dotsCount == 8) return 50;
     if (GameState!.linesDrawn.length < totalLinesHalf) {
-      return 300;
+      return 200;
     }
     final random = math.Random();
-    final interval = random.nextInt(2000) + 200;
+    final interval = random.nextInt(1000) + 200;
     log('Dynamic delay is: $interval');
     return interval;
   }

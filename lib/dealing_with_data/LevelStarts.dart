@@ -18,18 +18,27 @@ class LevelStarObject extends ChangeNotifier {
   int newScore = 0;
 
   LevelStarObject({required this.levelObject}) {
+    log('initial stats: $stars , and time: $time');
     thresholdSeconds = ((levelObject.xPoints - 1) * levelObject.yPoints) + ((levelObject.yPoints - 1) * levelObject.xPoints) * 3;
     log('thresholdSeconds: $thresholdSeconds for level: ${levelObject.id}');
-    totalScore = levelObject.xPoints - 1 * levelObject.yPoints - 1;
+    totalScore = (levelObject.xPoints - 1) * (levelObject.yPoints - 1);
     log('totalScore: $totalScore for level: ${levelObject.id}');
+    displayObjectState();
+  }
+
+  void displayObjectState() {
+    log('stars: $stars, \n time: $time, \n totalScore: $totalScore, \n thresholdSeconds: $thresholdSeconds');
+    log('newTime: $newTime, \n newScore: $newScore');
   }
 
   void updateStoredData(int score, int time) {
     log('updating stored data for level: ${levelObject.id}');
+    log('incoming score: $score, incoming time: $time');
     newTime = time;
     newScore = score;
     int tempStars = calculateStars();
     saveStats(tempStars);
+    log('Saved stats for level: ${levelObject.id} are stars: $stars, time: $time');
     notifyListeners();
   }
 
@@ -42,15 +51,18 @@ class LevelStarObject extends ChangeNotifier {
     bool second = false;
     bool third = false;
 
-    if (newScore > 0.5 * totalScore) {
+    if (newScore > (0.5 * totalScore)) {
+      log('criteria for first star: ${0.5 * totalScore} has been met because new score is $newScore');
       first = true;
     }
 
     if (newScore > secondStarCritera()) {
+      log('criteria for second star: ${secondStarCritera()} has been met because new score is $newScore');
       second = true;
     }
 
     if ((newTime < thresholdSeconds) && second) {
+      log('criteria for third star: $thresholdSeconds seconds has been met because new time is $newTime');
       third = true;
     }
 
@@ -65,15 +77,18 @@ class LevelStarObject extends ChangeNotifier {
 
   void saveStats(int tempStars) {
     if (tempStars > stars) {
+      log('new stars for saving stats : $tempStars, old stars: $stars so updating the stats');
       stars = tempStars;
       time = newTime;
     } else if (tempStars == stars) {
       if (newTime < time) {
+        log(' stars same but new time: $newTime, old time: $time so updating the stats');
         time = newTime;
       }
     }
 
 //now lets save the new stats using sharedPrefs and notify the listeners to update the UI. we need to concatenate stars and time with the levelid before saving it
+
     try {
       SharedPreferences.getInstance().then((prefs) {
         prefs.setInt('${levelObject.id}stars', stars);
@@ -92,6 +107,6 @@ class LevelStarObject extends ChangeNotifier {
       notifyListeners();
     });
 
-    log('stats loaded for level: ${levelObject.id}');
+    log('stats loaded for level: ${levelObject.id} ${(stars != 0) ? 'stars: $stars, time: $time' : ''}');
   }
 }

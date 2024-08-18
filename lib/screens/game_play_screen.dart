@@ -48,6 +48,7 @@ import 'dart:developer';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/business_logic/game_state.dart';
+import 'package:cellz_lite/main.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:cellz_lite/screens/animated_think_circle.dart';
 import 'package:cellz_lite/screens/game_over_screen.dart';
@@ -61,6 +62,7 @@ class GamePlayScreen extends StatelessWidget {
   final String playerOneName;
   final String playerTwoName;
   final MyGame game;
+  final bestTime = levelStars[gamePlayStateForGui!.currentLevel.id - 1].time;
 
   GamePlayScreen({
     Key? key,
@@ -272,6 +274,10 @@ class GamePlayScreen extends StatelessWidget {
                                   },
                                 );
                               },
+                            ),
+                            Text(
+                              'best time = $bestTime',
+                              style: TextStyle(fontSize: 12),
                             ),
                           ],
                         ),
