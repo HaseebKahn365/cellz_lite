@@ -27,7 +27,7 @@ class UserProvider extends ChangeNotifier {
 //we need t save and load the useKey
   Future<void> loadAllPrefs() async {
     _prefs = await SharedPreferences.getInstance();
-    name = _prefs?.getString('name') ?? 'Anon';
+    name = _prefs?.getString('name') ?? 'You';
     score = _prefs?.getInt('score') ?? 0;
     currentLevelIndex = _prefs?.getInt('currentLevelIndex') ?? 0;
 

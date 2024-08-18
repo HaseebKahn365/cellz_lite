@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
 import 'package:cellz_lite/providers/theme_provider.dart';
 
@@ -108,6 +109,8 @@ class _SettingsContainerState extends State<SettingsContainer> {
                             final currentImage = ThemeProvider.colorImageProviders[index];
                             return InkWell(
                               onTap: () {
+                                AudioPlayer().play(AssetSource('audio/dot_touch.wav'), volume: 0.05);
+
                                 themeProvider.handleImageSelect(index);
                               },
                               child: Stack(
@@ -230,6 +233,8 @@ class _SettingsContainerState extends State<SettingsContainer> {
 
         return InkWell(
           onTap: () {
+            AudioPlayer().play(AssetSource('audio/dot_touch.wav'), volume: 0.05);
+
             themeProvider.handleColorSelect(index);
           },
           child: Stack(

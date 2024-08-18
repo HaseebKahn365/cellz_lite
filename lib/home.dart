@@ -14,6 +14,7 @@ import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:cellz_lite/providers/theme_provider.dart';
 import 'package:cellz_lite/sections/dial.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatelessWidget {
@@ -181,12 +182,10 @@ class OverviewTab extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //creating a funky container for the current level that has smooth zig zag border line.
-
             CurrentLevelContainer(),
             SizedBox(height: 10),
             Center(
-              child: FunkyLevelsRadial(
+              child: AnimatedRadialDial(
                 currentLevel: userProvider.currentLevelIndex + 1,
                 totalLevels: 65,
                 diameter: 230,
@@ -194,7 +193,6 @@ class OverviewTab extends StatelessWidget {
                 backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                 centerColor: Theme.of(context).colorScheme.primary.withOpacity(0.8),
                 labels: [
-                  //levels from 1 to 65 display only the levels that are multiples of 5
                   for (int i = 1; i <= 65; i++)
                     if (i == 1 || i % 11 == 0 || i == 65) LabelData(i * 180 / 65, '$i'),
                 ],
@@ -213,5 +211,161 @@ class OverviewTab extends StatelessWidget {
         ),
       );
     });
+  }
+}
+
+class AnimatedRadialDial extends StatefulWidget {
+  final int currentLevel;
+  final int totalLevels;
+  final double diameter;
+  final Color progressColor;
+  final Color backgroundColor;
+  final Color centerColor;
+  final List<LabelData> labels;
+  final TextStyle levelTextStyle;
+  final TextStyle subtitleTextStyle;
+  final TextStyle labelTextStyle;
+  final double progressWidth;
+  final double backgroundWidth;
+  final double labelOffset;
+
+  const AnimatedRadialDial({
+    Key? key,
+    required this.currentLevel,
+    required this.totalLevels,
+    required this.diameter,
+    required this.progressColor,
+    required this.backgroundColor,
+    required this.centerColor,
+    required this.labels,
+    required this.levelTextStyle,
+    required this.subtitleTextStyle,
+    required this.labelTextStyle,
+    required this.progressWidth,
+    required this.backgroundWidth,
+    required this.labelOffset,
+  }) : super(key: key);
+
+  @override
+  _AnimatedRadialDialState createState() => _AnimatedRadialDialState();
+}
+
+class _AnimatedRadialDialState extends State<AnimatedRadialDial> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 100),
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _handleTap() {
+    if (_controller.status == AnimationStatus.completed) {
+      _controller.reverse();
+    } else {
+      _controller.forward();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        _handleTap();
+        AudioPlayer().play(
+            AssetSource(
+              'audio/next.wav',
+            ),
+            volume: 0.4);
+
+        //showing a model bottom sheet to view the procedure of getting reward
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(24),
+                  topRight: Radius.circular(24),
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Congratulations! You have reached level ${widget.currentLevel}',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'You have unlocked the next level: ',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'To claim your reward, you need to complete the following tasks:',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+      child: AnimatedBuilder(
+        animation: _scaleAnimation,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scaleAnimation.value,
+            child: FunkyLevelsRadial(
+              currentLevel: widget.currentLevel,
+              totalLevels: widget.totalLevels,
+              diameter: widget.diameter,
+              progressColor: widget.progressColor,
+              backgroundColor: widget.backgroundColor,
+              centerColor: widget.centerColor,
+              labels: widget.labels,
+              levelTextStyle: widget.levelTextStyle,
+              subtitleTextStyle: widget.subtitleTextStyle,
+              labelTextStyle: widget.labelTextStyle,
+              progressWidth: widget.progressWidth,
+              backgroundWidth: widget.backgroundWidth,
+              labelOffset: widget.labelOffset,
+            ),
+          );
+        },
+      ),
+    );
   }
 }

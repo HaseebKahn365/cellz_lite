@@ -48,7 +48,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
       AudioPlayer().play(AssetSource('audio/applause.wav'));
     } else if (widget.playerOneScore < widget.playerTwoScore) {
       userProvider.incrementLosses();
-      AudioPlayer().play(AssetSource('audio/loser.wav'));
+      AudioPlayer().play(AssetSource('audio/loss.wav'));
     } else {
       AudioPlayer().play(AssetSource('audio/quit.wav'));
       //lets refund the life
@@ -152,7 +152,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
                     SizedBox(height: 40),
                     ElevatedButton.icon(
                       onPressed: () async {
-                        AudioPlayer().play(AssetSource('audio/next.wav'), volume: 0.4);
+                        AudioPlayer().play(AssetSource('audio/play.wav'), volume: 0.4);
 
                         setState(() {
                           shouldAppear = false;
