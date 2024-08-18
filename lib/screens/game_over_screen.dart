@@ -105,12 +105,23 @@ class _GameResultScreenState extends State<GameResultScreen> {
                 alignment: Alignment.center,
                 children: [
                   //this time it should animate and scale up until it disappears at the end using flutter animate
-                  Text(
-                    '${(ratio * 100).toStringAsFixed(0)} %',
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          fontWeight: FontWeight.w300,
+                  Row(
+                    children: [
+                      Text(
+                        '${(ratio * 100).toStringAsFixed(0)}',
+                        style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                              fontWeight: FontWeight.w300,
+                              color: _getResultColor(widget.playerOneScore, widget.playerTwoScore),
+                            ),
+                      ),
+                      Text(
+                        '%',
+                        style: TextStyle(
+                          fontSize: 12,
                           color: _getResultColor(widget.playerOneScore, widget.playerTwoScore),
                         ),
+                      ),
+                    ],
                   )
                       .animate()
                       .scale(

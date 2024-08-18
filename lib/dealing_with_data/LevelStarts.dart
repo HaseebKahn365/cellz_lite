@@ -19,7 +19,7 @@ class LevelStarObject extends ChangeNotifier {
 
   LevelStarObject({required this.levelObject}) {
     log('initial stats: $stars , and time: $time');
-    thresholdSeconds = ((levelObject.xPoints - 1) * levelObject.yPoints) + ((levelObject.yPoints - 1) * levelObject.xPoints) * 3;
+    thresholdSeconds = ((levelObject.xPoints - 1) * levelObject.yPoints) + ((levelObject.yPoints - 1) * levelObject.xPoints) * 1;
     log('thresholdSeconds: $thresholdSeconds for level: ${levelObject.id}');
     totalScore = (levelObject.xPoints - 1) * (levelObject.yPoints - 1);
     log('totalScore: $totalScore for level: ${levelObject.id}');
@@ -110,7 +110,7 @@ class LevelStarObject extends ChangeNotifier {
   void getStoredStats() {
     SharedPreferences.getInstance().then((prefs) {
       stars = prefs.getInt('${levelObject.id}stars') ?? 0;
-      time = prefs.getInt('${levelObject.id}time') ?? 0;
+      time = prefs.getInt('${levelObject.id}time') ?? thresholdSeconds;
       // stars = 0;
       // time = 0;
       notifyListeners();

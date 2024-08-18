@@ -275,9 +275,12 @@ class GamePlayScreen extends StatelessWidget {
                                 );
                               },
                             ),
-                            Text(
-                              'best time = $bestTime',
-                              style: TextStyle(fontSize: 12),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 2.0),
+                              child: Text(
+                                '(Finish before ${(bestTime ~/ 60).toString().padLeft(2, '')}:${(bestTime % 60).toString().padLeft(2, '0')})',
+                                style: TextStyle(fontSize: 8),
+                              ),
                             ),
                           ],
                         ),
