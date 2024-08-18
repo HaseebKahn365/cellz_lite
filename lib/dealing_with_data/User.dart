@@ -24,6 +24,10 @@ class UserProvider extends ChangeNotifier {
     loadAllPrefs();
   }
 
+  void emptyUpdate() {
+    notifyListeners();
+  }
+
 //we need t save and load the useKey
   Future<void> loadAllPrefs() async {
     _prefs = await SharedPreferences.getInstance();

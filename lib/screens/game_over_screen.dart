@@ -35,6 +35,8 @@ class _GameResultScreenState extends State<GameResultScreen> {
     updateTheDb();
     //lets feed the score and timer value to the LevelStarObject to get the stars
     levelStars[widget.levelPlayedIndex].updateStoredData(widget.playerOneScore, gamePlayStateForGui!.secTimerNotifier.value);
+    userProvider.emptyUpdate();
+
     super.initState();
   }
 
