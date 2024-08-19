@@ -280,11 +280,16 @@ class _AnimatedRadialDialState extends State<AnimatedRadialDial> with SingleTick
     }
   }
 
+  var buttonPressed = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        if (buttonPressed) return;
         _handleTap();
+        buttonPressed = true;
+        await Future.delayed(Duration(milliseconds: 400));
         AudioPlayer().play(
             AssetSource(
               'audio/next.wav',
@@ -293,6 +298,8 @@ class _AnimatedRadialDialState extends State<AnimatedRadialDial> with SingleTick
 
         //showing a model bottom sheet to view the procedure of getting reward
         showModalBottomSheet(
+          //make bg black
+          barrierColor: Colors.black.withOpacity(0.95),
           isScrollControlled: true,
           context: context,
           builder: (context) {
@@ -308,6 +315,9 @@ class _AnimatedRadialDialState extends State<AnimatedRadialDial> with SingleTick
             );
           },
         );
+        Future.delayed(Duration(seconds: 2), () {
+          buttonPressed = false;
+        });
       },
       child: AnimatedBuilder(
         animation: _scaleAnimation,
@@ -445,6 +455,9 @@ class AwardWidget extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10),
                                 value: sum / total,
                                 backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Theme.of(context).colorScheme.primary,
+                                ),
                               ),
                             ),
                           ),
@@ -470,22 +483,24 @@ class AwardWidget extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Icon(
-                    Icons.circle,
-                    size: 8,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 10.0),
+                //   child: Icon(
+                //     Icons.circle,
+                //     size: 8,
+                //     color: Theme.of(context).colorScheme.primary,
+                //   ),
+                // ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Here is the criteria for stars:',
-                        style: TextStyle(fontSize: 13),
+                      Center(
+                        child: Text(
+                          'Here is the criteria for stars:',
+                          style: TextStyle(fontSize: 13),
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Container(
@@ -495,8 +510,8 @@ class AwardWidget extends StatelessWidget {
                           boxShadow: [
                             BoxShadow(
                               color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                              spreadRadius: 2,
-                              blurRadius: 5,
+                              spreadRadius: 3,
+                              blurRadius: 7,
                               offset: Offset(0, 3),
                             ),
                           ],
@@ -513,7 +528,8 @@ class AwardWidget extends StatelessWidget {
                               1: FlexColumnWidth(1),
                             },
                             children: [
-                              _buildTableRow('Level', 'Win %', context, isHeader: true),
+                              _buildTableRow('Level', 'For 2 Stars', context, isHeader: true),
+                              _buildTableRow('<60', '70%', context),
                               _buildTableRow('60', '80%', context),
                               _buildTableRow('61', '82%', context),
                               _buildTableRow('62', '85%', context),
@@ -567,22 +583,33 @@ class AwardWidget extends StatelessWidget {
                     height: 120,
                   ),
                 ),
-                Container(
-                  width: 140,
-                  height: 140,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.inversePrimary,
-                      // style: BorderStyle.dotted
-                      width: 3,
+                GestureDetector(
+                  onTap: () {
+                    AudioPlayer().play(
+                        AssetSource(
+                          'audio/next.wav',
+                        ),
+                        volume: 0.4);
+
+                    //Displaying an alert dialogue box that has the following content:
+                  },
+                  child: Container(
+                    width: 140,
+                    height: 140,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                        // style: BorderStyle.dotted
+                        width: 3,
+                      ),
+                      // borderRadius: BorderRadius.circular(75),
                     ),
-                    // borderRadius: BorderRadius.circular(75),
-                  ),
-                  child: Center(
-                    child: Text(
-                      '\$100',
-                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.inverseSurface),
+                    child: Center(
+                      child: Text(
+                        '\$100',
+                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.inverseSurface),
+                      ),
                     ),
                   ),
                 ),
