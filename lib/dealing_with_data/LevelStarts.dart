@@ -46,7 +46,13 @@ class LevelStarObject extends ChangeNotifier {
   }
 
   double secondStarCritera() {
-    return 0.7 * totalScore;
+    if (levelObject.id == 60) return 0.80 * totalScore;
+    if (levelObject.id == 61) return 0.82 * totalScore;
+    if (levelObject.id == 62) return 0.85 * totalScore;
+    if (levelObject.id == 63) return 0.87 * totalScore;
+    if (levelObject.id == 64) return 0.9 * totalScore;
+    if (levelObject.id == 65) return 0.95 * totalScore;
+    return (0.7 * totalScore).ceil().toDouble();
   }
 
   int calculateStars() {

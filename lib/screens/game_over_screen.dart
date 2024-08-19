@@ -87,6 +87,14 @@ class _GameResultScreenState extends State<GameResultScreen> {
       return Colors.red;
     }
 
+    //display a snakebar highlighting the criteria for getting stars:
+    //     if (levelObject.id == 60) return 0.80 * totalScore;
+    // if (levelObject.id == 61) return 0.82 * totalScore;
+    // if (levelObject.id == 62) return 0.85 * totalScore;
+    // if (levelObject.id == 63) return 0.87 * totalScore;
+    // if (levelObject.id == 64) return 0.9 * totalScore;
+    // if (levelObject.id == 65) return 0.95 * totalScore;
+
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -343,7 +351,9 @@ class _GameResultScreenState extends State<GameResultScreen> {
                             //make sure to reset the scores and stuff before game start
                             gamePlayStateForGui!.resetGame();
 
-                            gamePlayStateForGui!.currentLevel = (shouldRetry) ? thisLevel : levels[thisLevel.id]; //id of this level is index+1
+                            int validLevelID = (thisLevel.id == 65) ? 64 : thisLevel.id;
+
+                            gamePlayStateForGui!.currentLevel = (shouldRetry) ? thisLevel : levels[validLevelID]; //id of this level is index+1
                             //use material route to navigate to the game play screen
 
                             final size = MediaQuery.of(context).size;
@@ -406,7 +416,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
                           //in case if the game is lost or draw the show retry button else show go Next button
                           icon: shouldRetry ? const Icon(Icons.replay_circle_filled_rounded) : Icon(Icons.arrow_forward_ios_rounded),
                           label: Text(
-                            shouldRetry ? 'Retry' : 'Next Level',
+                            shouldRetry ? 'Retry' : 'Next Level ${levels[widget.levelPlayedIndex + 1].id}',
                           ),
                           style: ElevatedButton.styleFrom(
                             elevation: 5,
@@ -419,6 +429,49 @@ class _GameResultScreenState extends State<GameResultScreen> {
                 ),
               ],
             ),
+            Positioned(
+              bottom: 10,
+              right: MediaQuery.of(context).size.width / 2 - 120,
+              child: Container(
+                margin: const EdgeInsets.only(top: 20.0),
+                child: Row(
+                  //info icon and text all in primary color
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(width: 5),
+                    Column(
+                      children: [
+                        Opacity(
+                          opacity: 0.5,
+                          child: Icon(
+                            Icons.arrow_drop_down_sharp,
+                            size: 20,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        Text(
+                          'To get 3 stars, you need to have at least ${levelStars[widget.levelPlayedIndex].secondStarCritera().toInt()} squares,',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                        // within ${levelStars[widget.levelPlayedIndex].thresholdSeconds} seconds',
+                        Text(
+                          'within ${levelStars[widget.levelPlayedIndex].thresholdSeconds} seconds',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),
