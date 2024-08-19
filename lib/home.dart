@@ -2,7 +2,6 @@
 
 // import 'package:animations/animations.dart';
 import 'dart:io';
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:audioplayers/audioplayers.dart';
@@ -10,10 +9,11 @@ import 'package:cellz_lite/Profile_Section/current_level_clipper.dart';
 import 'package:cellz_lite/Profile_Section/profile.dart';
 import 'package:cellz_lite/Tabs/journey_tab.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
-import 'package:cellz_lite/providers/game_play_provider.dart';
+import 'package:cellz_lite/main.dart';
 import 'package:cellz_lite/providers/theme_provider.dart';
 import 'package:cellz_lite/sections/dial.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
@@ -174,7 +174,7 @@ class OverviewTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (context, userProvider, child) {
-      final nextLevel = (userProvider.currentLevelIndex < 64) ? levels[userProvider.currentLevelIndex + 1] : levels[64];
+      // final nextLevel = (userProvider.currentLevelIndex < 64) ? levels[userProvider.currentLevelIndex + 1] : levels[64];
 
       return Container(
         margin: const EdgeInsets.all(12),
@@ -258,11 +258,11 @@ class _AnimatedRadialDialState extends State<AnimatedRadialDial> with SingleTick
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 100),
+      duration: const Duration(milliseconds: 200),
       vsync: this,
     );
     _scaleAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+      CurvedAnimation(parent: _controller, curve: Curves.linear),
     );
   }
 
@@ -293,6 +293,7 @@ class _AnimatedRadialDialState extends State<AnimatedRadialDial> with SingleTick
 
         //showing a model bottom sheet to view the procedure of getting reward
         showModalBottomSheet(
+          isScrollControlled: true,
           context: context,
           builder: (context) {
             return Container(
@@ -303,42 +304,7 @@ class _AnimatedRadialDialState extends State<AnimatedRadialDial> with SingleTick
                   topRight: Radius.circular(24),
                 ),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Congratulations! You have reached level ${widget.currentLevel}',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'You have unlocked the next level: ',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'To claim your reward, you need to complete the following tasks:',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              child: AwardWidget(widget: widget),
             );
           },
         );
@@ -366,6 +332,301 @@ class _AnimatedRadialDialState extends State<AnimatedRadialDial> with SingleTick
           );
         },
       ),
+    );
+  }
+}
+
+/*
+Following is the content of the AwardWidget:
+a central large text that says "Criteria"
+then we will have two bullets:
+first bullet:
+- You must get 3 stars in all levels
+  then there should be a progress indicator showing your gained stars against totals stars
+
+second bullet:
+- Here is criteria for stars
+  a table showing crtieria for stars:
+  2 colums : Level, Win %
+    if (levelObject.id == 60) return 0.80 * totalScore;
+    if (levelObject.id == 61) return 0.82 * totalScore;
+    if (levelObject.id == 62) return 0.85 * totalScore;
+    if (levelObject.id == 63) return 0.87 * totalScore;
+    if (levelObject.id == 64) return 0.9 * totalScore;
+    if (levelObject.id == 65) return 0.95 * totalScore;
+
+  At the bottom should be a huge central cirlcle with content '100$'
+  it should be beautifully decorate using a doted outlined with loop animmation to make it rotate using flutter animate.
+ */
+
+class AwardWidget extends StatelessWidget {
+  const AwardWidget({
+    super.key,
+    required this.widget,
+  });
+
+  final AnimatedRadialDial widget;
+
+  @override
+  Widget build(BuildContext context) {
+    int sum = 0;
+    for (int i = 0; i < levelStars.length; i++) {
+      sum += levelStars[i].stars;
+    }
+    int total = 65 * 3;
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Center(
+              child: Text(
+                (widget.currentLevel == 65) ? 'Wow! final level!' : 'You still have ${65 - widget.currentLevel} levels to go!',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+            ),
+          ),
+          Center(
+            child: Text(
+              'Rules',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+
+// First Bullet: 3 stars in all levels with Progress Indicator
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 10.0),
+                //   child: Icon(
+                //     Icons.circle,
+                //     size: 8,
+                //     color: Theme.of(context).colorScheme.primary,
+                //   ),
+                // ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Text(
+                          'You must get 3 stars in all levels',
+                          style: TextStyle(fontSize: 13),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      Row(
+                        children: [
+                          Column(
+                            children: [
+                              Text('My Stars', style: TextStyle(fontSize: 8)),
+                              Text('$sum', style: TextStyle(fontSize: 12)),
+                            ],
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: LinearProgressIndicator(
+                                minHeight: 8,
+                                borderRadius: BorderRadius.circular(10),
+                                value: sum / total,
+                                backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                              ),
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              Text('Total Stars', style: TextStyle(fontSize: 8)),
+                              Text('$total', style: TextStyle(fontSize: 12)),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 25),
+
+// Second Bullet: Criteria for Stars Table
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Icon(
+                    Icons.circle,
+                    size: 8,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Here is the criteria for stars:',
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        margin: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Table(
+                            border: TableBorder.all(
+                              color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            columnWidths: const {
+                              0: FlexColumnWidth(1),
+                              1: FlexColumnWidth(1),
+                            },
+                            children: [
+                              _buildTableRow('Level', 'Win %', context, isHeader: true),
+                              _buildTableRow('60', '80%', context),
+                              _buildTableRow('61', '82%', context),
+                              _buildTableRow('62', '85%', context),
+                              _buildTableRow('63', '87%', context),
+                              _buildTableRow('64', '90%', context),
+                              _buildTableRow('65', '95%', context),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 30),
+
+          // Rotating Dotted Circle with "$100"
+          Center(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Transform(
+                  alignment: Alignment.center,
+                  //flip it
+                  transform: Matrix4.rotationY(3.14),
+                  child: Animate(
+                    effects: [RotateEffect(duration: 200.seconds, end: 12)],
+                    child: Image.asset(
+                      color: Theme.of(context).colorScheme.primary,
+                      'assets/images/circ.png',
+                      width: 160,
+                      height: 160,
+                    ),
+                  ),
+                ),
+                Animate(
+                  effects: [
+                    RotateEffect(
+                      duration: 200.seconds,
+                      end: 10,
+                      alignment: Alignment.center,
+                    ),
+                  ],
+                  child: Image.asset(
+                    color: Theme.of(context).colorScheme.primary,
+                    'assets/images/dotcirc.png',
+                    width: 120,
+                    height: 120,
+                  ),
+                ),
+                Container(
+                  width: 140,
+                  height: 140,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                      // style: BorderStyle.dotted
+                      width: 3,
+                    ),
+                    // borderRadius: BorderRadius.circular(75),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '\$100',
+                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.inverseSurface),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 30),
+        ],
+      ),
+    );
+  }
+
+  // !Helper method to build table rows
+  TableRow _buildTableRow(String level, String winPercentage, BuildContext context, {bool isHeader = false}) {
+    return TableRow(
+      decoration: BoxDecoration(
+        color: isHeader ? Theme.of(context).colorScheme.primary.withOpacity(0.2) : Colors.transparent,
+      ),
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Center(
+            child: Text(
+              level,
+              style: TextStyle(
+                fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Center(
+            child: Text(
+              winPercentage,
+              style: TextStyle(
+                fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

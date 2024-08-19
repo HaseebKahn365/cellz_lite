@@ -52,7 +52,7 @@ class LevelStarObject extends ChangeNotifier {
     if (levelObject.id == 63) return 0.87 * totalScore;
     if (levelObject.id == 64) return 0.9 * totalScore;
     if (levelObject.id == 65) return 0.95 * totalScore;
-    return (0.7 * totalScore).ceil().toDouble();
+    return (0.7 * totalScore);
   }
 
   int calculateStars() {
@@ -67,8 +67,8 @@ class LevelStarObject extends ChangeNotifier {
 
     log('second star criteria: ${secondStarCritera()}');
 
-    if (newScore > secondStarCritera()) {
-      log('criteria for second star: ${secondStarCritera()} has been met because new score is $newScore');
+    if (newScore > secondStarCritera().toInt()) {
+      log('criteria for second star: ${secondStarCritera().toInt()} has been met because new score is $newScore');
       second = true;
     }
 
