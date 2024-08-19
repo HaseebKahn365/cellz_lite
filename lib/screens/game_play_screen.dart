@@ -62,7 +62,7 @@ class GamePlayScreen extends StatelessWidget {
   final String playerOneName;
   final String playerTwoName;
   final MyGame game;
-  final bestTime = levelStars[gamePlayStateForGui!.currentLevel.id - 1].time;
+  final bestTime = levelStars[gamePlayStateForGui!.currentLevel.id - 1].thresholdSeconds;
 
   GamePlayScreen({
     Key? key,

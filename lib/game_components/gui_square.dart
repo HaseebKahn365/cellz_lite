@@ -40,6 +40,8 @@ class GuiSquare extends PositionComponent with HasGameRef {
   Color humanColor = Colors.green;
   double iconScale = 0.0;
 
+  static final int levelId = gamePlayStateForGui!.currentLevel.id;
+
   GuiSquare({
     required this.isMine,
     required this.myXcord,
@@ -65,7 +67,7 @@ class GuiSquare extends PositionComponent with HasGameRef {
 
       dev.log('Game Over: My Score: $myScore, AI Score: $aiScore');
 
-      if (myScore > aiScore) {
+      if ((myScore > aiScore)) {
         Future.delayed(const Duration(milliseconds: 1000), () {
           AudioPlayer().play(AssetSource('audio/you_win.wav'));
         });
@@ -78,10 +80,6 @@ class GuiSquare extends PositionComponent with HasGameRef {
           AudioPlayer().play(AssetSource('audio/tie.wav'));
         });
       }
-    }
-
-    if (gamePlayStateForGui!.currentLevel.id < 3) {
-      AudioPlayer().play(AssetSource('audio/${GameState!.allSquares.length}.wav'));
     }
   }
 
