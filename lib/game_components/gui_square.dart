@@ -146,7 +146,7 @@ class GuiSquare extends PositionComponent with HasGameRef {
 
   @override
   void onLoad() {
-    if (soundEnabled) AudioPlayer().play(AssetSource('audio/square.wav'));
+    if (soundEnabled) AudioPlayer().play(AssetSource('audio/dot_touch.wav')); //dot touch sound matches the square creation thats why im using it
     //we will use switch case on the chain count to play the sound
     if (GameState!.myTurn && soundEnabled) {
       GameState!.chainCount++;

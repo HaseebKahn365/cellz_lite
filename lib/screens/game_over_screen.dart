@@ -28,9 +28,12 @@ class GameResultScreen extends StatefulWidget {
   State<GameResultScreen> createState() => _GameResultScreenState();
 }
 
+var allStarsPlayed = false;
+
 class _GameResultScreenState extends State<GameResultScreen> {
   @override
   void initState() {
+    allStarsPlayed = false;
     updateTheDb();
     //lets feed the score and timer value to the LevelStarObject to get the stars
     levelStars[widget.levelPlayedIndex].updateStoredData(widget.playerOneScore, gamePlayStateForGui!.secTimerNotifier.value);
@@ -105,23 +108,12 @@ class _GameResultScreenState extends State<GameResultScreen> {
                 alignment: Alignment.center,
                 children: [
                   //this time it should animate and scale up until it disappears at the end using flutter animate
-                  Row(
-                    children: [
-                      Text(
-                        '${(ratio * 100).toStringAsFixed(0)}',
-                        style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                              fontWeight: FontWeight.w300,
-                              color: _getResultColor(widget.playerOneScore, widget.playerTwoScore),
-                            ),
-                      ),
-                      Text(
-                        '%',
-                        style: TextStyle(
-                          fontSize: 12,
+                  Text(
+                    '${(ratio * 100).toStringAsFixed(0)} %',
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                          fontWeight: FontWeight.w300,
                           color: _getResultColor(widget.playerOneScore, widget.playerTwoScore),
                         ),
-                      ),
-                    ],
                   )
                       .animate()
                       .scale(
@@ -143,12 +135,25 @@ class _GameResultScreenState extends State<GameResultScreen> {
                         end: const Offset(3, 3),
                       ),
 
-                  Text(
-                    '${(ratio * 100).toStringAsFixed(0)} %',
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          fontWeight: FontWeight.w300,
-                          color: _getResultColor(widget.playerOneScore, widget.playerTwoScore),
-                        ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${(ratio * 100).toStringAsFixed(0)}',
+                        style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                              fontWeight: FontWeight.w300,
+                              color: _getResultColor(widget.playerOneScore, widget.playerTwoScore),
+                            ),
+                      ),
+                      Text(
+                        ' %',
+                        style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w100,
+                              color: _getResultColor(widget.playerOneScore, widget.playerTwoScore),
+                            ),
+                      ),
+                    ],
                   ),
 
                   //!now the stars are ready to be displayed
@@ -158,6 +163,11 @@ class _GameResultScreenState extends State<GameResultScreen> {
                       3,
                       (index) {
                         bool isActive = index < levelStars[widget.levelPlayedIndex].newStars;
+                        Future.delayed(Duration(milliseconds: ((index + 1) * 500)), () {
+                          if (isActive && !allStarsPlayed) AudioPlayer().play(AssetSource('audio/star${index + 1}.wav'));
+                          if (index == 2) allStarsPlayed = true; //to avoid multiple plays
+                        });
+
                         return Container(
                           margin: const EdgeInsets.only(top: 110.0),
                           height: 700,
