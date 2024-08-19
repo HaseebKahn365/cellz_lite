@@ -13,6 +13,7 @@ import 'package:cellz_lite/main.dart';
 import 'package:cellz_lite/providers/theme_provider.dart';
 import 'package:cellz_lite/sections/dial.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
@@ -292,9 +293,9 @@ class _AnimatedRadialDialState extends State<AnimatedRadialDial> with SingleTick
         await Future.delayed(Duration(milliseconds: 400));
         AudioPlayer().play(
             AssetSource(
-              'audio/next.wav',
+              'audio/openRadial.wav',
             ),
-            volume: 0.4);
+            volume: 0.1);
 
         //showing a model bottom sheet to view the procedure of getting reward
         showModalBottomSheet(
@@ -315,7 +316,7 @@ class _AnimatedRadialDialState extends State<AnimatedRadialDial> with SingleTick
             );
           },
         );
-        Future.delayed(Duration(seconds: 2), () {
+        Future.delayed(Duration(seconds: 1), () {
           buttonPressed = false;
         });
       },
@@ -528,7 +529,7 @@ class AwardWidget extends StatelessWidget {
                               1: FlexColumnWidth(1),
                             },
                             children: [
-                              _buildTableRow('Level', 'For 2 Stars', context, isHeader: true),
+                              _buildTableRow('Level', 'For 3 Stars', context, isHeader: true),
                               _buildTableRow('<60', '70%', context),
                               _buildTableRow('60', '80%', context),
                               _buildTableRow('61', '82%', context),
@@ -589,9 +590,117 @@ class AwardWidget extends StatelessWidget {
                         AssetSource(
                           'audio/next.wav',
                         ),
-                        volume: 0.4);
+                        volume: 0.09);
 
                     //Displaying an alert dialogue box that has the following content:
+                    /*
+                    first we have to identify wether the user has completed all levels with 3 stars using sum == total
+                    if he has then we will display the codeShare content
+                    else we will display the steps to get the reward which are as follows:
+                    - Gain 195 stars
+                    - Copy the generated code and send it to the admin
+                    - You will get the reward in 24 hours
+                     */
+
+                    // sum = total;
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          String code = '';
+                          if (sum == total) {
+                            //user provider and current date of month + 365
+                            code = '${userProvider.name}${DateTime.now().day + 365}';
+                          }
+                          return AlertDialog(
+                            titlePadding: EdgeInsets.all(0),
+                            contentPadding: EdgeInsets.all(0),
+                            actionsPadding: EdgeInsets.all(0),
+                            content: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2.0),
+                                borderRadius: BorderRadius.circular(24.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      (sum == total) ? 'CodeShare' : 'Reward Steps',
+                                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 20),
+                                    if (sum != total) ...[
+                                      // Text('Step 1.'),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text('Gain 195 stars', style: TextStyle(fontSize: 15)),
+                                          const SizedBox(width: 10),
+                                          Icon(
+                                            Icons.star_border_rounded,
+                                            color: Theme.of(context).colorScheme.primary,
+                                            size: 20,
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10),
+                                      // Text('Step 2.'),
+                                      // Text('Copy the generated code', style: TextStyle(fontSize: 15)),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text('Copy the generated code', style: TextStyle(fontSize: 15)),
+                                          const SizedBox(width: 10),
+                                          Icon(Icons.copy, color: Theme.of(context).colorScheme.primary, size: 15),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10),
+                                      // Text('Step 3.'),
+                                      // Text('Send it to the admin', style: TextStyle(fontSize: 15)),
+                                      const SizedBox(height: 10),
+                                      // Text('You will get the reward in 24 hours', style: TextStyle(fontSize: 15)),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text('Send it to the admin', style: TextStyle(fontSize: 15)),
+                                          const SizedBox(width: 10),
+                                          Icon(Icons.send, color: Theme.of(context).colorScheme.primary, size: 15),
+                                        ],
+                                      ),
+                                    ] else ...[
+                                      Text('Code: $code', style: TextStyle(fontSize: 15)),
+                                      const SizedBox(height: 10),
+                                      Text('Send this code to admin', style: TextStyle(fontSize: 15)),
+                                    ],
+                                    const SizedBox(height: 20),
+                                    (sum == total)
+                                        ? Center(
+                                            child: ElevatedButton(
+                                              child: Text('Share Code'),
+                                              style: ElevatedButton.styleFrom(
+                                                elevation: 10,
+                                                //make the surface color primary
+                                                backgroundColor: Theme.of(context).colorScheme.primary,
+                                                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                                              ),
+                                              onPressed: () {
+                                                //Copy  the code to clipboard
+                                                Clipboard.setData(ClipboardData(text: '$code completed the game\nWhatsApp: 03491777261'));
+                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                  content: Text('Code copied to clipboard'),
+                                                  duration: Duration(seconds: 2),
+                                                ));
+                                              },
+                                            ),
+                                          )
+                                        : SizedBox(),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        });
                   },
                   child: Container(
                     width: 140,

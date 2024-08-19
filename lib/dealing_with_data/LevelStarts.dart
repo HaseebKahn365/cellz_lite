@@ -19,7 +19,7 @@ class LevelStarObject extends ChangeNotifier {
 
   LevelStarObject({required this.levelObject}) {
     log('initial stats: $stars , and time: $time');
-    thresholdSeconds = ((levelObject.xPoints - 1) * levelObject.yPoints) + ((levelObject.yPoints - 1) * levelObject.xPoints) * 1;
+    thresholdSeconds = (((levelObject.xPoints - 1) * levelObject.yPoints) + ((levelObject.yPoints - 1) * levelObject.xPoints) * ((levelObject.id > 3) ? 0.6 : 1)).toInt();
     log('thresholdSeconds: $thresholdSeconds for level: ${levelObject.id}');
     totalScore = (levelObject.xPoints - 1) * (levelObject.yPoints - 1);
     log('totalScore: $totalScore for level: ${levelObject.id}');

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/Tabs/all_unlocked_levels.dart';
+import 'package:cellz_lite/dealing_with_data/LevelStarts.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
 import 'package:cellz_lite/main.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
@@ -74,7 +75,7 @@ class JourneyTab extends StatelessWidget {
                     //  up arrow
                     icon: Icon(Icons.arrow_upward),
                     onPressed: () {
-                      AudioPlayer().play(AssetSource('audio/show_more.wav'), volume: 0.4);
+                      AudioPlayer().play(AssetSource('audio/show_more.wav'), volume: 0.05);
 
                       //Navigate to the levels screen ..it will have details of each level. all levels that the user has unlocked will be shown.
                       Navigator.of(context).push(
@@ -134,6 +135,7 @@ class MyTimeLineTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final LevelStarObject levelStar = levelStars[currentLevel];
     return TimelineTile(
       isFirst: isFirst,
       isLast: isLast,
@@ -196,9 +198,48 @@ class MyTimeLineTile extends StatelessWidget {
             enabled: (isCurrent || isPassed),
             initiallyExpanded: isExpanded,
             childrenPadding: const EdgeInsets.all(0),
-            title: Text(
-              'Level ${levels[currentLevel].id}',
-              style: Theme.of(context).textTheme.headlineSmall,
+            title: Row(
+              children: [
+                Text(
+                  'Level ${currentLevel + 1}',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+
+                Spacer(),
+
+                //creating stars for the level
+                (isPassed || isCurrent)
+                    ? Stack(
+                        children: [
+                          ...[
+                            Row(
+                              children: [
+                                //this row will contain the filled stars
+                                for (int i = 0; i < levelStar.stars; i++)
+                                  Icon(
+                                    Icons.star,
+                                    color: Theme.of(context).colorScheme.primary,
+                                    size: 10,
+                                  ),
+                              ],
+                            ),
+                            Row(
+                              //this row will contain the empty stars
+                              children: [
+                                for (int i = 0; i < 3; i++)
+                                  Icon(
+                                    Icons.star_border_rounded,
+                                    color: Theme.of(context).colorScheme.primary,
+                                    size: 10,
+                                  ),
+                              ],
+                            ),
+                          ]
+                        ],
+                      )
+                    : SizedBox.shrink(),
+                Spacer(),
+              ],
             ),
             children: [
               Padding(
