@@ -539,9 +539,20 @@ class _GameResultScreenState extends State<GameResultScreen> {
           ),
         ),
         SizedBox(width: 15),
-        Text(
-          score.toString(),
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: color),
+        Row(
+          children: [
+            Text(
+              score.toString(),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: color),
+            ),
+            Text(
+              ' ▢',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ],
         ),
       ],
     );
