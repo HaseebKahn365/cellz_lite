@@ -5,6 +5,7 @@ import 'package:cellz_lite/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
+import 'package:rive/rive.dart' as riv;
 
 class SettingsContainer extends StatefulWidget {
   @override
@@ -436,6 +437,137 @@ class _AccountSettingsState extends State<AccountSettings> {
                 ),
               ),
             ),
+            Container(
+              color: Theme.of(context).colorScheme.surface,
+              child: Container(
+                margin: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(11),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.secondaryContainer,
+                    width: 1,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ListTile(
+                      title: Center(
+                        child: const Text(
+                          '  Buy  lives',
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 3.5,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    //offering a 400 lives pack for 10 dollars
+                    //lets have a container with rive animation as a child and on the right description about the package
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 5,
+                                    color: Theme.of(context).colorScheme.inverseSurface,
+                                  )
+                                ],
+                              ),
+                              height: 100,
+                              width: 100,
+                              child: riv.RiveAnimation.asset(
+                                'assets/images/heartgrad.riv',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Get 400 Lives',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Theme.of(context).colorScheme.onSecondaryContainer,
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              Text(
+                                'For 10 \$',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontStyle: FontStyle.italic,
+                                  color: Theme.of(context).colorScheme.onSecondaryContainer,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 10),
+                          // an incredibly captivative button for buying the package
+                          // lets have a container with a gradient and a text
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 50),
+
+                    Container(
+                      width: 200,
+                      height: 50,
+                      //same as the button
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.inverseSurface,
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.inverseSurface,
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 40,
+                            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                          )
+                        ],
+                      ),
+                      child: ElevatedButton.icon(
+                        onPressed: () async {
+                          AudioPlayer().play(AssetSource('audio/play.wav'), volume: 0.4);
+
+                          //buying the package
+                          //lets have a dialog box to confirm the purchase
+                        },
+                        icon: Icon(Icons.shopping_cart),
+                        label: Text('Buy'),
+                      )
+                          .animate(
+                            onPlay: (controller) => controller.repeat(), // This makes it loop indefinitely
+                          )
+                          .shimmer(
+                            delay: const Duration(milliseconds: 500),
+                            duration: const Duration(milliseconds: 600),
+                            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                            angle: 45,
+                            size: 1.5,
+                          ),
+                    ),
+                    const SizedBox(height: 40),
+                  ],
+                ),
+              ),
+            )
           ],
         );
       },
