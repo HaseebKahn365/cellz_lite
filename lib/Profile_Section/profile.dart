@@ -141,7 +141,7 @@ class ProfileWidget extends StatelessWidget {
                                     padding: const EdgeInsets.only(left: 8.0),
                                     child: OutlinedButton.icon(
                                       onPressed: () {
-                                        AudioPlayer().play(AssetSource('audio/tap.wav'));
+                                        AudioPlayer().play(AssetSource('audio/tap.wav'), volume: 0.3);
 
                                         userProvider.incrementLife();
                                       },
