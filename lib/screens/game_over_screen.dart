@@ -37,7 +37,9 @@ class _GameResultScreenState extends State<GameResultScreen> {
     updateTheDb();
     //lets feed the score and timer value to the LevelStarObject to get the stars
     levelStars[widget.levelPlayedIndex].updateStoredData(widget.playerOneScore, gamePlayStateForGui!.secTimerNotifier.value);
-    userProvider.emptyUpdate();
+    Future.microtask(() {
+      userProvider.emptyUpdate();
+    });
 
     super.initState();
   }
@@ -100,9 +102,9 @@ class _GameResultScreenState extends State<GameResultScreen> {
         child: Stack(
           children: [
             if (widget.playerOneScore > widget.playerTwoScore && shouldAppear)
-              const Opacity(
-                opacity: 0.1,
-                child: Positioned.fill(
+              Positioned.fill(
+                child: const Opacity(
+                  opacity: 0.1,
                   child: RiveAnimation.asset(
                     'assets/images/confetti_best.riv',
                     fit: BoxFit.cover,
@@ -450,7 +452,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
                           ),
                         ),
                         Text(
-                          'To get 3 stars, you need to have at least ${levelStars[widget.levelPlayedIndex].secondStarCritera().toInt()} squares,',
+                          'To get 3 stars, you need to have at least ${levelStars[widget.levelPlayedIndex].secondStarCritera().ceil().toInt()} squares,',
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                             fontSize: 10,
