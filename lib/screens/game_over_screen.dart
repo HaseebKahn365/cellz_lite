@@ -102,7 +102,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
         child: Stack(
           children: [
             if (widget.playerOneScore > widget.playerTwoScore && shouldAppear)
-              Positioned.fill(
+              const Positioned.fill(
                 child: const Opacity(
                   opacity: 0.1,
                   child: RiveAnimation.asset(
@@ -144,6 +144,8 @@ class _GameResultScreenState extends State<GameResultScreen> {
                         begin: Offset.zero,
                         end: const Offset(3, 3),
                       ),
+
+                  //text about the level id
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -225,6 +227,16 @@ class _GameResultScreenState extends State<GameResultScreen> {
                                   color: _getResultColor(widget.playerOneScore, widget.playerTwoScore),
                                 ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 0.0),
+                            child: Text(
+                              '[  L e v e l   ${widget.levelPlayedIndex + 1}  ]',
+                              style: TextStyle(
+                                fontSize: 8,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ),
                           SizedBox(
                             height: 300,
                             width: 450,
@@ -268,161 +280,176 @@ class _GameResultScreenState extends State<GameResultScreen> {
                         SizedBox(height: 20),
                         _buildPlayerScore(context, widget.playerTwoName, widget.playerTwoScore, total, Colors.redAccent),
                         SizedBox(height: 40),
-                        ElevatedButton.icon(
-                          onPressed: () async {
-                            AudioPlayer().play(AssetSource('audio/play.wav'), volume: 0.4);
+                        //color should be inversePrimary
+                        Container(
+                          padding: EdgeInsets.all(2),
+                          //same as the button
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.inverseSurface,
+                            borderRadius: BorderRadius.circular(50),
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 23,
+                                color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+                              )
+                            ],
+                          ),
+                          child: ElevatedButton.icon(
+                            onPressed: () async {
+                              AudioPlayer().play(AssetSource('audio/play.wav'), volume: 0.4);
 
-                            setState(() {
-                              shouldAppear = false;
-                            });
-                            if (!userProvider.hasLives() && shouldRetry) {
-                              showDialog(
-                                barrierColor: Colors.black.withOpacity(0.8),
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    titlePadding: EdgeInsets.all(0),
-                                    contentPadding: EdgeInsets.all(0),
-                                    actionsPadding: EdgeInsets.all(0),
-                                    content: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2.0),
-                                        borderRadius: BorderRadius.circular(24.0),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: <Widget>[
-                                            Text(
-                                              'No Lives Left',
-                                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(
-                                              width: 350,
-                                              height: 150,
-                                              child: RiveAnimation.asset(
-                                                'assets/images/cute_heart_broken.riv',
-                                                fit: BoxFit.cover,
-                                                antialiasing: true,
+                              setState(() {
+                                shouldAppear = false;
+                              });
+                              if (!userProvider.hasLives() && shouldRetry) {
+                                showDialog(
+                                  barrierColor: Colors.black.withOpacity(0.8),
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      titlePadding: EdgeInsets.all(0),
+                                      contentPadding: EdgeInsets.all(0),
+                                      actionsPadding: EdgeInsets.all(0),
+                                      content: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2.0),
+                                          borderRadius: BorderRadius.circular(24.0),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              const Text(
+                                                'No Lives Left',
+                                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                               ),
-                                            ),
-                                            SizedBox(height: 16),
-                                            Text('You have no lives left. Would you like to get more?'),
-                                            const SizedBox(height: 20),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.end,
-                                              children: <Widget>[
-                                                TextButton(
-                                                  child: Text('Cancel'),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
+                                              const SizedBox(
+                                                width: 350,
+                                                height: 150,
+                                                child: RiveAnimation.asset(
+                                                  'assets/images/cute_heart_broken.riv',
+                                                  fit: BoxFit.cover,
+                                                  antialiasing: true,
                                                 ),
-                                                OutlinedButton(
-                                                  child: Text('Get Lives'),
-                                                  onPressed: () {
-                                                    // Implement logic to get more lives
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                              ),
+                                              SizedBox(height: 16),
+                                              Text('You have no lives left. Would you like to get more?'),
+                                              const SizedBox(height: 20),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                children: <Widget>[
+                                                  TextButton(
+                                                    child: Text('Cancel'),
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                  ),
+                                                  OutlinedButton(
+                                                    child: Text('Get Lives'),
+                                                    onPressed: () {
+                                                      // Implement logic to get more lives
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                },
-                              );
-                              return;
-                            }
+                                    );
+                                  },
+                                );
+                                return;
+                              }
 
-                            //first we store the current level
-                            final thisLevel = levels[widget.levelPlayedIndex];
+                              //first we store the current level
+                              final thisLevel = levels[widget.levelPlayedIndex];
 
-                            Future.delayed(Duration(seconds: 1), () {
+                              Future.delayed(Duration(seconds: 1), () {
+                                //Creating instances of Global States
+                                userProvider.decrementLives();
+                              });
+
+                              gamePlayStateForGui = GamePlayStateForGui();
+
                               //Creating instances of Global States
-                              userProvider.decrementLives();
-                            });
 
-                            gamePlayStateForGui = GamePlayStateForGui();
+                              //make sure to reset the scores and stuff before game start
+                              gamePlayStateForGui!.resetGame();
 
-                            //Creating instances of Global States
+                              int validLevelID = (thisLevel.id == 65) ? 64 : thisLevel.id;
 
-                            //make sure to reset the scores and stuff before game start
-                            gamePlayStateForGui!.resetGame();
+                              gamePlayStateForGui!.currentLevel = (shouldRetry) ? thisLevel : levels[validLevelID]; //id of this level is index+1
+                              //use material route to navigate to the game play screen
 
-                            int validLevelID = (thisLevel.id == 65) ? 64 : thisLevel.id;
+                              final size = MediaQuery.of(context).size;
+                              game = MyGame(
+                                screenSize: size,
+                                xP: gamePlayStateForGui!.currentLevel.xPoints,
+                                yP: gamePlayStateForGui!.currentLevel.yPoints,
+                              );
+                              //random int generated from 0 to 2
 
-                            gamePlayStateForGui!.currentLevel = (shouldRetry) ? thisLevel : levels[validLevelID]; //id of this level is index+1
-                            //use material route to navigate to the game play screen
+                              GameState!.offsetFromTopLeftCorner = gamePlayStateForGui!.currentLevel.offsetFromTopLeftCorner;
+                              GameState!.offsetFactoForSquare = gamePlayStateForGui!.currentLevel.offsetFactoForSquare;
 
-                            final size = MediaQuery.of(context).size;
-                            game = MyGame(
-                              screenSize: size,
-                              xP: gamePlayStateForGui!.currentLevel.xPoints,
-                              yP: gamePlayStateForGui!.currentLevel.yPoints,
-                            );
-                            //random int generated from 0 to 2
+                              //lets upload a new instance to the database. this will be a gameStartInsertion
 
-                            GameState!.offsetFromTopLeftCorner = gamePlayStateForGui!.currentLevel.offsetFromTopLeftCorner;
-                            GameState!.offsetFactoForSquare = gamePlayStateForGui!.currentLevel.offsetFactoForSquare;
-
-                            //lets upload a new instance to the database. this will be a gameStartInsertion
-
-                            GameState!.myTurn = true;
-                            Navigator.of(context).pushReplacement(
-                              PageRouteBuilder(
-                                pageBuilder: (context, animation, secondaryAnimation) => GamePlayScreen(
-                                  game: game!,
-                                  playerOneName: gamePlayStateForGui!.playerOneName,
-                                  playerTwoName: gamePlayStateForGui!.playerTwoName,
+                              GameState!.myTurn = true;
+                              Navigator.of(context).pushReplacement(
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation, secondaryAnimation) => GamePlayScreen(
+                                    game: game!,
+                                    playerOneName: gamePlayStateForGui!.playerOneName,
+                                    playerTwoName: gamePlayStateForGui!.playerTwoName,
+                                  ),
+                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                    if (shouldRetry) {
+                                      // Scale animation for retry
+                                      const begin = 0.5;
+                                      const end = 1.0;
+                                      const curve = Curves.easeOutQuint;
+                                      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                      var scaleAnimation = animation.drive(tween);
+                                      return ScaleTransition(
+                                        scale: scaleAnimation,
+                                        child: child,
+                                      );
+                                    } else if (!shouldRetry) {
+                                      // Slide animation for next level
+                                      const begin = Offset(1.0, 0.0);
+                                      const end = Offset.zero;
+                                      const curve = Curves.easeOutCubic;
+                                      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                      var slideAnimation = animation.drive(tween);
+                                      return SlideTransition(
+                                        position: slideAnimation,
+                                        child: child,
+                                      );
+                                    } else {
+                                      // Default fade transition
+                                      return FadeTransition(
+                                        opacity: animation,
+                                        child: child,
+                                      );
+                                    }
+                                  },
+                                  transitionDuration: const Duration(milliseconds: 1000),
                                 ),
-                                transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                  if (shouldRetry) {
-                                    // Scale animation for retry
-                                    const begin = 0.5;
-                                    const end = 1.0;
-                                    const curve = Curves.easeOutQuint;
-                                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                                    var scaleAnimation = animation.drive(tween);
-                                    return ScaleTransition(
-                                      scale: scaleAnimation,
-                                      child: child,
-                                    );
-                                  } else if (!shouldRetry) {
-                                    // Slide animation for next level
-                                    const begin = Offset(1.0, 0.0);
-                                    const end = Offset.zero;
-                                    const curve = Curves.easeOutCubic;
-                                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                                    var slideAnimation = animation.drive(tween);
-                                    return SlideTransition(
-                                      position: slideAnimation,
-                                      child: child,
-                                    );
-                                  } else {
-                                    // Default fade transition
-                                    return FadeTransition(
-                                      opacity: animation,
-                                      child: child,
-                                    );
-                                  }
-                                },
-                                transitionDuration: const Duration(milliseconds: 1000),
-                              ),
-                            );
-                          },
+                              );
+                            },
 
-                          //in case if the game is lost or draw the show retry button else show go Next button
-                          icon: shouldRetry ? const Icon(Icons.replay_circle_filled_rounded) : Icon(Icons.arrow_forward_ios_rounded),
-                          label: Text(
-                            shouldRetry ? 'Retry' : 'Next Level ${levels[widget.levelPlayedIndex + 1].id}',
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            elevation: 5,
-                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                            //in case if the game is lost or draw the show retry button else show go Next button
+                            icon: shouldRetry ? const Icon(Icons.replay_circle_filled_rounded) : Icon(Icons.arrow_forward_ios_rounded),
+                            label: Text(
+                              shouldRetry ? 'Retry' : 'Next Level ${levels[widget.levelPlayedIndex + 1].id}',
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              elevation: 5,
+                              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                            ),
                           ),
                         ),
                       ],
