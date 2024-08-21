@@ -131,12 +131,23 @@ class Home extends StatelessWidget {
                   'Are you sure you want to quit?',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
+
+                //a huge shut down icoon
+                Icon(
+                  Icons.cancel_outlined,
+                  size: 100,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     OutlinedButton(
-                      child: Text('Quit', textAlign: TextAlign.center),
+                      child: Text('Yes', textAlign: TextAlign.center),
+                      //change ooutline color
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: Colors.black.withOpacity(0)),
+                      ),
                       onPressed: () {
                         exit(0);
                       },
@@ -145,7 +156,7 @@ class Home extends StatelessWidget {
                       width: 10,
                     ),
                     ElevatedButton(
-                      child: Text('Stay'),
+                      child: Text('No'),
                       style: ElevatedButton.styleFrom(
                         elevation: 10,
                         //make the surface color primary

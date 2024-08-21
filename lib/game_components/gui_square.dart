@@ -142,7 +142,7 @@ class GuiSquare extends PositionComponent with HasGameRef {
     add(particleSystem);
   }
 
-  static const loundness = 0.8;
+  static const loundness = 0.6;
   @override
   void onLoad() {
     if (soundEnabled) AudioPlayer().play(AssetSource('audio/dot_touch.wav')); //dot touch sound matches the square creation thats why im using it
@@ -243,7 +243,7 @@ class GuiSquare extends PositionComponent with HasGameRef {
           ..addRRect(
             RRect.fromRectAndRadius(
               Rect.fromCenter(
-                center: positionOffset + Offset(7, 7),
+                center: positionOffset + Offset(5, 5),
                 width: currentSize,
                 height: currentSize,
               ),
