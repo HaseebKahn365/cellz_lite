@@ -78,7 +78,7 @@ class MyGame extends FlameGame with HasGameRef {
 
   final random = Random();
 
-  int interval = 60;
+  int interval = 15;
   int counter = 0;
 
   @override

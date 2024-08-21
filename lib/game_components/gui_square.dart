@@ -225,7 +225,7 @@ class GuiSquare extends PositionComponent with HasGameRef {
     iconScale = (currentSize - animationStartSize) / (animationEndSize - animationStartSize);
   }
 
-  Paint shadowPaint = Paint()..maskFilter = MaskFilter.blur(BlurStyle.normal, 10); // Add blur effect
+  Paint shadowPaint = Paint()..maskFilter = MaskFilter.blur(BlurStyle.normal, 1); // Add blur effect
 
   @override
   void render(Canvas canvas) {
@@ -243,7 +243,7 @@ class GuiSquare extends PositionComponent with HasGameRef {
           ..addRRect(
             RRect.fromRectAndRadius(
               Rect.fromCenter(
-                center: positionOffset + Offset(5, 5),
+                center: positionOffset + Offset(7, 7),
                 width: currentSize,
                 height: currentSize,
               ),
