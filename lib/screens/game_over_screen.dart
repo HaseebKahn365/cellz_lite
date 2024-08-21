@@ -117,34 +117,6 @@ class _GameResultScreenState extends State<GameResultScreen> {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  //this time it should animate and scale up until it disappears at the end using flutter animate
-                  Text(
-                    '${(ratio * 100).toStringAsFixed(0)} %',
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          fontWeight: FontWeight.w300,
-                          color: _getResultColor(widget.playerOneScore, widget.playerTwoScore),
-                        ),
-                  )
-                      .animate()
-                      .scale(
-                        duration: 3.seconds,
-                        curve: Curves.easeInOut,
-                        begin: Offset(1, 1),
-                        end: Offset(5, 5),
-                      )
-                      .fade(
-                        duration: 3.seconds,
-                        curve: Curves.easeInOut,
-                        begin: 1,
-                        end: 0,
-                      )
-                      .blur(
-                        duration: 3.seconds,
-                        curve: Curves.easeInOut,
-                        begin: Offset.zero,
-                        end: const Offset(3, 3),
-                      ),
-
                   //text about the level id
 
                   Row(
@@ -500,7 +472,37 @@ class _GameResultScreenState extends State<GameResultScreen> {
                   ],
                 ),
               ),
-            )
+            ),
+
+            //this time it should animate and scale up until it disappears at the end using flutter animate
+            Center(
+              child: Text(
+                '${(ratio * 100).toStringAsFixed(0)} %',
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: _getResultColor(widget.playerOneScore, widget.playerTwoScore),
+                    ),
+              )
+                  .animate()
+                  .scale(
+                    duration: 4.seconds,
+                    curve: Curves.easeOutCirc,
+                    begin: Offset(1, 1),
+                    end: Offset(5, 5),
+                  )
+                  .fade(
+                    duration: 4.seconds,
+                    curve: Curves.easeOutCirc,
+                    begin: 1,
+                    end: 0,
+                  )
+                  .blur(
+                    duration: 4.seconds,
+                    curve: Curves.easeOutCirc,
+                    begin: Offset.zero,
+                    end: const Offset(5, 5),
+                  ),
+            ),
           ],
         ),
       ),

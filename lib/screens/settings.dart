@@ -24,7 +24,7 @@ class _SettingsContainerState extends State<SettingsContainer> {
           color: Theme.of(context).colorScheme.surface,
           child: Column(
             children: [
-              const SizedBox(height: 50),
+              const SizedBox(height: 60),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -62,6 +62,9 @@ class _SettingsContainerState extends State<SettingsContainer> {
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(
+                height: 20,
               ),
               Container(
                 color: Theme.of(context).colorScheme.surface,
@@ -278,6 +281,17 @@ class AccountSettings extends StatefulWidget {
 class _AccountSettingsState extends State<AccountSettings> {
   final _formKey = GlobalKey<FormState>();
   bool _isError = false;
+  bool shouldRender = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        shouldRender = true;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -437,151 +451,162 @@ class _AccountSettingsState extends State<AccountSettings> {
                 ),
               ),
             ),
-            Container(
-              color: Theme.of(context).colorScheme.surface,
-              child: Container(
-                margin: const EdgeInsets.all(12),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(11),
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.secondaryContainer,
-                    width: 1,
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ListTile(
-                      title: Center(
-                        child: const Text(
-                          '  Buy  lives',
-                          style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 3.5,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    //offering a 400 lives pack for 10 dollars
-                    //lets have a container with rive animation as a child and on the right description about the package
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Container(
-                            height: 100,
-                            width: 100,
-                            child: riv.RiveAnimation.asset(
-                              'assets/images/heartgrad.riv',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 35),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Get 400 Lives',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Theme.of(context).colorScheme.onSecondaryContainer,
-                                fontStyle: FontStyle.italic,
-                                letterSpacing: 1.5,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Text(
-                              'For 10 \$',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontStyle: FontStyle.italic,
-                                color: Theme.of(context).colorScheme.onSecondaryContainer,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(width: 15),
-                        // an incredibly captivative button for buying the package
-                        // lets have a container with a gradient and a text
-                      ],
-                    ),
-                    const SizedBox(height: 50),
-
-                    Container(
-                            width: 200,
-                            height: 50,
-                            //same as the button
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.inverseSurface,
-                              borderRadius: BorderRadius.circular(50),
-                              border: Border.all(
-                                color: Theme.of(context).colorScheme.inverseSurface,
-                                width: 1,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 40,
-                                  color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                                )
-                              ],
-                            ),
-                            child: ElevatedButton.icon(
-                              onPressed: () async {
-                                AudioPlayer().play(AssetSource('audio/play.wav'), volume: 0.4);
-
-                                //buying the package
-                                //lets have a dialog box to confirm the purchase
-                              },
-                              icon: Icon(Icons.shopping_cart),
-                              label: Text('Buy'),
-                            ))
-                        .animate(
-                          onPlay: (controller) => controller.repeat(
-                            reverse: true,
-                          ), // This makes it loop indefinitely
-                        )
-                        .shimmer(
-                          delay: const Duration(milliseconds: 500),
-                          duration: const Duration(milliseconds: 600),
-                          color: Theme.of(context).colorScheme.primary,
-                          angle: 45,
-                          size: 1.5,
-                        )
-                        .then()
-                        .shake(
-                          hz: 1,
-                          delay: const Duration(milliseconds: 200),
-                          duration: const Duration(milliseconds: 1000),
-                        )
-                        .then()
-                        .scale(
-                          duration: const Duration(milliseconds: 1000),
-                          begin: Offset(1, 1),
-                          end: Offset(1.1, 1.1),
-                        ),
-                    // .then()
-                    // .scale(
-                    //   duration: const Duration(milliseconds: 300),
-                    //   begin: Offset(1, 1),
-                    //   end: Offset(1.1, 1.1),
-                    // )
-                    // .then()
-                    // .rotate(duration: const Duration(milliseconds: 1000), end: 0.3),
-                    const SizedBox(height: 40),
-                  ],
-                ),
-              ),
-            )
+            (shouldRender) ? BuySection() : const SizedBox.shrink(),
           ],
         );
       },
+    );
+  }
+}
+
+class BuySection extends StatelessWidget {
+  const BuySection({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Theme.of(context).colorScheme.surface,
+      child: Container(
+        margin: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(11),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.secondaryContainer,
+            width: 1,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ListTile(
+              title: Center(
+                child: const Text(
+                  '  Buy  lives',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 3.5,
+                  ),
+                ),
+              ),
+            ),
+
+            //offering a 400 lives pack for 10 dollars
+            //lets have a container with rive animation as a child and on the right description about the package
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: Container(
+                    height: 100,
+                    width: 100,
+                    child: riv.RiveAnimation.asset(
+                      'assets/images/heartgrad.riv',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 35),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Get 400 Lives',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).colorScheme.onSecondaryContainer,
+                        fontStyle: FontStyle.italic,
+                        letterSpacing: 1.5,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      'For 10 \$',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontStyle: FontStyle.italic,
+                        color: Theme.of(context).colorScheme.onSecondaryContainer,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 15),
+                // an incredibly captivative button for buying the package
+                // lets have a container with a gradient and a text
+              ],
+            ),
+            const SizedBox(height: 50),
+
+            Container(
+                    width: 200,
+                    height: 50,
+                    //same as the button
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.inverseSurface,
+                      borderRadius: BorderRadius.circular(50),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.inverseSurface,
+                        width: 1,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 40,
+                          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                        )
+                      ],
+                    ),
+                    child: ElevatedButton.icon(
+                      onPressed: () async {
+                        AudioPlayer().play(AssetSource('audio/play.wav'), volume: 0.4);
+
+                        //buying the package
+                        //lets have a dialog box to confirm the purchase
+                      },
+                      icon: Icon(Icons.shopping_cart),
+                      label: Text('Buy'),
+                    ))
+                .animate(
+                  onPlay: (controller) => controller.repeat(
+                    reverse: true,
+                  ), // This makes it loop indefinitely
+                )
+                .shimmer(
+                  delay: const Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 600),
+                  color: Theme.of(context).colorScheme.primary,
+                  angle: 45,
+                  size: 1.5,
+                )
+                .then()
+                .shake(
+                  hz: 1,
+                  delay: const Duration(milliseconds: 200),
+                  duration: const Duration(milliseconds: 1000),
+                )
+                .then()
+                .scale(
+                  duration: const Duration(milliseconds: 1000),
+                  begin: Offset(1, 1),
+                  end: Offset(1.1, 1.1),
+                ),
+            // .then()
+            // .scale(
+            //   duration: const Duration(milliseconds: 300),
+            //   begin: Offset(1, 1),
+            //   end: Offset(1.1, 1.1),
+            // )
+            // .then()
+            // .rotate(duration: const Duration(milliseconds: 1000), end: 0.3),
+            const SizedBox(height: 40),
+          ],
+        ),
+      ),
     );
   }
 }
