@@ -142,9 +142,63 @@ class GuiSquare extends PositionComponent with HasGameRef {
     add(particleSystem);
   }
 
+  void _showStar(int chainCount) async {
+    if (soundEnabled) AudioPlayer().play(AssetSource('audio/newstar.wav')); //dot touch sound matches the square creation thats why im using it
+
+    dev.log('Generating star particles');
+    final random = Random();
+    final sprite = await Sprite.load('star.png');
+    final position = Offset(
+      (myXcord.toDouble() * GameState!.globalOffset) + (GameState!.offsetFromTopLeftCorner * GameState!.offsetFactoForSquare),
+      (myYcord.toDouble() * GameState!.globalOffset) + GameState!.offsetFromTopLeftCorner * GameState!.offsetFactoForSquare,
+    );
+
+    Vector2 randomVector2() => (Vector2.random(random) - Vector2.random(random)) * 80;
+    final gravity = Vector2(0, 200); // Gravity vector, adjust as needed
+
+    ParticleSystemComponent particleSystem = ParticleSystemComponent(
+      priority: 0,
+      particle: Particle.generate(
+        count: chainCount,
+        lifespan: chainCount / 3, // Increased lifespan to make gravity effect more noticeable
+        generator: (i) {
+          return AcceleratedParticle(
+            speed: randomVector2(),
+            acceleration: gravity / 2,
+            child: RotatingParticle(
+              to: random.nextDouble() * pi * 2,
+              child: ComputedParticle(
+                renderer: (canvas, particle) {
+                  sprite.render(
+                    canvas,
+                    size: Vector2.all(20) * (1 - particle.progress * 0.7), // Slower shrinking
+                    anchor: Anchor.center,
+                    overridePaint: Paint()
+                      ..color = Colors.white.withOpacity(
+                        1 - particle.progress,
+                      ),
+                  );
+                },
+              ),
+            ),
+          );
+        },
+      ),
+      position: position.toVector2(),
+    );
+
+    add(particleSystem);
+  }
+
   static const loundness = 0.6;
   @override
   void onLoad() {
+    if (((GameState!.chainCount + 1) % 4) == 0) {
+      dev.log('Showing star particles for chain count: ${GameState!.chainCount}');
+
+      _showStar(GameState!.chainCount);
+    }
+
     if (soundEnabled) AudioPlayer().play(AssetSource('audio/dot_touch.wav')); //dot touch sound matches the square creation thats why im using it
     //we will use switch case on the chain count to play the sound
     if (GameState!.myTurn && soundEnabled) {

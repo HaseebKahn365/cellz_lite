@@ -65,14 +65,17 @@ class ProfileWidget extends StatelessWidget {
                                 fit: BoxFit.cover,
                               ),
                               Positioned(
-                                bottom: 90,
-                                right: 90,
-                                child: IconButton(
-                                  iconSize: 12,
-                                  icon: Icon(Icons.settings),
-                                  onPressed: () {
-                                    _navigateToSettings(context);
-                                  },
+                                bottom: 80,
+                                right: 80,
+                                child: Opacity(
+                                  opacity: 0.5,
+                                  child: IconButton(
+                                    iconSize: 30,
+                                    icon: Icon(Icons.settings),
+                                    onPressed: () {
+                                      _navigateToSettings(context);
+                                    },
+                                  ),
                                 ),
                               ),
                             ]),

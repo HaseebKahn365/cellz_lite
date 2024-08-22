@@ -47,6 +47,7 @@ class MyGame extends FlameGame with HasGameRef {
 
   @override
   FutureOr<void> onLoad() async {
+    await images.load('star.png');
     final screenWidth = screenSize.width * 1.2;
     final screenHeight = screenSize.height;
     globalOffsetLocalCopy = GameState!.globalOffset = (screenWidth / xP).clamp(30, 150);
