@@ -60,7 +60,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
       userProvider.incrementLosses();
       AudioPlayer().play(AssetSource('audio/loss.wav'));
     } else {
-      AudioPlayer().play(AssetSource('audio/quit.wav'));
+      AudioPlayer().play(AssetSource('audio/tiebg.wav'));
       //lets refund the life
       userProvider.incrementLife();
     }
@@ -169,7 +169,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
                                   delay: ((index + 1) * 500).milliseconds, // Delay each star's animation,
                                   duration: 1000.milliseconds,
                                   curve: Curves.bounceOut,
-                                  begin: Offset((isActive) ? 2.5 : 1, (isActive) ? 2.5 : 1),
+                                  begin: Offset((isActive) ? 3.5 : 1, (isActive) ? 3.5 : 1),
                                   end: Offset(1, 1),
                                 ),
                           ),
@@ -479,28 +479,37 @@ class _GameResultScreenState extends State<GameResultScreen> {
               child: Text(
                 '${(ratio * 100).toStringAsFixed(0)} %',
                 style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: _getResultColor(widget.playerOneScore, widget.playerTwoScore),
+                      fontWeight: FontWeight.w900,
+                      fontSize: 35,
+                      color: _getResultColor(widget.playerOneScore, widget.playerTwoScore).withOpacity(0.4),
                     ),
               )
                   .animate()
+                  .moveY(
+                      begin: 1,
+                      end: 12,
+                      curve: Curves.linear,
+                      duration: const Duration(
+                        milliseconds: 500,
+                      ))
+                  .then()
                   .scale(
-                    duration: 4.seconds,
-                    curve: Curves.easeOutCirc,
-                    begin: Offset(1, 1),
-                    end: Offset(5, 5),
+                    duration: 3.seconds,
+                    curve: Curves.easeInOutExpo,
+                    begin: const Offset(1, 1),
+                    end: const Offset(4, 4),
                   )
                   .fade(
-                    duration: 4.seconds,
-                    curve: Curves.easeOutCirc,
+                    duration: 3.seconds,
+                    curve: Curves.easeInOutExpo,
                     begin: 1,
                     end: 0,
                   )
                   .blur(
-                    duration: 4.seconds,
-                    curve: Curves.easeOutCirc,
+                    duration: 3.seconds,
+                    curve: Curves.easeInQuad,
                     begin: Offset.zero,
-                    end: const Offset(5, 5),
+                    end: const Offset(10, 10),
                   ),
             ),
           ],

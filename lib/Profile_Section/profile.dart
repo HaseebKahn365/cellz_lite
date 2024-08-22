@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
 import 'package:cellz_lite/main.dart';
 import 'package:cellz_lite/providers/audio_service.dart';
@@ -143,7 +142,7 @@ class ProfileWidget extends StatelessWidget {
                                     padding: const EdgeInsets.only(left: 8.0),
                                     child: OutlinedButton.icon(
                                       onPressed: () {
-                                        AudioPlayer().play(AssetSource('audio/tap.wav'), volume: 0.3);
+                                        audioService.playSfx(MyComponent.GETLIFE);
 
                                         userProvider.incrementLife();
                                       },

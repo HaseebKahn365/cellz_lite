@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
 import 'package:cellz_lite/main.dart';
 import 'package:cellz_lite/providers/audio_service.dart';
@@ -569,7 +568,7 @@ class BuySection extends StatelessWidget {
                     ),
                     child: ElevatedButton.icon(
                       onPressed: () async {
-                        AudioPlayer().play(AssetSource('audio/play.wav'), volume: 0.4);
+                        audioService.playSfx(MyComponent.BUYBUTTON);
 
                         //buying the package
                         //lets have a dialog box to confirm the purchase
