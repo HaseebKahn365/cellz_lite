@@ -58,7 +58,7 @@ class AudioService {
         AudioPlayer().play(AssetSource('audio/retry.wav'), volume: loudness);
         break;
       case MyComponent.PROFILE:
-        AudioPlayer().play(AssetSource('audio/profile.wav'), volume: loudness);
+        AudioPlayer().play(AssetSource('audio/profilesection.wav'), volume: loudness);
         break;
       case MyComponent.PLAYBUTTON:
         AudioPlayer().play(AssetSource('audio/playbutton.wav'), volume: loudness);
@@ -73,10 +73,10 @@ class AudioService {
         AudioPlayer().play(AssetSource('audio/darkswitch.wav'), volume: loudness);
         break;
       case MyComponent.BGPICSELECTOR:
-        AudioPlayer().play(AssetSource('audio/bgpicselector.wav'), volume: loudness);
+        AudioPlayer().play(AssetSource('audio/bgpicselect.wav'), volume: loudness);
         break;
       case MyComponent.USERPICSELECTOR:
-        AudioPlayer().play(AssetSource('audio/userpicselector.wav'), volume: loudness);
+        AudioPlayer().play(AssetSource('audio/profilepic.wav'), volume: loudness);
         break;
       case MyComponent.GETLIFE:
         AudioPlayer().play(AssetSource('audio/getlife.wav'), volume: loudness);

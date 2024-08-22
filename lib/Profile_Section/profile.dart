@@ -2,6 +2,8 @@
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
+import 'package:cellz_lite/main.dart';
+import 'package:cellz_lite/providers/audio_service.dart';
 import 'package:cellz_lite/screens/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -40,7 +42,7 @@ class ProfileWidget extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      AudioPlayer().play(AssetSource('audio/profile.wav'));
+                      audioService.playSfx(MyComponent.PROFILE);
 
                       _navigateToSettings(context);
                     },

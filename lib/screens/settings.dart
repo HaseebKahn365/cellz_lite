@@ -59,6 +59,7 @@ class _SettingsContainerState extends State<SettingsContainer> {
                         opticalSize: 23,
                       ),
                       onPressed: () {
+                        audioService.playSfx(MyComponent.BUTTON);
                         Navigator.of(context).pop();
                       },
                     ),
@@ -116,7 +117,7 @@ class _SettingsContainerState extends State<SettingsContainer> {
                             final currentImage = ThemeProvider.colorImageProviders[index];
                             return InkWell(
                               onTap: () {
-                                AudioPlayer().play(AssetSource('audio/dot_touch.wav'), volume: 0.05);
+                                audioService.playSfx(MyComponent.BGPICSELECTOR);
 
                                 themeProvider.handleImageSelect(index);
                               },
@@ -240,7 +241,7 @@ class _SettingsContainerState extends State<SettingsContainer> {
 
         return InkWell(
           onTap: () {
-            AudioPlayer().play(AssetSource('audio/dot_touch.wav'), volume: 0.05);
+            audioService.playSfx(MyComponent.COLORCHANGE);
 
             themeProvider.handleColorSelect(index);
           },
@@ -408,6 +409,7 @@ class _AccountSettingsState extends State<AccountSettings> {
 
                           return InkWell(
                             onTap: () {
+                              audioService.playSfx(MyComponent.USERPICSELECTOR);
                               userProvider.updateAvatarIndex(index);
                             },
                             child: Stack(
