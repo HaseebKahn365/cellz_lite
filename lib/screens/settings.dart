@@ -1,5 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
+import 'package:cellz_lite/main.dart';
+import 'package:cellz_lite/providers/audio_service.dart';
 import 'package:cellz_lite/providers/theme_provider.dart';
 
 import 'package:flutter/material.dart';
@@ -85,6 +87,7 @@ class _SettingsContainerState extends State<SettingsContainer> {
                         title: const Text('Dark Mode'),
                         value: !themeProvider.useLightMode,
                         onChanged: (value) {
+                          audioService.playSfx(MyComponent.DARKSWITCH);
                           themeProvider.handleBrightnessChange(!value);
                         },
                       ),
@@ -285,6 +288,7 @@ class _AccountSettingsState extends State<AccountSettings> {
 
   @override
   void initState() {
+    super.initState();
     // TODO: implement initState
     Future.delayed(const Duration(seconds: 1), () {
       setState(() {

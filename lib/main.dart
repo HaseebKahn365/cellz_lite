@@ -1,5 +1,6 @@
 import 'package:cellz_lite/dealing_with_data/LevelStarts.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
+import 'package:cellz_lite/providers/audio_service.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:cellz_lite/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,8 @@ import 'package:provider/provider.dart';
 import 'home.dart';
 
 final userProvider = UserProvider();
+
+final AudioService audioService = AudioService();
 //we have another provider : LevelStarObject. lets create a final list to store all the levels
 
 final List<LevelStarObject> levelStars = [...levels.map((level) => LevelStarObject(levelObject: level))];
