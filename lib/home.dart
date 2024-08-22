@@ -10,6 +10,7 @@ import 'package:cellz_lite/Profile_Section/profile.dart';
 import 'package:cellz_lite/Tabs/journey_tab.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
 import 'package:cellz_lite/main.dart';
+import 'package:cellz_lite/providers/audio_service.dart';
 import 'package:cellz_lite/providers/theme_provider.dart';
 import 'package:cellz_lite/sections/dial.dart';
 import 'package:flutter/material.dart';
@@ -149,6 +150,7 @@ class Home extends StatelessWidget {
                         side: BorderSide(color: Colors.black.withOpacity(0)),
                       ),
                       onPressed: () {
+                        audioService.playSfx(MyComponent.BUTTON);
                         exit(0);
                       },
                     ),
@@ -164,6 +166,8 @@ class Home extends StatelessWidget {
                         foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       ),
                       onPressed: () {
+                        audioService.playSfx(MyComponent.BUTTON);
+
                         Navigator.of(context).pop(false);
                       },
                     ),
@@ -597,11 +601,7 @@ class AwardWidget extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    AudioPlayer().play(
-                        AssetSource(
-                          'audio/next.wav',
-                        ),
-                        volume: 0.09);
+                    audioService.playSfx(MyComponent.BUTTON);
 
                     //Displaying an alert dialogue box that has the following content:
                     /*

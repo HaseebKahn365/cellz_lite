@@ -49,7 +49,7 @@ class AudioService {
         AudioPlayer().play(AssetSource('audio/adblives.wav'), volume: loudness);
         break;
       case MyComponent.SHOWMORE:
-        AudioPlayer().play(AssetSource('audio/showmore.wav'), volume: loudness);
+        AudioPlayer().play(AssetSource('audio/show_more.wav'), volume: loudness);
         break;
       case MyComponent.NEXT:
         AudioPlayer().play(AssetSource('audio/next.wav'), volume: loudness);

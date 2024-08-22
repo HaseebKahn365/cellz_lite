@@ -297,6 +297,17 @@ class _AccountSettingsState extends State<AccountSettings> {
     });
   }
 
+  final _focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    nameControlla.dispose();
+    super.dispose();
+  }
+
+  TextEditingController nameControlla = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(
@@ -342,8 +353,16 @@ class _AccountSettingsState extends State<AccountSettings> {
                       child: Form(
                         key: _formKey,
                         child: TextFormField(
+                          controller: nameControlla,
+                          focusNode: _focusNode,
+                          onTap: () {
+                            setState(() {
+                              //set focus to true
+                              _focusNode.requestFocus();
+                            });
+                          },
                           decoration: InputDecoration(
-                            hintText: userProvider.name,
+                            hintText: _focusNode.hasFocus ? "" : userProvider.name,
                             alignLabelWithHint: true,
                             hintStyle: TextStyle(
                               fontSize: 16.0,
@@ -352,13 +371,14 @@ class _AccountSettingsState extends State<AccountSettings> {
                             ),
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: _isError ? Colors.red : Theme.of(context).colorScheme.secondaryContainer,
+                                color: _isError ? Colors.red : Theme.of(context).colorScheme.onSecondaryContainer,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(11),
                             ),
                             contentPadding: const EdgeInsets.all(10),
                           ),
+
                           textAlign: TextAlign.center,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -372,6 +392,7 @@ class _AccountSettingsState extends State<AccountSettings> {
                               });
                               return 'Valid name length: 3-18';
                             }
+
                             setState(() {
                               _isError = false;
                               FocusScope.of(context).unfocus();
@@ -382,6 +403,11 @@ class _AccountSettingsState extends State<AccountSettings> {
                             if (_formKey.currentState!.validate()) {
                               userProvider.changeName(value);
                             }
+                          },
+                          //on canceling editing unfocus
+                          onTapOutside: (_) {
+                            nameControlla.clear();
+                            FocusScope.of(context).unfocus();
                           },
                         ),
                       ),

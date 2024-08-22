@@ -49,6 +49,7 @@ import 'dart:developer';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/business_logic/game_state.dart';
 import 'package:cellz_lite/main.dart';
+import 'package:cellz_lite/providers/audio_service.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:cellz_lite/screens/animated_think_circle.dart';
 import 'package:cellz_lite/screens/game_over_screen.dart';
@@ -115,6 +116,8 @@ class GamePlayScreen extends StatelessWidget {
                         OutlinedButton(
                           child: Text('Leave', textAlign: TextAlign.center),
                           onPressed: () {
+                            // audioService.playSfx(MyComponent.BUTTON);
+
                             Navigator.of(context).pop(true);
                           },
                         ),
@@ -127,6 +130,8 @@ class GamePlayScreen extends StatelessWidget {
                             foregroundColor: Theme.of(context).colorScheme.onPrimary,
                           ),
                           onPressed: () {
+                            audioService.playSfx(MyComponent.BUTTON);
+
                             Navigator.of(context).pop(false);
                           },
                         ),

@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/business_logic/game_state.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
 import 'package:cellz_lite/main.dart';
+import 'package:cellz_lite/providers/audio_service.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:cellz_lite/screens/game_play_screen.dart';
 import 'package:cellz_lite/screens/my_game.dart';
@@ -163,12 +164,16 @@ class CurrentLevelContainer extends StatelessWidget {
                                               TextButton(
                                                 child: Text('Cancel'),
                                                 onPressed: () {
+                                                  audioService.playSfx(MyComponent.BUTTON);
+
                                                   Navigator.of(context).pop();
                                                 },
                                               ),
                                               OutlinedButton(
                                                 child: Text('Get Lives'),
                                                 onPressed: () {
+                                                  audioService.playSfx(MyComponent.BUTTON);
+
                                                   // Implement logic to get more lives
                                                   Navigator.of(context).pop();
                                                 },

@@ -5,6 +5,7 @@ import 'package:cellz_lite/Tabs/all_unlocked_levels.dart';
 import 'package:cellz_lite/dealing_with_data/LevelStarts.dart';
 import 'package:cellz_lite/dealing_with_data/User.dart';
 import 'package:cellz_lite/main.dart';
+import 'package:cellz_lite/providers/audio_service.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -75,7 +76,7 @@ class JourneyTab extends StatelessWidget {
                     //  up arrow
                     icon: Icon(Icons.arrow_upward),
                     onPressed: () {
-                      AudioPlayer().play(AssetSource('audio/show_more.wav'), volume: 0.05);
+                      audioService.playSfx(MyComponent.SHOWMORE);
 
                       //Navigate to the levels screen ..it will have details of each level. all levels that the user has unlocked will be shown.
                       Navigator.of(context).push(
