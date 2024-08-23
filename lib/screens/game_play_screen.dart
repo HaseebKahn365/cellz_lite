@@ -245,7 +245,7 @@ class GamePlayScreen extends StatelessWidget {
                                     final double progress = elapsedSeconds / bestTime;
 
                                     // Calculate the width of the container
-                                    double containerWidth = progress <= 1 ? (250 * (1 - progress) + 30) : 1; //!30 is to just accomodate the text
+                                    double containerWidth = progress <= 1 ? (220 * (1 - progress) + 30) : 1; //!30 is to just accomodate the text
 
                                     //! Determine the color based on progress
                                     Color containerColor = _getColorForProgress(progress);
