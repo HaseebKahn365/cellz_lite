@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cellz_lite/business_logic/game_state.dart';
+import 'package:cellz_lite/main.dart';
 import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:cellz_lite/screens/game_play_screen.dart';
 import 'package:flame/components.dart';
@@ -210,37 +211,39 @@ class GuiSquare extends PositionComponent with HasGameRef {
       );
 
       if (GameState!.chainCount > 1) {
-        if (GameState!.chainCount == 2) {
-          AudioPlayer().play(AssetSource('audio/2.wav'), volume: loundness);
-          _addParticle(1, positionOffset.toVector2());
-        } else if (GameState!.chainCount == 3) {
-          AudioPlayer().play(AssetSource('audio/3.wav'), volume: loundness);
-          _addParticle(2, positionOffset.toVector2());
-        } else if (GameState!.chainCount == 4) {
-          AudioPlayer().play(AssetSource('audio/4.wav'), volume: loundness);
-          _addParticle(3, positionOffset.toVector2());
-        } else if (GameState!.chainCount == 5) {
-          AudioPlayer().play(AssetSource('audio/5.wav'), volume: loundness);
-          _addParticle(4, positionOffset.toVector2());
-        } else if (GameState!.chainCount == 6) {
-          AudioPlayer().play(AssetSource('audio/6.wav'), volume: loundness);
-          _addParticle(5, positionOffset.toVector2());
-        } else if (GameState!.chainCount == 7) {
-          AudioPlayer().play(AssetSource('audio/7.wav'), volume: loundness);
-          _addParticle(6, positionOffset.toVector2());
-        } else if (GameState!.chainCount == 8) {
-          AudioPlayer().play(AssetSource('audio/8.wav'), volume: loundness);
-          _addParticle(7, positionOffset.toVector2());
-        } else if (GameState!.chainCount == 9) {
-          AudioPlayer().play(AssetSource('audio/9.wav'), volume: loundness);
-          _addParticle(8, positionOffset.toVector2());
-        } else if (GameState!.chainCount == 10) {
-          AudioPlayer().play(AssetSource('audio/10.wav'), volume: loundness);
-          _addParticle(9, positionOffset.toVector2());
-        } else {
-          AudioPlayer().play(AssetSource('audio/combo.wav'), volume: loundness);
-          _addParticle(10, positionOffset.toVector2());
-        }
+        // if (GameState!.chainCount == 2) {
+        //   AudioPlayer().play(AssetSource('audio/2.wav'), volume: loundness);
+        //   //we should use audio service to play this sound to avoid cross-overs
+        //   _addParticle(1, positionOffset.toVector2());
+        // } else if (GameState!.chainCount == 3) {
+        //   AudioPlayer().play(AssetSource('audio/3.wav'), volume: loundness);
+        //   _addParticle(2, positionOffset.toVector2());
+        // } else if (GameState!.chainCount == 4) {
+        //   AudioPlayer().play(AssetSource('audio/4.wav'), volume: loundness);
+        //   _addParticle(3, positionOffset.toVector2());
+        // } else if (GameState!.chainCount == 5) {
+        //   AudioPlayer().play(AssetSource('audio/5.wav'), volume: loundness);
+        //   _addParticle(4, positionOffset.toVector2());
+        // } else if (GameState!.chainCount == 6) {
+        //   AudioPlayer().play(AssetSource('audio/6.wav'), volume: loundness);
+        //   _addParticle(5, positionOffset.toVector2());
+        // } else if (GameState!.chainCount == 7) {
+        //   AudioPlayer().play(AssetSource('audio/7.wav'), volume: loundness);
+        //   _addParticle(6, positionOffset.toVector2());
+        // } else if (GameState!.chainCount == 8) {
+        //   AudioPlayer().play(AssetSource('audio/8.wav'), volume: loundness);
+        //   _addParticle(7, positionOffset.toVector2());
+        // } else if (GameState!.chainCount == 9) {
+        //   AudioPlayer().play(AssetSource('audio/9.wav'), volume: loundness);
+        //   _addParticle(8, positionOffset.toVector2());
+        // } else if (GameState!.chainCount == 10) {
+        //   AudioPlayer().play(AssetSource('audio/10.wav'), volume: loundness);
+        //   _addParticle(9, positionOffset.toVector2());
+        // } else {
+        //   AudioPlayer().play(AssetSource('audio/combo.wav'), volume: loundness);
+        //   _addParticle(10, positionOffset.toVector2());
+        // }
+        audioService.playSquareSfx(GameState!.chainCount);
       }
     }
 
