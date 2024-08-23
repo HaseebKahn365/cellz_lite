@@ -147,7 +147,14 @@ class GamePlayScreen extends StatelessWidget {
         false;
   }
 
-  // final instead of using a solid 200 lets use 1/5 of the screen height
+  Color _getColorForProgress(double progress) {
+    if (progress < 0.45) return Colors.green;
+    if (progress < 0.6) return Colors.yellow;
+    if (progress < 0.7) return Colors.orange;
+    if (progress < 0.95) return Color.fromARGB(255, 255, 134, 97);
+
+    return Colors.red;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -229,15 +236,51 @@ class GamePlayScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             //!Timer Text
-                            ValueListenableBuilder<int>(
-                              valueListenable: gamePlayStateForGui!.secTimerNotifier,
-                              builder: (context, sec, _) {
-                                return Text(
-                                  '${(sec ~/ 60).toString().padLeft(2, '')}:${(sec % 60).toString().padLeft(2, '0')}',
-                                  style: TextStyle(fontSize: 12),
-                                );
-                              },
+                            Stack(
+                              children: [
+                                ValueListenableBuilder<int>(
+                                  valueListenable: gamePlayStateForGui!.secTimerNotifier,
+                                  builder: (context, elapsedSeconds, _) {
+                                    // !Assume bestTimeSeconds is available from somewhere in your app
+                                    final double progress = elapsedSeconds / bestTime;
+
+                                    // Calculate the width of the container
+                                    double containerWidth = progress <= 1 ? (250 * (1 - progress) + 30) : 1; //!30 is to just accomodate the text
+
+                                    //! Determine the color based on progress
+                                    Color containerColor = _getColorForProgress(progress);
+
+                                    return Stack(
+                                      children: [
+                                        Center(
+                                          child: AnimatedContainer(
+                                            duration: const Duration(milliseconds: 700),
+                                            margin: const EdgeInsets.only(top: 5),
+                                            width: containerWidth,
+                                            height: 5,
+                                            decoration: BoxDecoration(
+                                              color: containerColor,
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                        ),
+                                        Center(
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                                            color: Theme.of(context).colorScheme.surface,
+                                            child: Text(
+                                              '${(elapsedSeconds ~/ 60).toString()}:${(elapsedSeconds % 60).toString().padLeft(2, '0')}',
+                                              style: TextStyle(fontSize: 10),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
+
                             LayoutBuilder(
                               builder: (context, constraints) {
                                 return ValueListenableBuilder<int>(
