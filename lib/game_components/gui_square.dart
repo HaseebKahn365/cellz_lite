@@ -172,7 +172,7 @@ class GuiSquare extends PositionComponent with HasGameRef {
                 renderer: (canvas, particle) {
                   sprite.render(
                     canvas,
-                    size: Vector2.all(20) * (1 - particle.progress * 0.7), // Slower shrinking
+                    size: Vector2.all(40) * (1 - particle.progress), // Slower shrinking
                     anchor: Anchor.center,
                     overridePaint: Paint()
                       ..color = Colors.white.withOpacity(
@@ -211,6 +211,7 @@ class GuiSquare extends PositionComponent with HasGameRef {
       );
 
       if (GameState!.chainCount > 1) {
+        _addParticle(GameState!.chainCount, positionOffset.toVector2());
         audioService.playSquareSfx(GameState!.chainCount);
       }
     }

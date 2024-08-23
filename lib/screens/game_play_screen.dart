@@ -507,10 +507,17 @@ class GamePlayScreen extends StatelessWidget {
               child: Opacity(
                 opacity: 0.5,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 30.0),
+                  padding: const EdgeInsets.only(bottom: 30.0, right: 50, left: 50),
                   child: SizedBox(
-                    height: 30,
-                    child: interactiveSoundButton(),
+                    height: 25,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        interactiveSoundButton(),
+                        const SizedBox(width: 10),
+                        BGMControls(),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -518,6 +525,87 @@ class GamePlayScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class BGMControls extends StatefulWidget {
+  BGMControls({
+    super.key,
+  });
+
+  @override
+  State<BGMControls> createState() => _BGMControlsState();
+}
+
+class _BGMControlsState extends State<BGMControls> {
+  bool isPlaying = true;
+  int currentIndex = 1;
+  int changeIndex({bool? previous, bool? next}) {
+    if (previous != null) {
+      currentIndex = currentIndex == 0 ? 5 : currentIndex - 1;
+    } else if (next != null) {
+      currentIndex = currentIndex == 5 ? 0 : currentIndex + 1;
+    }
+    return currentIndex;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: 30,
+          height: 30,
+          child: IconButton(
+            icon: const Icon(Icons.skip_previous),
+            onPressed: () {
+              // Handle back button press
+
+              audioService.changeBGM(index: changeIndex(previous: true));
+            },
+            iconSize: 24,
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+          ),
+        ),
+        SizedBox(
+          width: 25,
+          height: 25,
+          child: IconButton(
+            icon: isPlaying ? const Icon(Icons.music_note) : const Icon(Icons.music_off),
+            onPressed: () {
+              // Handle back button press
+              setState(() {
+                isPlaying = !isPlaying;
+                if (isPlaying) {
+                  audioService.resumeBGM();
+                } else {
+                  audioService.pauseBGM();
+                }
+              });
+            },
+            iconSize: 25,
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+          ),
+        ),
+        SizedBox(
+          width: 30,
+          height: 30,
+          child: IconButton(
+            icon: const Icon(Icons.skip_next),
+            onPressed: () {
+              // Handle back button press
+              audioService.changeBGM(index: changeIndex(next: true));
+            },
+            iconSize: 24,
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+          ),
+        ),
+      ],
     );
   }
 }

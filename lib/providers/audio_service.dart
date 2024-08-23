@@ -1,5 +1,7 @@
 //this is a class that manages the bgm audio and the sfx audios for the UI.
 
+import 'dart:math';
+
 import 'package:audioplayers/audioplayers.dart';
 
 //enum for the components that will play audio
@@ -14,9 +16,23 @@ class AudioService {
 
   //bg audio should come from online:
   /*
-  https://www.bensound.com/royalty-free-music/track/hope-touching-piano
+  https://assets.mixkit.co/music/138/138.mp3
+  https://assets.mixkit.co/music/970/970.mp3
+  https://assets.mixkit.co/music/989/989.mp3
+  https://assets.mixkit.co/music/466/466.mp3
+  https://assets.mixkit.co/music/759/759.mp3
+  https://assets.mixkit.co/music/262/262.mp3
 
-   */
+ */
+
+  static const musicList = [
+    'https://assets.mixkit.co/music/138/138.mp3',
+    'https://assets.mixkit.co/music/970/970.mp3',
+    'https://assets.mixkit.co/music/989/989.mp3',
+    'https://assets.mixkit.co/music/466/466.mp3',
+    'https://assets.mixkit.co/music/759/759.mp3',
+    'https://assets.mixkit.co/music/262/262.mp3',
+  ];
 
   //method to pause BGM
   void pauseBGM() {
@@ -43,15 +59,20 @@ class AudioService {
   //method to change bgm
   //THIS METHOD TAKES AN INDEX OF THE BGM WHICH IF NOT PROVIDED WILL PLAY A RANDOM BGM
   void changeBGM({int? index}) async {
-    index ??= 1;
     _audioPlayer.stop();
+    final randIndex = Random().nextInt(musicList.length);
     await _audioPlayer.setReleaseMode(ReleaseMode.loop);
     // _audioPlayer.play(AssetSource("audio/bgm$index.wav"), volume: 0.2);
     //from url
-    _audioPlayer.play(UrlSource("https://www.bensound.com/bensound-music/bensound-hope.mp3"), volume: 0.2);
+    _audioPlayer.play(
+        UrlSource(
+          musicList[randIndex],
+        ),
+        volume: bgLoundness);
   }
 
   final double loudness = 0.5;
+  final double bgLoundness = 0.08;
 
   //method to play sfx using provided component. IT WILL PAUSE THE BGM AND PLAY THE SFX THEN RESUME THE BGM WHILE MAINTAINING THE LENGTH OF THE BGM PLAYED
   void playSfx(MyComponent comp) {
