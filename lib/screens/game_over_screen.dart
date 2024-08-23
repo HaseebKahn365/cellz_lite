@@ -7,7 +7,7 @@ import 'package:cellz_lite/screens/game_play_screen.dart';
 import 'package:cellz_lite/screens/my_game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:rive/rive.dart';
+import 'package:rive/rive.dart' as riv;
 
 class GameResultScreen extends StatefulWidget {
   final String playerOneName;
@@ -106,7 +106,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
               const Positioned.fill(
                 child: const Opacity(
                   opacity: 0.1,
-                  child: RiveAnimation.asset(
+                  child: riv.RiveAnimation.asset(
                     'assets/images/confetti_best.riv',
                     fit: BoxFit.cover,
                   ),
@@ -153,26 +153,52 @@ class _GameResultScreenState extends State<GameResultScreen> {
                           if (index == 2) allStarsPlayed = true; //to avoid multiple plays
                         });
 
-                        return Container(
-                          margin: const EdgeInsets.only(top: 110.0),
-                          height: 700,
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Icon(
-                              Icons.star,
-                              color: isActive ? Colors.yellow : Colors.grey,
-                              size: 20, // Increased size for better visibility
-                            )
-                                .animate(
-                                  onPlay: (controller) => controller.forward(), // Ensure the animation plays
-                                )
-                                .scale(
-                                  delay: ((index + 1) * 500).milliseconds, // Delay each star's animation,
-                                  duration: 1000.milliseconds,
-                                  curve: Curves.bounceOut,
-                                  begin: Offset((isActive) ? 3.5 : 1, (isActive) ? 3.5 : 1),
-                                  end: Offset(1, 1),
-                                ),
+                        return SizedBox(
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 110.0),
+                            height: 700,
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: isActive
+                                  ? Image.asset(
+                                      'assets/images/star.png',
+                                      width: 20,
+                                      height: 20,
+                                    )
+                                      .animate(
+                                        onPlay: (controller) => controller.forward(),
+                                      )
+                                      .rotate(
+                                        begin: 0,
+                                        end: 1,
+                                        duration: 3.seconds,
+                                      )
+                                      .moveX(
+                                        begin: index == 0 ? -100 : (index == 2 ? 100 : 0),
+                                        end: 0,
+                                        duration: 3.seconds,
+                                        curve: Curves.easeOutQuart,
+                                      )
+                                      .moveY(
+                                        begin: index == 1 ? 100 : 0,
+                                        end: 0,
+                                        duration: 3.seconds,
+                                        curve: Curves.easeOutQuart,
+                                      )
+                                      .scale(
+                                        delay: ((index + 1) * 500).milliseconds,
+                                        duration: 1.seconds,
+                                        curve: Curves.bounceOut,
+                                        begin: Offset(3.5, 3.5),
+                                        end: Offset(1, 1),
+                                      )
+                                  : Image.asset(
+                                      'assets/images/star.png',
+                                      width: 20,
+                                      height: 20,
+                                      color: Colors.grey,
+                                    ),
+                            ),
                           ),
                         );
                       },
@@ -215,7 +241,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
                             width: 450,
                             child: (!shouldAppear)
                                 ? const SizedBox.shrink()
-                                : RiveAnimation.asset(
+                                : riv.RiveAnimation.asset(
                                     'assets/images/emoji_set.riv',
                                     artboard: emojiAnimation,
                                     fit: BoxFit.contain,
@@ -300,7 +326,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
                                               const SizedBox(
                                                 width: 350,
                                                 height: 150,
-                                                child: RiveAnimation.asset(
+                                                child: riv.RiveAnimation.asset(
                                                   'assets/images/cute_heart_broken.riv',
                                                   fit: BoxFit.cover,
                                                   antialiasing: true,

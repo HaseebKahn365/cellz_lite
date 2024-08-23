@@ -297,6 +297,7 @@ class Dot extends PositionComponent with DragCallbacks, CollisionCallbacks, HasG
   static final dotsCount = GameState!.allPoints.length;
 
   int getDynamicDelay() {
+    return 1;
     //between 300 and 3000 milliseconds random int
     if (dotsCount == 4 || dotsCount == 8) return 50;
     if (GameState!.linesDrawn.length < totalLinesHalf) {
@@ -315,7 +316,8 @@ class Dot extends PositionComponent with DragCallbacks, CollisionCallbacks, HasG
       // aiFunction.testComponentCreation(gameRef);
       if (!GameState!.myTurn) {
         try {
-          await aiFunction.buildReadyLines(gameRef);
+          // await aiFunction.buildReadyLines(gameRef);
+          GameState!.myTurn = true;
           dragIsAllowed = true;
         } catch (e) {
           log('Error in the AI function: $e');

@@ -539,7 +539,7 @@ class BGMControls extends StatefulWidget {
 }
 
 class _BGMControlsState extends State<BGMControls> {
-  bool isPlaying = true;
+  bool isPlaying = false;
   int currentIndex = 1;
   int changeIndex({bool? previous, bool? next}) {
     if (previous != null) {
@@ -562,6 +562,7 @@ class _BGMControlsState extends State<BGMControls> {
             icon: const Icon(Icons.skip_previous),
             onPressed: () {
               // Handle back button press
+              if (!isPlaying) return;
 
               audioService.changeBGM(index: changeIndex(previous: true));
             },
@@ -576,9 +577,15 @@ class _BGMControlsState extends State<BGMControls> {
           child: IconButton(
             icon: isPlaying ? const Icon(Icons.music_note) : const Icon(Icons.music_off),
             onPressed: () {
-              // Handle back button press
               setState(() {
                 isPlaying = !isPlaying;
+                if (!audioService.gameRunState) {
+                  audioService.gameStart();
+                  setState(() {
+                    isPlaying = true;
+                  });
+                  return;
+                }
                 if (isPlaying) {
                   audioService.resumeBGM();
                 } else {
@@ -597,7 +604,8 @@ class _BGMControlsState extends State<BGMControls> {
           child: IconButton(
             icon: const Icon(Icons.skip_next),
             onPressed: () {
-              // Handle back button press
+              if (!isPlaying) return;
+
               audioService.changeBGM(index: changeIndex(next: true));
             },
             iconSize: 24,

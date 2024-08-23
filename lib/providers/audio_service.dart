@@ -72,7 +72,7 @@ class AudioService {
   }
 
   final double loudness = 0.5;
-  final double bgLoundness = 0.08;
+  final double bgLoundness = 0.06;
 
   //method to play sfx using provided component. IT WILL PAUSE THE BGM AND PLAY THE SFX THEN RESUME THE BGM WHILE MAINTAINING THE LENGTH OF THE BGM PLAYED
   void playSfx(MyComponent comp) {

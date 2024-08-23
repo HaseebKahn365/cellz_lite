@@ -50,7 +50,6 @@ class GamePlayStateForGui {
   }
 
   void initMovesLeftAndSquares(int movesLeft, int squaresLeft) {
-    audioService.gameStart();
     movesLeftNotifier.value = movesLeft;
     squaresLeftNotifier.value = squaresLeft;
     //start the timer
