@@ -12,6 +12,12 @@ class AudioService {
 
   bool gameRunState = false; //to check if the game is running or not
 
+  //bg audio should come from online:
+  /*
+  https://www.bensound.com/royalty-free-music/track/hope-touching-piano
+
+   */
+
   //method to pause BGM
   void pauseBGM() {
     _audioPlayer.pause();
@@ -29,13 +35,20 @@ class AudioService {
     resumeBGM();
   }
 
+  void gameEnd() {
+    gameRunState = false;
+    _audioPlayer.stop();
+  }
+
   //method to change bgm
   //THIS METHOD TAKES AN INDEX OF THE BGM WHICH IF NOT PROVIDED WILL PLAY A RANDOM BGM
   void changeBGM({int? index}) async {
     index ??= 1;
     _audioPlayer.stop();
     await _audioPlayer.setReleaseMode(ReleaseMode.loop);
-    _audioPlayer.play(AssetSource("assets/audio/bgm$index.wav"), volume: 0.2);
+    // _audioPlayer.play(AssetSource("audio/bgm$index.wav"), volume: 0.2);
+    //from url
+    _audioPlayer.play(UrlSource("https://www.bensound.com/bensound-music/bensound-hope.mp3"), volume: 0.2);
   }
 
   final double loudness = 0.5;

@@ -50,6 +50,7 @@ class GamePlayStateForGui {
   }
 
   void initMovesLeftAndSquares(int movesLeft, int squaresLeft) {
+    audioService.gameStart();
     movesLeftNotifier.value = movesLeft;
     squaresLeftNotifier.value = squaresLeft;
     //start the timer
@@ -84,6 +85,7 @@ class GamePlayStateForGui {
   bool checkGameOver() {
     if (movesLeftNotifier.value == 0) {
       isGameOverNotifier.value = true;
+      audioService.gameEnd();
       print('Game Over and resetting');
     }
 

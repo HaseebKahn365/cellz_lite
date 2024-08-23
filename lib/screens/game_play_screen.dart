@@ -117,6 +117,7 @@ class GamePlayScreen extends StatelessWidget {
                           child: Text('Leave', textAlign: TextAlign.center),
                           onPressed: () {
                             // audioService.playSfx(MyComponent.BUTTON);
+                            audioService.gameEnd();
 
                             Navigator.of(context).pop(true);
                           },
