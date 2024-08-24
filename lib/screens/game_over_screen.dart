@@ -53,7 +53,9 @@ class _GameResultScreenState extends State<GameResultScreen> {
       userProvider.incrementLife();
 
       if (widget.levelPlayedIndex == userProvider.currentLevelIndex) {
-        userProvider.updateCurrentLevelIndex(userProvider.currentLevelIndex + 1);
+        if (userProvider.currentLevelIndex != 64) {
+          userProvider.updateCurrentLevelIndex(userProvider.currentLevelIndex + 1);
+        }
       }
       //lets play the applause audio
       AudioPlayer().play(AssetSource('audio/applause.wav'));
@@ -447,7 +449,11 @@ class _GameResultScreenState extends State<GameResultScreen> {
                             //in case if the game is lost or draw the show retry button else show go Next button
                             icon: shouldRetry ? const Icon(Icons.replay_circle_filled_rounded) : Icon(Icons.arrow_forward_ios_rounded),
                             label: Text(
-                              shouldRetry ? 'Retry' : 'Next Level ${levels[widget.levelPlayedIndex + 1].id}',
+                              shouldRetry
+                                  ? 'Retry'
+                                  : (widget.levelPlayedIndex == 64)
+                                      ? 'You did it! 😲'
+                                      : 'Next Level ${(widget.levelPlayedIndex == 64) ? levels[widget.levelPlayedIndex + 1].id : ''}',
                             ),
                             style: ElevatedButton.styleFrom(
                               elevation: 5,

@@ -3,6 +3,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cellz_lite/providers/game_play_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,9 +34,9 @@ class UserProvider extends ChangeNotifier {
     _prefs = await SharedPreferences.getInstance();
     name = _prefs?.getString('name') ?? 'You';
     score = _prefs?.getInt('score') ?? 0;
-    currentLevelIndex = _prefs?.getInt('currentLevelIndex') ?? 0;
+    // currentLevelIndex = _prefs?.getInt('currentLevelIndex') ?? 0;
 
-    // currentLevelIndex = 0;
+    currentLevelIndex = 64;
     wins = _prefs?.getInt('wins') ?? 0;
     losses = _prefs?.getInt('losses') ?? 0;
     lives = _prefs?.getInt('lives') ?? 5;
@@ -153,7 +154,9 @@ class UserProvider extends ChangeNotifier {
   }
 
   void updateCurrentLevelIndex(int index) {
-    currentLevelIndex = index;
+    if (index < levels.length) {
+      currentLevelIndex = index;
+    }
     _saveToPrefs('currentLevelIndex', currentLevelIndex);
     notifyListeners();
   }

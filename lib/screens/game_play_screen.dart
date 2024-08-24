@@ -56,7 +56,8 @@ import 'package:cellz_lite/screens/game_over_screen.dart';
 import 'package:cellz_lite/screens/my_game.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:rive/rive.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:rive/rive.dart' as riv;
 
 // ignore: must_be_immutable
 class GamePlayScreen extends StatelessWidget {
@@ -97,7 +98,7 @@ class GamePlayScreen extends StatelessWidget {
                     const SizedBox(
                       width: 350,
                       height: 150,
-                      child: RiveAnimation.asset(
+                      child: riv.RiveAnimation.asset(
                         'assets/images/cute_heart_broken.riv',
                         fit: BoxFit.cover,
                         antialiasing: true,
@@ -251,6 +252,7 @@ class GamePlayScreen extends StatelessWidget {
                                     Color containerColor = _getColorForProgress(progress);
 
                                     return Stack(
+                                      alignment: Alignment.center,
                                       children: [
                                         Center(
                                           child: AnimatedContainer(
@@ -261,9 +263,44 @@ class GamePlayScreen extends StatelessWidget {
                                             decoration: BoxDecoration(
                                               color: containerColor,
                                               borderRadius: BorderRadius.circular(10),
+                                              border: Border.all(color: Theme.of(context).colorScheme.secondaryContainer, width: 0.8),
                                             ),
                                           ),
                                         ),
+                                        //if progress becomes 1 then animate a star usig flutter animate downward
+                                        if (progress >= 1)
+                                          Center(
+                                              child: SizedBox(
+                                            height: 5,
+                                            width: 5,
+                                            child: Image.asset(
+                                              'assets/images/star.png',
+                                              fit: BoxFit.cover,
+                                            ),
+                                          )
+                                                  .animate()
+                                                  .scale(
+                                                    begin: Offset(10, 10),
+                                                    end: Offset(1, 1),
+                                                    curve: Curves.easeInOut,
+                                                    duration: const Duration(milliseconds: 500),
+                                                  )
+                                                  .moveY(
+                                                    begin: 0,
+                                                    end: 100,
+                                                    curve: Curves.easeInOut,
+                                                    duration: const Duration(milliseconds: 500),
+                                                  )
+                                                  .rotate(
+                                                    begin: 0,
+                                                    end: 1,
+                                                    duration: const Duration(milliseconds: 500),
+                                                  )
+                                                  .blur(
+                                                    begin: Offset.zero,
+                                                    end: Offset(10, 10),
+                                                    duration: const Duration(milliseconds: 500),
+                                                  )),
                                         Center(
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -380,7 +417,7 @@ class GamePlayScreen extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15),
                                     side: BorderSide(
-                                      color: GameState!.colorSet[3],
+                                      color: (GameState!.myTurn) ? GameState!.colorSet[3] : Theme.of(context).colorScheme.secondaryContainer,
                                       width: isMyTurn ? 4.0 : 1.0, // Adjust these values as needed
                                     ),
                                   ),
@@ -474,7 +511,7 @@ class GamePlayScreen extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15),
                                     side: BorderSide(
-                                      color: GameState!.myTurn ? GameState!.colorSet[3] : GameState!.colorSet[4],
+                                      color: GameState!.myTurn ? Theme.of(context).colorScheme.secondaryContainer : GameState!.colorSet[4],
                                       width: !isMyTurn ? 4.0 : 1.0, // Adjust these values as needed
                                     ),
                                   ),
