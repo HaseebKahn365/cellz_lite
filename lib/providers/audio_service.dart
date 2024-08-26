@@ -10,7 +10,7 @@ enum MyComponent { BUTTON, ADBFORLIVES, SHOWMORE, NEXT, RETRY, PROFILE, PLAYBUTT
 
 class AudioService {
   static final AudioPlayer _audioPlayer = AudioPlayer();
-  static final AudioPlayer _squareSfxPlayer = AudioPlayer();
+  // static final AudioPlayer _squareSfxPlayer = AudioPlayer();
 
   bool gameRunState = false; //to check if the game is running or not
 
