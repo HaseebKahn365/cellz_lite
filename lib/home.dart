@@ -312,7 +312,7 @@ class _AnimatedRadialDialState extends State<AnimatedRadialDial> with SingleTick
             volume: 0.1);
 
         //showing a model bottom sheet to view the procedure of getting reward
-        showGlobalModelBottomSheet(context: context, showCarousel: false);
+        showGlobalModelBottomSheet(context: context, showCarousel: true);
 
         Future.delayed(Duration(seconds: 1), () {
           buttonPressed = false;

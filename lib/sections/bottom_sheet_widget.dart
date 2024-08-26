@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cellz_lite/main.dart';
 import 'package:cellz_lite/providers/audio_service.dart';
 import 'package:flutter/material.dart';
@@ -138,7 +140,101 @@ class AwardWidget extends StatelessWidget {
           ),
           const SizedBox(height: 25),
 
+          //!Here is the CarouselView:
+          SizedBox(
+            height: 120,
+            child: RawScrollbar(
+              // controller: controller,
+              thumbColor: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+              radius: Radius.circular(20),
+              thickness: 3,
+              thumbVisibility: true,
+              trackVisibility: true,
+              trackRadius: Radius.circular(30),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              // onPrimary
+              trackColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+              child: CarouselView(
+                itemExtent: MediaQuery.sizeOf(context).width - 210,
+                elevation: 1,
+                shrinkExtent: 1,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                ),
+                onTap: (index) {
+                  log('listening to taps of $index');
+                },
+                children: List.generate(
+                  levelStars.length,
+                  (uIndex) {
+                    return Container(
+                      //stop recieving taps
+
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 5),
+                          Text(
+                            'Level ${uIndex + 1}',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          //showing stars
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(
+                              3,
+                              (index) => Icon(
+                                (levelStars[uIndex].stars) > index ? Icons.star : Icons.star_border_rounded,
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 10,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+
+                          //an outline play button
+                          SizedBox(
+                            height: 25,
+                            child: OutlinedButton(
+                              onPressed: () {
+                                audioService.playSfx(MyComponent.BUTTON);
+                                Navigator.of(context).pop();
+                              },
+                              style: OutlinedButton.styleFrom(
+                                side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 0.5),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              child: Text(
+                                'Play',
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+
 // Second Bullet: Criteria for Stars Table
+          const SizedBox(
+            height: 10,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
